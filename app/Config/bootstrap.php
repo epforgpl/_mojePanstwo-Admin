@@ -70,11 +70,19 @@ Cache::config('default', array('engine' => 'File'));
  *
  */
 
+CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
+
 /**
  * To prefer app translation over plugin translation, you can set
  *
  * Configure::write('I18n.preferApp', true);
  */
+
+Configure::write('Opauth.Strategy.MojePanstwo', array(
+    'client_id' => 'NTI1N2RhYjgzNDg1YTBk',
+    'client_secret' => 'def14eb0654ba2dcc904d5723a5fdc023dac0f30',
+    'response_type' => 'code'
+));
 
 /**
  * You can attach event listeners to the request lifecycle as Dispatcher Filter. By default CakePHP bundles two filters:

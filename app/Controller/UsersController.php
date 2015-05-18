@@ -1,11 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 18.05.15
- * Time: 12:41
- */
 
-class UsersController {
+class UsersController extends AppController {
+
+    public function opauth_complete() {
+        debug($this->data);
+    }
 
 }

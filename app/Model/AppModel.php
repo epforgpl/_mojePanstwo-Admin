@@ -30,4 +30,19 @@ App::uses('Model', 'Model');
  * @package       app.Model
  */
 class AppModel extends Model {
+
+    /**
+     * @return array
+     */
+    public static function getMenu() {
+        return array(
+            'items' => array(
+                array(
+                    'label' => 'Posiedzenia Rady Miasta',
+                    'href' => 'krakow/rada/posiedzenia'
+                )
+            )
+        );
+    }
+
 }
