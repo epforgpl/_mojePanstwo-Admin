@@ -32,9 +32,27 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 
+    public $components = array(
+        'Session',
+        'Auth' => array(
+            'loginAction' => array(
+                'plugin' => 'Opauth', 'controller' => 'Opauth', 'action' => 'index', 'mojepanstwo'
+            ),
+            'loginRedirect' => '/',
+            'logoutRedirect' => '/',
+            'authenticate' => array('Form')
+        )
+    );
+
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->Auth->allow();
+    }
+
     public function beforeRender() {
         ClassRegistry::init('AppModel');
         $this->set('menu', AppModel::getMenu());
+        $this->set('user', $this->Auth->user());
     }
 
 }

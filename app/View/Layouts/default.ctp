@@ -28,7 +28,12 @@
             </div>
             <div class="navbar-collapse collapse" id="navbar-main">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/login">Zaloguj się</a></li>
+                    <? if($user) { ?>
+                        <li><a href="#"><?= $user['email']; ?></a></li>
+                        <li><a href="/users/logout">Wyloguj się</a></li>
+                    <? } else { ?>
+                        <li><a href="/auth/mojepanstwo">Zaloguj się</a></li>
+                    <? } ?>
                 </ul>
             </div>
         </div>

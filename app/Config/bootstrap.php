@@ -79,8 +79,11 @@ CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
  */
 
 Configure::write('Opauth.Strategy.MojePanstwo', array(
-    'client_id' => 'NTI1N2RhYjgzNDg1YTBk',
-    'client_secret' => 'def14eb0654ba2dcc904d5723a5fdc023dac0f30',
+    'authorization_code_url' => 'https://mojepanstwo.pl/oauth/authorize',
+    'access_token_url' => 'https://mojepanstwo.pl/oauth/token',
+    'userinfo_url' => 'https://mojepanstwo.pl/oauth/userinfo',
+    'client_id' => 'NTI2N2RhYjgzNDg1YTBm',
+    'client_secret' => 'f1be5cd357330aefedeab00da799f139766cb4c3',
     'response_type' => 'code'
 ));
 
