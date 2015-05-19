@@ -9,6 +9,7 @@
 		echo $this->Html->css('bootstrap.min');
 		echo $this->Html->css('layout');
         echo $this->Html->script('jquery-2.1.4.min');
+        echo $this->Html->script('bootstrap.min');
 
 		echo $this->fetch('meta');
 		echo $this->fetch('css');
@@ -27,6 +28,13 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse" id="navbar-main">
+                <? if($user && $menu) { ?>
+                    <ul class="nav navbar-nav">
+                        <? foreach($menu['items'] as $item) { ?>
+                            <li><a href="<?= $item['href']; ?>"><?= $item['label']; ?></a></li>
+                        <? } ?>
+                    </ul>
+                <? } ?>
                 <ul class="nav navbar-nav navbar-right">
                     <? if($user) { ?>
                         <li><a href="#"><?= $user['email']; ?></a></li>

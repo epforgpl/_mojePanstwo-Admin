@@ -41,14 +41,14 @@ class AppModel extends Model {
             'items' => array(
                 array(
                     'label' => 'Posiedzenia Rady Miasta',
-                    'href' => 'krakow/rada/posiedzenia'
+                    'href' => '/krakow/rada_posiedzenia'
                 )
             )
         );
     }
 
     /**
-     * Tabele do testowania
+     * Tabele do kopiowania
      *
      * @return array
      */

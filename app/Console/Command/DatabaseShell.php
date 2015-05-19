@@ -4,15 +4,15 @@ App::uses('ConnectionManager', 'Model');
 
 class DatabaseShell extends AppShell {
 
-    private $dbLocal;
+    private $dbDefault;
     private $dbMain;
 
     private $tables;
-    private static $limit = 10;
+    private static $limit = 30;
 
     public function __construct() {
         parent::__construct();
-        $this->dbLocal = ConnectionManager::getDataSource('local');
+        $this->dbDefault = ConnectionManager::getDataSource('default');
         $this->dbMain = ConnectionManager::getDataSource('main');
         ClassRegistry::init('AppModel');
         $this->tables = AppModel::getTables();
@@ -24,7 +24,7 @@ class DatabaseShell extends AppShell {
     public function drop() {
         foreach($this->tables as $table) {
             $query = 'DROP TABLE `'.$table.'`';
-            $this->dbLocal->execute($query);
+            $this->dbDefault->execute($query);
         }
     }
 
@@ -33,20 +33,35 @@ class DatabaseShell extends AppShell {
      */
     public function schema() {
         $query = file_get_contents(APP . 'Console/Command/Resources/schema.sql');
-        $results = $this->dbLocal->execute($query);
+        $results = $this->dbDefault->execute($query);
     }
 
     /**
      * Kopiowanie danych
      */
     public function copy() {
+        $errors = array();
         foreach($this->tables as $table) {
             $results =  $this->dbMain->fetchAll('SELECT * from `'.$table.'` LIMIT ' . self::$limit);
             foreach($results as $row) {
                 $row = $row[$table];
                 $query = $this->_insertQuery($table, $row);
                 try {
-                    $this->dbLocal->execute($query);
+                    $this->dbDefault->execute($query);
+                } catch(Exception $e) {
+                    $this->out($e->getMessage());
+                    $errors[] = $table;
+                }
+            }
+        }
+
+        foreach($errors as $table) {
+            $results =  $this->dbMain->fetchAll('SELECT * from `'.$table.'` LIMIT ' . self::$limit);
+            foreach($results as $row) {
+                $row = $row[$table];
+                $query = $this->_insertQuery($table, $row);
+                try {
+                    $this->dbDefault->execute($query);
                 } catch(Exception $e) {
                     $this->out($e->getMessage());
                 }

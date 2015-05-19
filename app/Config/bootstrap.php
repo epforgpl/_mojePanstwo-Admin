@@ -71,6 +71,7 @@ Cache::config('default', array('engine' => 'File'));
  */
 
 CakePlugin::load('Opauth', array('routes' => true, 'bootstrap' => true));
+CakePlugin::load('Krakow');
 
 /**
  * To prefer app translation over plugin translation, you can set
