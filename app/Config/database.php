@@ -68,25 +68,24 @@
  */
 class DATABASE_CONFIG {
 
-	public $default = array(
+	public $local = array(
 		'datasource' => 'Database/Mysql',
 		'persistent' => false,
 		'host' => 'localhost',
-		'login' => 'user',
-		'password' => 'password',
-		'database' => 'database_name',
+		'login' => 'root',
+		'password' => 'root',
+		'database' => 'db',
 		'prefix' => '',
-		//'encoding' => 'utf8',
 	);
 
-	public $test = array(
-		'datasource' => 'Database/Mysql',
-		'persistent' => false,
-		'host' => 'localhost',
-		'login' => 'user',
-		'password' => 'password',
-		'database' => 'test_database_name',
-		'prefix' => '',
-		//'encoding' => 'utf8',
-	);
+    public $main = array(
+        'datasource' => 'Database/Mysql',
+        'persistent' => false,
+        'host' => '37.233.98.110',
+        'login' => 'mpapi',
+        'password' => 'KMaGraawGvSZHEQV',
+        'database' => 'epf',
+        'prefix' => '',
+        'encoding' => 'utf8',
+    );
 }

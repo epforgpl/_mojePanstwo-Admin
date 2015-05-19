@@ -32,6 +32,8 @@ App::uses('Model', 'Model');
 class AppModel extends Model {
 
     /**
+     * Menu
+     *
      * @return array
      */
     public static function getMenu() {
@@ -43,6 +45,47 @@ class AppModel extends Model {
                 )
             )
         );
+    }
+
+    /**
+     * Tabele do testowania
+     *
+     * @return array
+     */
+    public static function getTables() {
+        $names = array();
+        $ends = array(
+            'dzielnice',
+            'dzielnice_rady_posiedzenia',
+            'dzielnice_rady_posiedzenia_zalaczniki',
+            'dzielnice_rady_uchwaly_przedzialy',
+            'glosowania',
+            'glosowania_glosy',
+            'glosowania_pola',
+            'jednostki',
+            'oswiadczenia',
+            'posiedzenia',
+            'posiedzenia_punkty',
+            'posiedzenia_punkty_backup',
+            'posiedzenia_punkty_backup02',
+            'posiedzenia_punkty_backup03',
+            'posiedzenia_punkty_plan',
+            'posiedzenia_punkty_wystapienia',
+            'posiedzenia_punkty_wystapienia_backup01',
+            'sesje',
+            'urzednicy',
+            'urzednicy-krs_osoby',
+            'zarzadzenia',
+            'zarzadzenia-zmiany',
+            'zarzadzenia_zalaczniki'
+        );
+
+        $prefix = 'pl_gminy_krakow_';
+        foreach($ends as $table) {
+            $names[] = $prefix . $table;
+        }
+
+        return $names;
     }
 
 }
