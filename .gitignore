@@ -1,1 +1,9 @@
-# Created by .ignore support plugin (hsz.mobi)
+.idea
+vendor
+composer.lock
+
+/app/tmp/*
+/app/Config/core.php
+/app/Config/database.php
+/vendors/*
+
