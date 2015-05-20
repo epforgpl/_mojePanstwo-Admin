@@ -1,0 +1,89 @@
+#points {
+    margin-bottom: 10px;
+}
+
+#points li {
+    overflow: hidden;
+}
+
+#points li:hover {
+    background: #fcfcfc;
+}
+
+#points li .remove, #points li .add, .osoba-delete, .move-to-debata, .osoba-stoper, .item-stoper {
+    color: #999;
+    float: right;
+    margin-right: 10px;
+    padding-top: 7px;
+}
+
+#points li .remove:hover, #points li .add:hover, .osoba-delete:hover, .move-to-debata:hover, .osoba-stoper:hover, .item-stoper:hover {
+    cursor: pointer;
+    color: #333;
+}
+
+#points li .handle {
+    margin-right: 10px;
+    padding-top: 7px;
+    color: #999;
+    float: left;
+}
+
+#points li .form-group-pr {
+    margin-right: 10px;
+    width: 700px;
+    float: left;
+}
+
+#points li .form-group-pr.sm {
+    width: 60px;
+}
+
+#points li .form-group-pr.sm.ext {
+    width: 150px;
+}
+
+#points li .form-group-pr.sm.ext input {
+    width: 110px;
+    float: left;
+}
+
+#points li .form-group-pr.sm.ext button {
+    width: 25px;
+    float: right;
+}
+
+#points li .form-group-pr .row {
+    margin-top: 10px;
+}
+
+#points li .timers span {
+    color: #666;
+    float: left;
+    font-size: 13px;
+    padding: 10px;
+}
+
+#points li .form-group-pr input[type=text], #points li .form-group-pr textarea {
+    border-color: #fff;
+    box-shadow: none;
+}
+
+#points li .form-group-pr input[type=text]:focus, #points li .form-group-pr textarea:focus {
+    border-color: #3093C8;
+}
+
+#points li .handle:hover {
+    cursor: pointer;
+    color: #333;
+}
+
+#points li.sortable-dragging {
+
+}
+
+#points .sortable-placeholder {
+    border: none;
+    background: #fafafa;
+    height: 50px;
+}

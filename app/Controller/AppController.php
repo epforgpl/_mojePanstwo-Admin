@@ -55,4 +55,11 @@ class AppController extends Controller {
         $this->set('user', $this->Auth->user());
     }
 
+    public function json($data) {
+        $this->autoRender = false;
+        $this->response->type('json');
+        $json = json_encode($data);
+        $this->response->body($json);
+    }
+
 }

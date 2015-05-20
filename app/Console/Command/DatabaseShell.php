@@ -8,7 +8,7 @@ class DatabaseShell extends AppShell {
     private $dbMain;
 
     private $tables;
-    private static $limit = 30;
+    private static $limit = 200;
 
     public function __construct() {
         parent::__construct();
