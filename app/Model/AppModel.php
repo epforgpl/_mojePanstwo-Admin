@@ -32,6 +32,18 @@ App::uses('Model', 'Model');
 class AppModel extends Model {
 
     /**
+     * @var bool|mixed Czy używać lokalnej bazy danych?
+     */
+    public static $local = true;
+
+    public function __construct() {
+        parent::__construct();
+        self::$local = Configure::read('Database.local');
+        if(!self::$local)
+            $this->useDbConfig = 'main';
+    }
+
+    /**
      * Menu
      *
      * @return array
