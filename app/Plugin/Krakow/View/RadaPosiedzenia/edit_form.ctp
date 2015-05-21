@@ -42,5 +42,5 @@
 <div id="data-json" data-value='<?=$punkty;?>'></div>
 
 <? echo $this->Html->script('jquery.sortable.min'); ?>
-<? echo $this->Html->script('Krakow.edit'); ?>
-<? echo $this->Html->css('Krakow.view'); ?>
+<? echo $this->Html->script('Krakow.RadaPosiedzenia/edit'); ?>
+<? echo $this->Html->css('Krakow.RadaPosiedzenia/view'); ?>

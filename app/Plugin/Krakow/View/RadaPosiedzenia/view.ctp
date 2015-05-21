@@ -11,5 +11,5 @@
 <div class="margin-top-10" id="data"></div>
 
 <div id="data-json" data-value='<?=$punkty;?>'></div>
-<? echo $this->Html->script('Krakow.view'); ?>
-<? echo $this->Html->css('Krakow.view'); ?>
+<? echo $this->Html->script('Krakow.RadaPosiedzenia/view'); ?>
+<? echo $this->Html->css('Krakow.RadaPosiedzenia/view'); ?>

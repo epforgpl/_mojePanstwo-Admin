@@ -1,11 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 21.05.15
- * Time: 16:42
- */
 
-class Dzielnice {
+App::uses('AppModel', 'Model');
+
+class Dzielnice extends AppModel {
+
+    public $useTable = 'pl_dzielnice';
 
 }

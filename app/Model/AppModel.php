@@ -54,6 +54,10 @@ class AppModel extends Model {
                 array(
                     'label' => 'Posiedzenia Rady Miasta',
                     'href' => '/krakow/rada_posiedzenia'
+                ),
+                array(
+                    'label' => 'Dodawanie plików',
+                    'href' => '/krakow/upload_sessions/addForm'
                 )
             )
         );

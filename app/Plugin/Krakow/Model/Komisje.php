@@ -1,11 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: root
- * Date: 21.05.15
- * Time: 16:41
- */
 
-class Komisje {
+App::uses('AppModel', 'Model');
+
+class Komisje extends AppModel {
+
+    public $useTable = 'rady_komisje';
 
 }
