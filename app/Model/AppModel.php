@@ -85,6 +85,14 @@ class AppModel extends Model {
             $names[] = $prefix . $table;
         }
 
+        $names = array_merge($names, array(
+            'krakow_upload_files',
+            'krakow_upload_sessions',
+            'rady_posiedzenia_pliki',
+            'rady_komisje',
+            'pl_dzielnice'
+        ));
+
         return $names;
     }
 
