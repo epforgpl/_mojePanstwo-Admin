@@ -9,7 +9,7 @@ class DatabaseShell extends AppShell {
     private $dbProd;
 
     private $tables;
-    private static $limit = 1000;
+    private static $limit = 999999999;
 
     public function __construct() {
         parent::__construct();
