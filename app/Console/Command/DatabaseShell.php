@@ -9,7 +9,7 @@ class DatabaseShell extends AppShell {
     private $dbProd;
 
     private $tables;
-    private static $limit = 100;
+    private static $limit = 1000;
 
     public function __construct() {
         parent::__construct();
@@ -33,7 +33,7 @@ class DatabaseShell extends AppShell {
 
             $file = TMP . $table . '.sql';
             $conf = $this->dbProd->config;
-            exec('mysqldump -h '.$conf["host"].' -u '.$conf["login"].' --password=\''.$conf["password"].'\' --default-character-set=utf8 --opt --where="1 limit '.self::$limit.'" '.$conf["database"].' '.$table.' -r '.$file);
+            exec('mysqldump -h '.$conf["host"].' -u '.$conf["login"].' --password=\''.$conf["password"].'\' --default-character-set=utf8 --opt --where="1 ORDER BY id DESC limit '.self::$limit.'" '.$conf["database"].' '.$table.' -r '.$file);
             $sql = file_get_contents($file);
             try {
                 $this->dbTest->execute($sql);
