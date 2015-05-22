@@ -51,6 +51,8 @@ class AppController extends Controller {
 
     public function beforeRender() {
         ClassRegistry::init('AppModel');
+        $this->set('databaseTypes', AppModel::$databaseTypes);
+        $this->set('databaseType', AppModel::$databaseType);
         $this->set('menu', AppModel::getMenu());
         $this->set('user', $this->Auth->user());
     }

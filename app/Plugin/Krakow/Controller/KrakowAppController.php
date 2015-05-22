@@ -2,6 +2,4 @@
 
 class KrakowAppController extends AppController {
 
-
-
 }

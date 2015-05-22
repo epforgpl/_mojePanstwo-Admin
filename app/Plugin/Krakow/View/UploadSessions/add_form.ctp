@@ -1,6 +1,11 @@
 <? echo $this->Html->css('Krakow.UploadSessions/jquery-ui.min'); ?>
 <? echo $this->Html->css('Krakow.UploadSessions/jquery-ui.theme.min'); ?>
 
+<ol class="breadcrumb">
+    <li><a href="/">Dane</a></li>
+    <li class="active">Dodawanie plików</li>
+</ol>
+
 <form action="" method="post">
     <div class="row margin-top-10">
         <div class="col-lg-4">

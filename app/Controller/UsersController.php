@@ -3,10 +3,10 @@
 class UsersController extends AppController {
 
     public function opauth_complete() {
-        $email = $this->data['auth']['info']['email'];
-
         $user = array(
-            'email' => $email
+            'id'    => $this->data['auth']['uid'],
+            'email' => $this->data['auth']['info']['email'],
+            'username' => $this->data['auth']['info']['name']
         );
 
         if($this->Auth->login($user)) {

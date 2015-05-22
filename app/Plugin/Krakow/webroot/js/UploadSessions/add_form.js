@@ -46,6 +46,7 @@ $(document).ready(function() {
         }).datepicker("show");
 
         $('#ui-datepicker-div').css('display', 'block !important');
+        $('#ui-datepicker-div').css('width', ($('#date').width() + 50) + 'px');
 
     } else {
         $("#date").datepicker({

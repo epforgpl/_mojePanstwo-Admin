@@ -1,4 +1,5 @@
 <ol class="breadcrumb">
+    <li><a href="/">Dane</a></li>
     <li><a href="/krakow/rada_posiedzenia">Posiedzenia Rady Miasta</a></li>
     <li class="active">Posiedzenie z dnia <?=$posiedzenie['Posiedzenia']['date'];?></li>
 </ol>

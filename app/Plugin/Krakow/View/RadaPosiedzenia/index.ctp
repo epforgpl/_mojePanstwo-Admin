@@ -1,49 +1,40 @@
-<h2 class="header">Posiedzenia Rady Miasta</h2>
+<ol class="breadcrumb">
+    <li><a href="/">Dane</a></li>
+    <li class="active">Posiedzenia Rady Miasta</li>
+</ol>
 
-<div role="tabpanel" data-example-id="togglable-tabs">
-    <ul id="myTab" class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">Wszystkie</a></li>
-        <li role="presentation"><a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile">Zaakceptowane</a></li>
-        <li role="presentation"><a href="#c" role="tab" id="c-tab" data-toggle="tab" aria-controls="c">Do zaakceptowania</a></li>
-    </ul>
-    <div id="myTabContent" class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active" id="home" aria-labelledby="home-tab">
-            <ul class="list-group margin-top-5">
-                <? foreach($posiedzenia as $row) { ?>
-                    <li class="list-group-item">
-                        <span class="badge"><?= $row['Posiedzenia']['liczba_punktow']; ?></span>
-                        <a href="/krakow/rada_posiedzenia/view/<?= $row['Posiedzenia']['id']; ?>">
-                            <?= $row['Posiedzenia']['date']; ?>
-                        </a>
-                    </li>
-                <? } ?>
-            </ul>
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
-            <ul class="list-group margin-top-5">
-                <? foreach($posiedzenia as $row) { ?>
-                    <? if($row['Posiedzenia']['porzadek_akcept'] == '0') continue; ?>
-                    <li class="list-group-item">
-                        <span class="badge"><?= $row['Posiedzenia']['liczba_punktow']; ?></span>
-                        <a href="/krakow/rada_posiedzenia/view/<?= $row['Posiedzenia']['id']; ?>">
-                            <?= $row['Posiedzenia']['date']; ?>
-                        </a>
-                    </li>
-                <? } ?>
-            </ul>
-        </div>
-        <div role="tabpanel" class="tab-pane fade" id="c" aria-labelledby="c-tab">
-            <ul class="list-group margin-top-5">
-                <? foreach($posiedzenia as $row) { ?>
-                    <? if($row['Posiedzenia']['porzadek_akcept'] == '1') continue; ?>
-                    <li class="list-group-item">
-                        <span class="badge"><?= $row['Posiedzenia']['liczba_punktow']; ?></span>
-                        <a href="/krakow/rada_posiedzenia/view/<?= $row['Posiedzenia']['id']; ?>">
-                            <?= $row['Posiedzenia']['date']; ?>
-                        </a>
-                    </li>
-                <? } ?>
-            </ul>
-        </div>
-    </div>
-</div>
+<ul class="nav nav-tabs">
+    <?php foreach($modes as $key => $label) { ?>
+        <li role="presentation" <?= ($mode == $key) ? 'class="active"' : ''; ?>><a href="/krakow/rada_posiedzenia?mode=<?= $key; ?>"><?= $label; ?></a></li>
+    <? } ?>
+</ul>
+
+<? if(count($data)) { ?>
+<ul class="list-group margin-top-5 panel-items">
+    <? foreach($data as $row) { ?>
+        <li class="list-group-item">
+            <span class="pull-right">Liczba punktów: <?= $row['Posiedzenia']['liczba_punktow']; ?></span>
+            <a href="/krakow/rada_posiedzenia/view/<?= $row['Posiedzenia']['id']; ?>">
+                <?= $this->PLText->date($row['Posiedzenia']['date']); ?>
+            </a>
+        </li>
+    <? } ?>
+</ul>
+<? } else { ?>
+    <p class="block margin-top-10">Brak danych</p>
+<? } ?>
+
+<ul class="pagination">
+    <?php
+    echo $this->Paginator->prev(__('Poprzednia'), array('tag' => 'li'), null, array('tag' => 'li','class' => 'disabled','disabledTag' => 'a'));
+    echo $this->Paginator->numbers(array('separator' => '','currentTag' => 'a', 'currentClass' => 'active','tag' => 'li','first' => 1));
+    echo $this->Paginator->next(__('Następna'), array('tag' => 'li','currentClass' => 'disabled'), null, array('tag' => 'li','class' => 'disabled','disabledTag' => 'a'));
+    ?>
+</ul>
+
+<span class="pull-right">
+    <? echo $this->Paginator->counter(
+        'Strona {:page} z {:pages}, wyświetla {:current} rekordów z
+     {:count} wszystkich, od {:start}, do {:end}.'
+    ); ?>
+</span>

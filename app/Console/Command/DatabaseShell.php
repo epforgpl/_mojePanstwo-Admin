@@ -1,13 +1,12 @@
 <?php
 
+App::uses('AppShell', 'Console/Command');
 App::uses('ConnectionManager', 'Model');
 
 class DatabaseShell extends AppShell {
 
-    private $dbDefault;
-    private $dbMain;
-
-    private $local;
+    private $dbTest;
+    private $dbProd;
 
     private $tables;
     private static $limit = 99999;
@@ -15,40 +14,29 @@ class DatabaseShell extends AppShell {
     public function __construct() {
         parent::__construct();
         ClassRegistry::init('AppModel');
-        $this->local = AppModel::$local;
         $this->tables = AppModel::getTables();
-
-        if($this->local) {
-            $this->dbDefault = ConnectionManager::getDataSource('default');
-            $this->dbMain = ConnectionManager::getDataSource('main');
-        }
+        $this->dbTest = ConnectionManager::getDataSource('test');
+        $this->dbProd = ConnectionManager::getDataSource('prod');
     }
 
     /*
-     * Importowanie tabel z bazy main do default
+     * Importowanie tabel z bazy prod do test
      */
-    public function import() {
-        if(!$this->local) {
-            $this->out('Project does not use local database.');
-            $this->out('To import tables change local database settings in app/Config/database.php');
-            $this->out('Next set `Database.local` in app/Config/core.php to true');
-            return false;
-        }
-
+    public function sync() {
         foreach($this->tables as $table) {
             $this->out($table);
             try {
-                $this->dbDefault->execute('DROP TABLE `' . $table . '`');
+                $this->dbTest->execute('DROP TABLE `' . $table . '`');
             } catch(Exception $e) {
                 $this->out($e->getMessage());
             }
 
             $file = TMP . $table . '.sql';
-            $conf = $this->dbMain->config;
+            $conf = $this->dbProd->config;
             exec('mysqldump -h '.$conf["host"].' -u '.$conf["login"].' --password=\''.$conf["password"].'\' --opt --where="1 limit '.self::$limit.'" '.$conf["database"].' '.$table.' > '.$file);
             $sql = file_get_contents($file);
             try {
-                $this->dbDefault->execute($sql);
+                $this->dbTest->execute($sql);
             } catch(Exception $e) {
                 $this->out($e->getMessage());
             }

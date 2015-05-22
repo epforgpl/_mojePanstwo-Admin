@@ -31,16 +31,32 @@ App::uses('Model', 'Model');
  */
 class AppModel extends Model {
 
-    /**
-     * @var bool|mixed Czy używać lokalnej bazy danych?
-     */
-    public static $local = true;
+    public $uses = array(
+        'Session'
+    );
+
+    public static $databaseTypes = array(
+        'test' => 'Baza testowa',
+        'prod' => 'Baza produkcyjna'
+    );
+
+    public static $databaseType = array();
 
     public function __construct() {
         parent::__construct();
-        self::$local = Configure::read('Database.local');
-        if(!self::$local)
-            $this->useDbConfig = 'main';
+
+        if(!count(self::$databaseType)) {
+            App::uses('CakeSession', 'Model/Datasource');
+            $type = in_array(CakeSession::read('Database.type'), array_keys(self::$databaseTypes)) ?
+                CakeSession::read('Database.type') : array_keys(self::$databaseTypes)[1];
+
+            self::$databaseType = array(
+                'key' => $type,
+                'value' => self::$databaseTypes[$type]
+            );
+        }
+
+        $this->useDbConfig = self::$databaseType['key'];
     }
 
     /**
@@ -52,12 +68,26 @@ class AppModel extends Model {
         return array(
             'items' => array(
                 array(
-                    'label' => 'Posiedzenia Rady Miasta',
-                    'href' => '/krakow/rada_posiedzenia'
+                    'label' => 'Dane',
+                    'childrens' => array(
+                        array(
+                            'label' => 'Posiedzenia Rady Miasta',
+                            'href' => '/krakow/rada_posiedzenia'
+                        ),
+                        array(
+                            'label' => 'Dodawanie plików',
+                            'href' => '/krakow/upload_sessions/addForm'
+                        )
+                    )
                 ),
                 array(
-                    'label' => 'Dodawanie plików',
-                    'href' => '/krakow/upload_sessions/addForm'
+                    'label' => 'Ustawienia',
+                    'childrens' => array(
+                        array(
+                            'label' => 'Synchronizacja bazy',
+                            'href' => '/settings/syncDatabase'
+                        )
+                    )
                 )
             )
         );

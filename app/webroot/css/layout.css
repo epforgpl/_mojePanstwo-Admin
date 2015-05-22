@@ -2,4 +2,11 @@ body { padding-top: 60px; font-family: Arial; }
 h2.header { margin-bottom: 20px; }
 .margin-top-5 { margin-top: 5px; }
 .margin-top-10 { margin-top: 10px; }
+.block { display: block; }
+.padding-top-10 { padding-top: 10px; }
 .breadcrumb { margin-bottom: 10px; border-bottom-width: 1px; }
+.container.content { margin-bottom: 20px; }
+a:hover {cursor: pointer;}
+#ui-datepicker-div { display: block !important; margin-left: 5px !important; }
+
+.panel-items .list-group-item { border: none; border-bottom: 1px solid #eee; background-color: inherit; }
