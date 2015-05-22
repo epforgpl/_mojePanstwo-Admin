@@ -53,9 +53,9 @@ $.fn.StopWatch = function() {
         '</div>'
     ].join(''));
 
-    $(this).find('input')
+    /* $(this).find('input')
         .css('border-width', 0)
-        .css('box-shadow', 'none');
+        .css('box-shadow', 'none'); */
 
     $(this).find('button').bind('click', function() {
         var action = $(this).attr('data-action');

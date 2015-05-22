@@ -6,13 +6,44 @@ class Posiedzenia extends AppModel {
 
     public $useTable = 'pl_gminy_krakow_posiedzenia';
 
+    public function findByIdWithClosest($id) {
+        $posiedzenie = $this->findById($id);
+        if(!$posiedzenie)
+            return false;
+
+        $posiedzenieNext = $this->find('first', array(
+            'fields' => array('id'),
+            'conditions' => array(
+                'Posiedzenia.date >' => $posiedzenie['Posiedzenia']['date']
+            ),
+            'order' => array(
+                'Posiedzenia.date' => 'asc'
+            ),
+        ));
+
+        $posiedzeniePrev = $this->find('first', array(
+            'fields' => array('id'),
+            'conditions' => array(
+                'Posiedzenia.date <' => $posiedzenie['Posiedzenia']['date']
+            ),
+            'order' => array(
+                'Posiedzenia.date' => 'desc'
+            ),
+        ));
+
+        $posiedzenie['Posiedzenia']['next'] = count($posiedzenieNext) > 0 ? $posiedzenieNext : false;
+        $posiedzenie['Posiedzenia']['prev'] = count($posiedzeniePrev) > 0 ? $posiedzeniePrev : false;
+
+        return $posiedzenie;
+    }
+
     /**
      * @param $id int Posiedzenie
      * @return array Wszystkie dane posiedzenia
      */
     public function getData($id)
     {
-        $posiedzenie = $this->findById($id);
+        $posiedzenie = $this->findByIdWithClosest($id);
         if(!$posiedzenie)
             return false;
 
@@ -27,7 +58,7 @@ class Posiedzenia extends AppModel {
         $punkty = $Punkty->find('all', array(
             'conditions' => array(
                 'Punkty.posiedzenie_id' => $id,
-                'Punkty.deleted'        => '0'
+                'Punkty.deleted NOT LIKE' => '1'
             ),
             'order' => array(
                 'Punkty.ord_panel'
@@ -40,7 +71,7 @@ class Posiedzenia extends AppModel {
             $wystapienia = $Wystapienia->find('all', array(
                 'conditions' => array(
                     'Wystapienia.punkt_id'  => $punkt['Punkty']['id'],
-                    'Wystapienia.deleted'   => '0'
+                    'Wystapienia.deleted NOT LIKE'   => '1'
                 ))
             );
 
@@ -63,8 +94,8 @@ class Posiedzenia extends AppModel {
         }
 
         return array(
-            'posiedzenie'   => $posiedzenie,
-            'punkty'        => $data
+            'posiedzenie'       => $posiedzenie,
+            'punkty'            => $data
         );
     }
 
@@ -167,6 +198,134 @@ class Posiedzenia extends AppModel {
         ));
 
         return true;
+    }
+
+    public function joinPoints($id) {
+        ClassRegistry::init('Krakow.Punkty');
+        ClassRegistry::init('Krakow.PunktyBip');
+
+        $Punkty = new Punkty();
+        $PunktyBip = new PunktyBip();
+
+        $punkty = $Punkty->find('all', array(
+            'conditions' => array(
+                'Punkty.posiedzenie_id' => $id,
+                'Punkty.deleted LIKE' => '0'
+            ),
+            'order' => array(
+                'Punkty.ord_panel'
+            ),
+        ));
+
+        $punktyBip = $PunktyBip->find('all', array(
+            'conditions' => array(
+                'PunktyBip.posiedzenie_id' => $id,
+                'PunktyBip.deleted LIKE' => '0'
+            ),
+            'order' => array(
+                'PunktyBip.ord_panel'
+            ),
+        ));
+
+        $_punkty = array();
+        foreach($punkty as $punkt) {
+            $p = $this->_preparePointToJoin($punkt, 'Punkty');
+            $_punkty[] = $p;
+        }
+
+        $_punktyBip = array();
+        foreach($punktyBip as $punkt) {
+            $p = $this->_preparePointToJoin($punkt, 'PunktyBip');
+            $_punktyBip[] = $p;
+        }
+
+        foreach($_punktyBip as $i => $b) {
+            $_id = 0;
+            foreach($_punkty as $a) {
+                if($b['druki_nr'] > 0 && $b['druki_nr'] == $a['druki_nr']) {
+                    $_id = $a['id'];
+                    break;
+                }
+
+                if($b['hash'] == $a['hash']) {
+                    $_id = $a['id'];
+                    break;
+                }
+            }
+
+            $_punktyBip[$i]['match_id'] = $_id;
+        }
+
+        foreach($_punkty as $i => $a) {
+            $_id = 0;
+            foreach($_punktyBip as $b) {
+                if($b['druki_nr'] > 0 && $b['druki_nr'] == $a['druki_nr']) {
+                    $_id = $b['id'];
+                    break;
+                }
+
+                if($a['hash'] == $b['hash']) {
+                    $_id = $b['id'];
+                    break;
+                }
+            }
+
+            $_punkty[$i]['match_id'] = $_id;
+        }
+
+        $results = array();
+        foreach($_punktyBip as $i => $b) {
+
+            $punkt = array();
+            foreach($_punkty as $_p) {
+                if($b['match_id'] == $_p['id']) {
+                    $punkt = $_p;
+                    break;
+                }
+            }
+
+            $_punktyBip[$i]['panel_id'] = $punkt['id'];
+            $_punktyBip[$i]['bip_id'] = $b['id'];
+            $results[] = $_punktyBip[$i];
+        }
+
+        return $results;
+    }
+
+    private function _preparePointToJoin($point, $name) {
+        $p = array(
+            'id' => $point[$name]['id'],
+            'nr' => $point[$name]['nr'],
+            'tytul' => $point[$name][$name == 'Punkty' ? 'tytul' : 'tytul_pelny'],
+            'match_id' => 0
+        );
+
+        $opis = '';
+        $druki_str = '';
+        $druki_nr = 0;
+        $parts = explode('/ ', $p['tytul']);
+        if(count($parts) > 1) {
+            if(count($parts) == 3) {
+                $opis = $parts[1];
+                $druki_str = $parts[2];
+                if(preg_match('/([0-9]{1,})/', $druki_str, $matches ) ) {
+                    $druki_nr = (int) $matches[0];
+                }
+            } else {
+                var_export($p);
+                die();
+            }
+        }
+
+        $p['opis'] = $opis;
+        $p['druki_str'] = $druki_str;
+        $p['druki_nr'] = $druki_nr;
+
+        $p['hash'] = strtolower(
+            preg_replace('/(\s+|\'|\\|\.|\,|\")/', '', trim($p['tytul']))
+        );
+
+        return $p;
     }
 
 }

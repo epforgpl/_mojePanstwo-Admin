@@ -118,6 +118,8 @@ class AppModel extends Model {
             'posiedzenia_punkty_plan',
             'posiedzenia_punkty_wystapienia',
             'posiedzenia_punkty_wystapienia_backup01',
+            'posiedzenia_punkty_portal',
+            'posiedzenia_punkty_bip',
             'sesje',
             'urzednicy',
             'urzednicy-krs_osoby',

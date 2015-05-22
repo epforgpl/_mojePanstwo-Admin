@@ -10,3 +10,6 @@ a:hover {cursor: pointer;}
 #ui-datepicker-div { display: block !important; margin-left: 5px !important; }
 
 .panel-items .list-group-item { border: none; border-bottom: 1px solid #eee; background-color: inherit; }
+
+.table.joins tr, .table.joins td { width: 33% !important; }
+td.col { background: #eee !important; }

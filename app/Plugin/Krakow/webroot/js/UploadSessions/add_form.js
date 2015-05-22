@@ -39,6 +39,16 @@ $(document).ready(function() {
         yearSuffix: ''};
     $.datepicker.setDefaults($.datepicker.regional['pl']);
 
+    $.datepicker._selectDateOverload = $.datepicker._selectDate;
+    $.datepicker._selectDate = function(id, dateStr) {
+        var target = $(id);
+        var inst = this._getInst(target[0]);
+        inst.inline = true;
+        $.datepicker._selectDateOverload(id, dateStr);
+        inst.inline = false;
+        this._updateDatepicker(inst);
+    };
+
     if(window.innerWidth > 1024) {
         $("#date").datepicker({
             showOptions: { direction: "down" },
@@ -46,7 +56,9 @@ $(document).ready(function() {
         }).datepicker("show");
 
         $('#ui-datepicker-div').css('display', 'block !important');
-        $('#ui-datepicker-div').css('width', ($('#date').width() + 50) + 'px');
+        $('#date').width(
+            ($('#ui-datepicker-div').width() - 20)
+        );
 
     } else {
         $("#date").datepicker({

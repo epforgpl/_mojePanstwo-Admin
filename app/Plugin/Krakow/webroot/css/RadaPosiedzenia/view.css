@@ -70,7 +70,7 @@
 }
 
 #points li .form-group-pr input[type=text]:focus, #points li .form-group-pr textarea:focus {
-    border-color: #3093C8;
+    border-color: #ccc;
 }
 
 #points li .handle:hover {

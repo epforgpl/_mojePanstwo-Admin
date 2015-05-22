@@ -7,6 +7,8 @@ class RadaPosiedzeniaController extends KrakowAppController {
     public $uses = array(
         'Krakow.Posiedzenia',
         'Krakow.Punkty',
+        'Krakow.PunktyBip',
+        'Krakow.PunktyPortal',
         'Krakow.Wystapienia',
         'PLText',
         'Paginator'
@@ -49,8 +51,9 @@ class RadaPosiedzeniaController extends KrakowAppController {
         if(!$data)
             throw new NotFoundException;
 
+        $punkty = str_replace("'", "", json_encode($data['punkty']));
         $this->set('posiedzenie', $data['posiedzenie']);
-        $this->set('punkty', json_encode($data['punkty']));
+        $this->set('punkty', $punkty);
     }
 
     public function editForm($id) {
@@ -58,8 +61,51 @@ class RadaPosiedzeniaController extends KrakowAppController {
         if(!$data)
             throw new NotFoundException;
 
+        $punkty = str_replace("'", "", json_encode($data['punkty']));
         $this->set('posiedzenie', $data['posiedzenie']);
-        $this->set('punkty', json_encode($data['punkty']));
+        $this->set('punkty', $punkty);
+    }
+
+    public function joins($id) {
+        $posiedzenie = $this->Posiedzenia->findByIdWithClosest($id);
+        if(!$posiedzenie)
+            throw new NotFoundException;
+
+        $punkty = $this->Punkty->find('all', array(
+            'conditions' => array(
+                'Punkty.posiedzenie_id' => $id,
+                'Punkty.deleted LIKE' => '0'
+            ),
+            'order' => array(
+                'Punkty.ord_panel'
+            ),
+        ));
+
+        $punktyBip = $this->PunktyBip->find('all', array(
+            'conditions' => array(
+                'PunktyBip.posiedzenie_id' => $id,
+                'PunktyBip.deleted LIKE' => '0'
+            ),
+            'order' => array(
+                'PunktyBip.ord_panel'
+            ),
+        ));
+
+        $punktyPortal = $this->PunktyPortal->find('all', array(
+            'conditions' => array(
+                'PunktyPortal.posiedzenie_id' => $id,
+                'PunktyPortal.deleted LIKE' => '0'
+            ),
+            'order' => array(
+                'PunktyPortal.ord_panel'
+            ),
+        ));
+
+        $this->set('punkty', $punkty);
+        $this->set('punktyBip', $punktyBip);
+        $this->set('punktyPortal', $punktyPortal);
+        $this->set('punktyWynik', $this->Posiedzenia->joinPoints($id));
+        $this->set('posiedzenie', $posiedzenie);
     }
 
     public function edit($id) {
