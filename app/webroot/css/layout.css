@@ -12,4 +12,4 @@ a:hover {cursor: pointer;}
 .panel-items .list-group-item { border: none; border-bottom: 1px solid #eee; background-color: inherit; }
 
 .table.joins tr, .table.joins td { width: 33% !important; }
-td.col { background: #eee !important; }
+tr.found, td.found { color: #ccc; }

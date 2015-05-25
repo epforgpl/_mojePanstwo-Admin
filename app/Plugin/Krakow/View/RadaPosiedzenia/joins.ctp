@@ -31,7 +31,7 @@
                     <?=$punkty[$i]['Punkty']['tytul'];?>
                 </td>
             <? } ?>
-            <td <?= $punktyWynik[$i]['panel_id'] ? 'class="col"' : '' ?>>
+            <td <?= isset($punktyWynik[$i]) && $punktyWynik[$i]['panel_id'] ? 'class="found"' : '' ?>>
                 <? if(isset($punktyWynik[$i])) { ?>
                     <?=$punktyWynik[$i]['nr'];?>.
                     <?=$punktyWynik[$i]['tytul'];?>

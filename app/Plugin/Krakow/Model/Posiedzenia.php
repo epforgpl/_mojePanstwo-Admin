@@ -284,7 +284,7 @@ class Posiedzenia extends AppModel {
                 }
             }
 
-            $_punktyBip[$i]['panel_id'] = $punkt['id'];
+            $_punktyBip[$i]['panel_id'] = isset($punkt['id']) ? $punkt['id'] : 0;
             $_punktyBip[$i]['bip_id'] = $b['id'];
             $results[] = $_punktyBip[$i];
         }
@@ -304,16 +304,16 @@ class Posiedzenia extends AppModel {
         $druki_str = '';
         $druki_nr = 0;
         $parts = explode('/ ', $p['tytul']);
+        $parts = array_filter($parts, 'strlen');
         if(count($parts) > 1) {
             if(count($parts) == 3) {
-                $opis = $parts[1];
+                $opis = @$parts[1];
                 $druki_str = $parts[2];
                 if(preg_match('/([0-9]{1,})/', $druki_str, $matches ) ) {
                     $druki_nr = (int) $matches[0];
                 }
             } else {
-                var_export($p);
-                die();
+
             }
         }
 
