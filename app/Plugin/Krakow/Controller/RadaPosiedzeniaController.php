@@ -67,44 +67,17 @@ class RadaPosiedzeniaController extends KrakowAppController {
     }
 
     public function joins($id) {
+        if(isset($this->data) && is_array($this->data) && count($this->data) > 0) {
+            return $this->json(array(
+                'success' => $this->PunktyPortal->addFromJoins($id, $this->data)
+            ));
+        }
+
         $posiedzenie = $this->Posiedzenia->findByIdWithClosest($id);
         if(!$posiedzenie)
             throw new NotFoundException;
 
-        $punkty = $this->Punkty->find('all', array(
-            'conditions' => array(
-                'Punkty.posiedzenie_id' => $id,
-                'Punkty.deleted LIKE' => '0'
-            ),
-            'order' => array(
-                'Punkty.ord_panel'
-            ),
-        ));
-
-        $punktyBip = $this->PunktyBip->find('all', array(
-            'conditions' => array(
-                'PunktyBip.posiedzenie_id' => $id,
-                'PunktyBip.deleted LIKE' => '0'
-            ),
-            'order' => array(
-                'PunktyBip.ord_panel'
-            ),
-        ));
-
-        $punktyPortal = $this->PunktyPortal->find('all', array(
-            'conditions' => array(
-                'PunktyPortal.posiedzenie_id' => $id,
-                'PunktyPortal.deleted LIKE' => '0'
-            ),
-            'order' => array(
-                'PunktyPortal.ord_panel'
-            ),
-        ));
-
-        $this->set('punkty', $punkty);
-        $this->set('punktyBip', $punktyBip);
-        $this->set('punktyPortal', $punktyPortal);
-        $this->set('punktyWynik', $this->Posiedzenia->joinPoints($id));
+        $this->set('punkty', $this->Posiedzenia->joinPoints($id));
         $this->set('posiedzenie', $posiedzenie);
     }
 

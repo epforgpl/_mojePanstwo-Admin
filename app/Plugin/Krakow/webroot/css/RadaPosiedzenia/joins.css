@@ -1,0 +1,54 @@
+body.dragging, body.dragging * {
+    cursor: move !important;
+}
+
+/*.panel-items .list-group-item { border-bottom: 2px solid #aaa; }*/
+
+.dragged {
+    position: absolute;
+    opacity: 0.5;
+    z-index: 2000;
+}
+
+ul {
+    list-style: none;
+}
+
+ul.sortable li.placeholder {
+    position: relative;
+    border-bottom: 1px dashed #3399F3;
+    /** More li styles **/
+}
+ul.sortable li.placeholder:before {
+    position: absolute;
+    /** Define arrowhead **/
+}
+
+ul ul {
+    padding: 0;
+    margin: 0;
+}
+
+ul ul li:not(.placeholder) {
+    margin: 0;
+    padding: 15px 0 0;
+    color: #999;
+    border-width: 0 !important;
+}
+
+ul li ul li {
+    padding-bottom: 0 !important;
+}
+
+ul ul ul {
+    display: none;
+}
+
+.sortable .glyphicon {
+    color: #999;
+}
+
+.sortable .glyphicon:hover {
+    cursor: pointer;
+    color: #333;
+}

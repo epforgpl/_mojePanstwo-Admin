@@ -16,33 +16,49 @@
     <? } ?>
 </ul>
 
-<table class="table margin-top-10 joins">
-    <tr>
-        <th>Punkty z panelu</th>
-        <th>Punkty wynikowe</th>
-        <th>Punkty z BIP</th>
-    </tr>
-    <? $c = max(array(count($punkty), count($punktyBip), count($punktyWynik))); ?>
-    <? for($i = 0; $i < $c; $i++) { ?>
-        <tr>
-            <? if(isset($punkty[$i])) { ?>
-                <td data-id="">
-                    <?=$punkty[$i]['Punkty']['nr'];?>.
-                    <?=$punkty[$i]['Punkty']['tytul'];?>
-                </td>
-            <? } ?>
-            <td <?= isset($punktyWynik[$i]) && $punktyWynik[$i]['panel_id'] ? 'class="found"' : '' ?>>
-                <? if(isset($punktyWynik[$i])) { ?>
-                    <?=$punktyWynik[$i]['nr'];?>.
-                    <?=$punktyWynik[$i]['tytul'];?>
-                <? } ?>
-            </td>
-            <td>
-                <? if(isset($punktyBip[$i])) { ?>
-                    <?=$punktyBip[$i]['PunktyBip']['nr'];?>.
-                    <?=$punktyBip[$i]['PunktyBip']['tytul_pelny'];?>
-                <? } ?>
-            </td>
-        </tr>
-    <? } ?>
-</table>
+<div class="row margin-top-10">
+    <div class="col-sm-12">
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                <button id="save" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;
+                    Zapisz
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<? if(count($punkty)) { ?>
+    <ul class="list-group margin-top-5 panel-items sortable">
+        <? foreach($punkty as $punkt) { ?>
+            <li class="list-group-item" data-source="<?= $punkt['source']; ?>" data-id="<?= $punkt['id']; ?>" <?= isset($punkt['punkt_id']) ? 'data-punkt-id="'.$punkt['punkt_id'].'"' : ''; ?>>
+                <div class="row">
+                    <div class="col-sm-1">
+                        <span class="glyphicon glyphicon-move handle" aria-hidden="true"></span>
+                        &nbsp; <span class="glyphicon glyphicon-trash remove" aria-hidden="true"></span>
+                    </div>
+                    <div class="col-sm-10">
+                        <?= $punkt['nr']; ?>.
+                        <?= $punkt['tytul']; ?>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="badge pull-right">
+                            <?= $punkt['source']; ?>
+                        </span>
+                    </div>
+                </div>
+                <? if(!isset($punkt['punkt_id']))
+                    echo '<ul class="list-group"></ul>'; ?>
+            </li>
+        <? } ?>
+    </ul>
+<? } else { ?>
+    <p class="block margin-top-10">Brak danych</p>
+<? } ?>
+
+<div data-id="<?= $posiedzenie['Posiedzenia']['id']; ?>" id="posiedzenie_id"></div>
+
+<? echo $this->Html->script('Krakow.RadaPosiedzenia/jquery-sortable-min'); ?>
+<? echo $this->Html->script('Krakow.RadaPosiedzenia/joins'); ?>
+<? echo $this->Html->css('Krakow.RadaPosiedzenia/joins'); ?>

@@ -62,6 +62,7 @@ class AppController extends Controller {
         $this->response->type('json');
         $json = json_encode($data);
         $this->response->body($json);
+        return true;
     }
 
 }

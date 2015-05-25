@@ -200,7 +200,16 @@ class Posiedzenia extends AppModel {
         return true;
     }
 
+    /**
+     * Tworzenie punktów wynikowych na podstawie Punkty oraz PunktyBip.
+     * Możliwe dopasowanie punktów. Niedopasowane punkty są dodawane.
+     *
+     * @param $id int Posiedzenie id
+     * @return array Punkty wynikowe
+     */
     public function joinPoints($id) {
+        $results = array();
+
         ClassRegistry::init('Krakow.Punkty');
         ClassRegistry::init('Krakow.PunktyBip');
 
@@ -227,71 +236,76 @@ class Posiedzenia extends AppModel {
             ),
         ));
 
-        $_punkty = array();
-        foreach($punkty as $punkt) {
-            $p = $this->_preparePointToJoin($punkt, 'Punkty');
-            $_punkty[] = $p;
-        }
+        // przygotowanie punktów do połączenia
+        foreach($punkty as $i => $punkt)
+            $punkty[$i] = $this->_preparePointToJoin($punkt, 'Punkty');
+        foreach($punktyBip as $i => $punkt)
+            $punktyBip[$i] = $this->_preparePointToJoin($punkt, 'PunktyBip');
 
-        $_punktyBip = array();
-        foreach($punktyBip as $punkt) {
-            $p = $this->_preparePointToJoin($punkt, 'PunktyBip');
-            $_punktyBip[] = $p;
-        }
+        // łączenie punktów
+        foreach($punktyBip as $i => $punktBip) {
+            $punkt_id = 0;
+            foreach($punkty as $j => $punkt) {
+                // czy punkt został już połączony?
+                if(isset($punkty[$j]['found']) && $punkty[$j]['found'])
+                    continue;
 
-        foreach($_punktyBip as $i => $b) {
-            $_id = 0;
-            foreach($_punkty as $a) {
-                if($b['druki_nr'] > 0 && $b['druki_nr'] == $a['druki_nr']) {
-                    $_id = $a['id'];
+                // po numerze druku
+                if($punktBip['druki_nr'] > 0 && ($punktBip['druki_nr'] == $punkt['druki_nr'])) {
+                    $punkty[$j]['found'] = true;
+                    $punkt_id = $punkt['id'];
                     break;
                 }
 
-                if($b['hash'] == $a['hash']) {
-                    $_id = $a['id'];
-                    break;
-                }
-            }
-
-            $_punktyBip[$i]['match_id'] = $_id;
-        }
-
-        foreach($_punkty as $i => $a) {
-            $_id = 0;
-            foreach($_punktyBip as $b) {
-                if($b['druki_nr'] > 0 && $b['druki_nr'] == $a['druki_nr']) {
-                    $_id = $b['id'];
+                // po tytule (hash)
+                if($punktBip['hash'] == $punkt['hash']) {
+                    $punkty[$j]['found'] = true;
+                    $punkt_id = $punkt['id'];
                     break;
                 }
 
-                if($a['hash'] == $b['hash']) {
-                    $_id = $b['id'];
+                // po opisie (hash)
+                if($punktBip['hash_opis']!= '' && $punktBip['hash_opis'] == $punkt['hash_opis']) {
+                    $punkty[$j]['found'] = true;
+                    $punkt_id = $punkt['id'];
                     break;
                 }
             }
 
-            $_punkty[$i]['match_id'] = $_id;
-        }
-
-        $results = array();
-        foreach($_punktyBip as $i => $b) {
-
-            $punkt = array();
-            foreach($_punkty as $_p) {
-                if($b['match_id'] == $_p['id']) {
-                    $punkt = $_p;
-                    break;
-                }
+            // znaleziono połączenie
+            if($punkt_id) {
+                $punktyBip[$i]['source'] = 'panel_bip';
+                $punktyBip[$i]['punkt_id'] = $punkt_id;
+            } else {
+                $punktyBip[$i]['source'] = 'bip';
             }
 
-            $_punktyBip[$i]['panel_id'] = isset($punkt['id']) ? $punkt['id'] : 0;
-            $_punktyBip[$i]['bip_id'] = $b['id'];
-            $results[] = $_punktyBip[$i];
+            $results[] = $punktyBip[$i];
         }
+
+        // dodanie niepołączonych punktów
+        foreach($punkty as $j => $punkt) {
+            // czy punkt nie został połączony?
+            if(!isset($punkty[$j]['found'])) {
+                $punkty[$j]['source'] = 'panel';
+                $results[] = $punkty[$j];
+            }
+        }
+
+        usort($results, function($a, $b) {
+            return (int) $a['nr'] > (int) $b['nr'];
+        });
 
         return $results;
     }
 
+    /**
+     * Przygotowywanie punktu do połączenia. Utworzenie `hash`, `druki_nr`.
+     *
+     * @param $point array Punkt
+     * @param $name string Nazwa modelu
+     * @return array Punkt
+     */
     private function _preparePointToJoin($point, $name) {
         $p = array(
             'id' => $point[$name]['id'],
@@ -323,6 +337,10 @@ class Posiedzenia extends AppModel {
 
         $p['hash'] = strtolower(
             preg_replace('/(\s+|\'|\\|\.|\,|\")/', '', trim($p['tytul']))
+        );
+
+        $p['hash_opis'] = strtolower(
+            preg_replace('/(\s+|\'|\\|\.|\,|\")/', '', trim($p['opis']))
         );
 
         return $p;
