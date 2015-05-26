@@ -28,10 +28,6 @@ class PunktyPortal extends AppModel {
 
         $doNotDelete = array();
 
-        /* $this->deleteAll(array(
-            'PunktyPortal.posiedzenie_id' => $posiedzenie_id
-        ), false); */
-
         foreach($data as $row) {
             $toSave = array();
             switch($row['source']) {
@@ -100,7 +96,7 @@ class PunktyPortal extends AppModel {
                 $toSave['ord_panel'] = $row['ord'];
                 $this->create();
                 $this->save($toSave);
-                $id = $this->getLastInsertID();
+                $id = $this->getInsertID();
 
                 $doNotDelete[] = $id;
             }
@@ -111,7 +107,7 @@ class PunktyPortal extends AppModel {
         ));
 
         foreach($punkty as $punkt) {
-            if(!in_array($punkty['PunktyPortal'], $doNotDelete))
+            if(!in_array($punkty['PunktyPortal']['id'], $doNotDelete))
                 $this->delete($punkty['PunktyPortal']['id']);
         }
 

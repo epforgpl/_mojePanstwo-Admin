@@ -204,6 +204,7 @@ class Posiedzenia extends AppModel {
      * Dla importu:
      * Tworzenie punktów wynikowych na podstawie Punkty oraz PunktyBip.
      * Możliwe dopasowanie punktów. Niedopasowane punkty są dodawane.
+     * Łączenie punktów za pomocą PunktyPortal.
      *
      * Dla braku importu:
      * Wczytywanie punktów z PunktyPortal.
@@ -223,7 +224,7 @@ class Posiedzenia extends AppModel {
         $PunktyBip = new PunktyBip();
         $PunktyPortal = new PunktyPortal();
 
-        $punktyPortal = (!$import) ? $PunktyPortal->find('all', array(
+        $punktyPortal = $PunktyPortal->find('all', array(
             'conditions' => array(
                 'PunktyPortal.posiedzenie_id' => $id,
                 'PunktyPortal.deleted' => '0'
@@ -231,7 +232,7 @@ class Posiedzenia extends AppModel {
             'order' => array(
                 'PunktyPortal.ord_panel'
             ),
-        )) : array();
+        ));
 
         if(!$import && !count($punktyPortal))
             return array();
@@ -320,7 +321,7 @@ class Posiedzenia extends AppModel {
         });
 
         // łączenie punktów zapisanych przez użytkownika
-        if($punktyPortal) {
+        if(!$import && $punktyPortal) {
             foreach($punktyPortal as $i => $punktPortal) {
                 if($punktPortal['punkt_id'] > 0 && $punktPortal['punkt_bip_id'] > 0) {
                     // usunięcie punkt_id z $results jeżeli istnieje (jako pojedyńczy)
@@ -356,6 +357,31 @@ class Posiedzenia extends AppModel {
 
                 if(!$isset)
                     unset($results[$r]);
+            }
+        }
+
+        if($import && $punktyPortal) {
+            foreach($punktyPortal as $i => $punktPortal) {
+                $found = false;
+                if($punktPortal['punkt_id'] > 0 && $punktPortal['punkt_bip_id'] > 0) {
+                    foreach($results as $r => $row) {
+                        if($row['id'] == $punktPortal['punkt_bip_id'] && $row['source'] == 'bip') {
+                            // znaleźliśmy punkt_bip_id do którego jako child trzeba dodać punkt_id
+                            // a punkt_id trzeba wywalić z tablicy results
+                            foreach($results as $r2 => $row2) {
+                                if($row2['source'] == 'panel' && $row2['id'] == $punktPortal['punkt_id']) {
+                                    $results[$r]['child'] = $row2;
+                                    unset($results[$r2]);
+                                    $found = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if($found)
+                            break;
+                    }
+                }
             }
         }
 
@@ -414,6 +440,8 @@ class Posiedzenia extends AppModel {
         $p['hash_opis'] = strtolower(
             preg_replace($pattern, '', trim($p['opis']))
         );
+
+        $p['child'] = false;
 
         return $p;
     }

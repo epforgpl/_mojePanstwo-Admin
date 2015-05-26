@@ -48,8 +48,30 @@
                         </span>
                     </div>
                 </div>
-                <? if(!isset($punkt['punkt_id']))
-                    echo '<ul class="list-group"></ul>'; ?>
+                <? if(!isset($punkt['punkt_id'])) { ?>
+                    <ul class="list-group"><? if($punkt['child']) { ?>
+                            <li class="list-group-item" data-source="<?= $punkt['child']['source']; ?>" data-id="<?= $punkt['child']['id']; ?>" <?= isset($punkt['child']['punkt_id']) ? 'data-punkt-id="'.$punkt['child']['punkt_id'].'"' : ''; ?>>
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        <span class="glyphicon glyphicon-move handle" aria-hidden="true"></span>
+                                        &nbsp; <span class="glyphicon glyphicon-trash remove" aria-hidden="true"></span>
+                                    </div>
+                                    <div class="col-sm-10">
+                                        <?= $punkt['child']['nr']; ?>.
+                                        <?= $punkt['child']['tytul']; ?>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <span class="badge pull-right">
+                                            <?= $punkt['child']['source']; ?>
+                                        </span>
+                                    </div>
+                                </div>
+                                <? if(!isset($punkt['child']['punkt_id'])) { ?>
+                                    <ul class="list-group"></ul>
+                                <? } ?>
+                            </li>
+                    <? } ?></ul>
+                <? } ?>
             </li>
         <? } ?>
     </ul>
