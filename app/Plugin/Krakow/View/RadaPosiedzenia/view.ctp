@@ -6,8 +6,8 @@
 
 <ul class="nav nav-tabs">
     <li role="presentation"<?= ($this->action == 'view') ? ' class="active"': ''; ?>><a href="/krakow/rada_posiedzenia/<?=$posiedzenie['Posiedzenia']['id'];?>">Dane</a></li>
-    <li role="presentation"<?= ($this->action == 'editForm') ? ' class="active"': ''; ?>><a href="/krakow/rada_posiedzenia/editForm/<?=$posiedzenie['Posiedzenia']['id'];?>">Edycja</a></li>
-    <li role="presentation"<?= ($this->action == 'joins') ? ' class="active"': ''; ?>><a href="/krakow/rada_posiedzenia/joins/<?=$posiedzenie['Posiedzenia']['id'];?>">Łączenie punktów</a></li>
+    <li role="presentation"<?= ($this->action == 'editForm') ? ' class="active"': ''; ?>><a href="/krakow/rada_posiedzenia/editForm/<?=$posiedzenie['Posiedzenia']['id'];?>">Punkty panel</a></li>
+    <li role="presentation"<?= ($this->action == 'import') ? ' class="active"': ''; ?>><a href="/krakow/rada_posiedzenia/import/<?=$posiedzenie['Posiedzenia']['id'];?>">Import</a></li>
     <? if(isset($posiedzenie['Posiedzenia']['next']) && is_array($posiedzenie['Posiedzenia']['next'])) { ?>
         <li role="presentation" class="pull-right"><a href="/krakow/rada_posiedzenia/<?=$posiedzenie['Posiedzenia']['next']['Posiedzenia']['id'];?>">Następne <span aria-hidden="true">&raquo;</span></a></li>
     <? } ?>
@@ -16,8 +16,26 @@
     <? } ?>
 </ul>
 
-<div class="margin-top-10" id="data"></div>
-
-<div id="data-json" data-value='<?=$punkty;?>'></div>
-<? echo $this->Html->script('Krakow.RadaPosiedzenia/view'); ?>
-<? echo $this->Html->css('Krakow.RadaPosiedzenia/view'); ?>
+<? if(count($punkty)) { ?>
+    <ul class="list-group margin-top-5 panel-items sortable">
+        <? foreach($punkty as $punkt) { ?>
+            <li class="list-group-item" data-source="<?= $punkt['source']; ?>" data-id="<?= $punkt['id']; ?>" <?= isset($punkt['punkt_id']) ? 'data-punkt-id="'.$punkt['punkt_id'].'"' : ''; ?>>
+                <div class="row">
+                    <div class="col-sm-11">
+                        <?= $punkt['nr']; ?>.
+                        <?= $punkt['tytul']; ?>
+                    </div>
+                    <div class="col-sm-1">
+                        <span class="badge pull-right">
+                            <?= $punkt['source']; ?>
+                        </span>
+                    </div>
+                </div>
+                <? if(!isset($punkt['punkt_id']))
+                    echo '<ul class="list-group"></ul>'; ?>
+            </li>
+        <? } ?>
+    </ul>
+<? } else { ?>
+    <p class="block margin-top-10">Brak danych</p>
+<? } ?>

@@ -47,13 +47,12 @@ class RadaPosiedzeniaController extends KrakowAppController {
     }
 
     public function view($id) {
-        $data = $this->Posiedzenia->getData($id);
-        if(!$data)
+        $posiedzenie = $this->Posiedzenia->findByIdWithClosest($id);
+        if(!$posiedzenie)
             throw new NotFoundException;
 
-        $punkty = str_replace("'", "", json_encode($data['punkty']));
-        $this->set('posiedzenie', $data['posiedzenie']);
-        $this->set('punkty', $punkty);
+        $this->set('posiedzenie', $posiedzenie);
+        $this->set('punkty', $this->Posiedzenia->joinPoints($id));
     }
 
     public function editForm($id) {
@@ -66,7 +65,7 @@ class RadaPosiedzeniaController extends KrakowAppController {
         $this->set('punkty', $punkty);
     }
 
-    public function joins($id) {
+    public function import($id) {
         if(isset($this->data) && is_array($this->data) && count($this->data) > 0) {
             return $this->json(array(
                 'success' => $this->PunktyPortal->addFromJoins($id, $this->data)
@@ -77,7 +76,7 @@ class RadaPosiedzeniaController extends KrakowAppController {
         if(!$posiedzenie)
             throw new NotFoundException;
 
-        $this->set('punkty', $this->Posiedzenia->joinPoints($id));
+        $this->set('punkty', $this->Posiedzenia->joinPoints($id, true));
         $this->set('posiedzenie', $posiedzenie);
     }
 

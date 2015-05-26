@@ -56,9 +56,10 @@ $(document).ready(function() {
             },
 
             save: function() {
-                $.post('/krakow/rada_posiedzenia/joins/' + this.id, { data: this.data })
+                var id = this.id;
+                $.post('/krakow/rada_posiedzenia/import/' + id, { data: this.data })
                     .done(function(res) {
-                        console.log(res);
+                        $(location).attr('href', '/krakow/rada_posiedzenia/' + id);
                     });
             }
 
@@ -104,6 +105,9 @@ $(document).ready(function() {
         });
 
         DataController.save();
+        $(this).html('Trwa zapisywanie...');
+        $(this).removeClass('btn-default');
+        $(this).addClass('btn-success');
     });
 
 });

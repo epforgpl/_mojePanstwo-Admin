@@ -81,7 +81,7 @@ class PunktyPortal extends AppModel {
 
             if(count($toSave) > 0) {
                 unset($toSave['id']);
-                $toSave['ord'] = $row['ord'];
+                $toSave['ord_panel'] = $row['ord'];
                 $this->create();
                 $this->save($toSave);
             }

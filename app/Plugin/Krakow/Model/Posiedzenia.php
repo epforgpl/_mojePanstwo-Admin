@@ -201,20 +201,40 @@ class Posiedzenia extends AppModel {
     }
 
     /**
+     * Dla importu:
      * Tworzenie punktów wynikowych na podstawie Punkty oraz PunktyBip.
      * Możliwe dopasowanie punktów. Niedopasowane punkty są dodawane.
      *
+     * Dla braku importu:
+     * Wczytywanie punktów z PunktyPortal.
+     *
      * @param $id int Posiedzenie id
+     * @param $import bool Czy importować dane?
      * @return array Punkty wynikowe
      */
-    public function joinPoints($id) {
+    public function joinPoints($id, $import = false) {
         $results = array();
 
         ClassRegistry::init('Krakow.Punkty');
         ClassRegistry::init('Krakow.PunktyBip');
+        ClassRegistry::init('Krakow.PunktyPortal');
 
         $Punkty = new Punkty();
         $PunktyBip = new PunktyBip();
+        $PunktyPortal = new PunktyPortal();
+
+        $punktyPortal = (!$import) ? $PunktyPortal->find('all', array(
+            'conditions' => array(
+                'PunktyPortal.posiedzenie_id' => $id,
+                'PunktyPortal.deleted' => '0'
+            ),
+            'order' => array(
+                'PunktyPortal.ord_panel'
+            ),
+        )) : array();
+
+        if(!$import && !count($punktyPortal))
+            return array();
 
         $punkty = $Punkty->find('all', array(
             'conditions' => array(
@@ -241,6 +261,9 @@ class Posiedzenia extends AppModel {
             $punkty[$i] = $this->_preparePointToJoin($punkt, 'Punkty');
         foreach($punktyBip as $i => $punkt)
             $punktyBip[$i] = $this->_preparePointToJoin($punkt, 'PunktyBip');
+        if($punktyPortal)
+            foreach($punktyPortal as $i => $punkt)
+                $punktyPortal[$i] = $this->_preparePointToJoin($punkt, 'PunktyPortal', true);
 
         // łączenie punktów
         foreach($punktyBip as $i => $punktBip) {
@@ -285,7 +308,7 @@ class Posiedzenia extends AppModel {
 
         // dodanie niepołączonych punktów
         foreach($punkty as $j => $punkt) {
-            // czy punkt nie został połączony?
+            // czy punkt nie został wcześniej połączony?
             if(!isset($punkty[$j]['found'])) {
                 $punkty[$j]['source'] = 'panel';
                 $results[] = $punkty[$j];
@@ -296,23 +319,70 @@ class Posiedzenia extends AppModel {
             return (int) $a['nr'] > (int) $b['nr'];
         });
 
+        // łączenie punktów zapisanych przez użytkownika
+        if($punktyPortal) {
+            foreach($punktyPortal as $i => $punktPortal) {
+                if($punktPortal['punkt_id'] > 0 && $punktPortal['punkt_bip_id'] > 0) {
+                    // usunięcie punkt_id z $results jeżeli istnieje (jako pojedyńczy)
+                    // i dodanie go jako podrzędnego w punkt_bip_id
+                    foreach($results as $r => $row) {
+                        if($row['id'] == $punktPortal['punkt_id'] && $row['source'] == 'panel') {
+                            unset($results[$r]);
+                        }
+
+                        if($row['id'] == $punktPortal['punkt_bip_id'] && $row['source'] == 'bip') {
+                            $results[$r]['punkt_id'] = $punktPortal['punkt_id'];
+                            $results[$r]['source'] = 'panel_bip';
+                        }
+                    }
+                }
+            }
+
+            // usunięcie punktów
+            foreach($results as $r => $row) {
+                $isset = false;
+                foreach($punktyPortal as $i => $punktPortal) {
+                    if($row['source'] == 'panel_bip' && $row['id'] == $punktPortal['punkt_bip_id'] && $row['punkt_id'] == $punktPortal['punkt_id'])
+                        $isset = true;
+
+                    if($row['source'] == 'panel' && $row['id'] == $punktPortal['punkt_id']) {
+                        $isset = true;
+                    }
+
+                    if($row['source'] == 'bip' && $row['id'] == $punktPortal['punkt_bip_id']) {
+                        $isset = true;
+                    }
+                }
+
+                if(!$isset)
+                    unset($results[$r]);
+            }
+        }
+
         return $results;
     }
 
     /**
-     * Przygotowywanie punktu do połączenia. Utworzenie `hash`, `druki_nr`.
+     * Przygotowywanie punktu do połączenia. Utworzenie `hash`, `druki_nr`, `hash_opis`.
      *
      * @param $point array Punkt
      * @param $name string Nazwa modelu
+     * @param $haveChilds bool Czy punkt zawiera punkt_id lub punkt_bip_id
      * @return array Punkt
      */
-    private function _preparePointToJoin($point, $name) {
+    private function _preparePointToJoin($point, $name, $haveChilds = false) {
         $p = array(
             'id' => $point[$name]['id'],
             'nr' => $point[$name]['nr'],
             'tytul' => $point[$name][$name == 'Punkty' ? 'tytul' : 'tytul_pelny'],
             'match_id' => 0
         );
+
+        if($haveChilds)
+            $p = array_merge($p, array(
+                'punkt_id' => $point[$name]['punkt_id'],
+                'punkt_bip_id' => $point[$name]['punkt_bip_id']
+            ));
 
         $opis = '';
         $druki_str = '';
@@ -335,12 +405,14 @@ class Posiedzenia extends AppModel {
         $p['druki_str'] = $druki_str;
         $p['druki_nr'] = $druki_nr;
 
+        $pattern = '/(\s+|\'|\\|\.|\,|\")/';
+
         $p['hash'] = strtolower(
-            preg_replace('/(\s+|\'|\\|\.|\,|\")/', '', trim($p['tytul']))
+            preg_replace($pattern, '', trim($p['tytul']))
         );
 
         $p['hash_opis'] = strtolower(
-            preg_replace('/(\s+|\'|\\|\.|\,|\")/', '', trim($p['opis']))
+            preg_replace($pattern, '', trim($p['opis']))
         );
 
         return $p;

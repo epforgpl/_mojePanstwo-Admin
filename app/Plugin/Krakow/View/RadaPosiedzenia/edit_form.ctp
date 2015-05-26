@@ -6,8 +6,8 @@
 
 <ul class="nav nav-tabs">
     <li role="presentation"<?= ($this->action == 'view') ? ' class="active"': ''; ?>><a href="/krakow/rada_posiedzenia/<?=$posiedzenie['Posiedzenia']['id'];?>">Dane</a></li>
-    <li role="presentation"<?= ($this->action == 'editForm') ? ' class="active"': ''; ?>><a href="/krakow/rada_posiedzenia/editForm/<?=$posiedzenie['Posiedzenia']['id'];?>">Edycja</a></li>
-    <li role="presentation"<?= ($this->action == 'joins') ? ' class="active"': ''; ?>><a href="/krakow/rada_posiedzenia/joins/<?=$posiedzenie['Posiedzenia']['id'];?>">Łączenie punktów</a></li>
+    <li role="presentation"<?= ($this->action == 'editForm') ? ' class="active"': ''; ?>><a href="/krakow/rada_posiedzenia/editForm/<?=$posiedzenie['Posiedzenia']['id'];?>">Punkty panel</a></li>
+    <li role="presentation"<?= ($this->action == 'import') ? ' class="active"': ''; ?>><a href="/krakow/rada_posiedzenia/import/<?=$posiedzenie['Posiedzenia']['id'];?>">Import</a></li>
     <? if(isset($posiedzenie['Posiedzenia']['next']) && is_array($posiedzenie['Posiedzenia']['next'])) { ?>
         <li role="presentation" class="pull-right"><a href="/krakow/rada_posiedzenia/editForm/<?=$posiedzenie['Posiedzenia']['next']['Posiedzenia']['id'];?>">Następne <span aria-hidden="true">&raquo;</span></a></li>
     <? } ?>
