@@ -137,7 +137,9 @@ class AppModel extends Model {
             'krakow_upload_files',
             'krakow_upload_sessions',
             'rady_posiedzenia_pliki',
+            'rady_posiedzenia_debaty_oznaczone_wystapienia',
             'rady_komisje',
+            'rady_druki',
             'pl_dzielnice'
         ));
 

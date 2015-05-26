@@ -87,3 +87,9 @@
     background: #fafafa;
     height: 50px;
 }
+
+textarea {
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    resize: none;
+}

@@ -140,13 +140,7 @@ var Posiedzenie = {
 
         });
 
-        $("textarea").keyup(function(e) {
-            while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
-                $(this).height($(this).height()+1);
-            };
-        });
-
-        $("textarea").each(function(e) {
+        $('textarea').keyup(function(e) {
             while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
                 $(this).height($(this).height()+1);
             };
@@ -216,6 +210,12 @@ var Posiedzenie = {
             });
             _this.updatePointsDOM();
         });
+
+        $('textarea').each(function(e) {
+            while($(this).outerHeight() < this.scrollHeight + parseFloat($(this).css("borderTopWidth")) + parseFloat($(this).css("borderBottomWidth"))) {
+                $(this).height($(this).height()+1);
+            };
+        });
     },
 
     getPointTemplate: function(i, point) {
@@ -265,7 +265,7 @@ var Posiedzenie = {
         if( Number(point.start_time) || Number(point.stop_time) )
             _html.push('<div class="timers"><span>' + point.start_time.toHHMMSS() + ' - ' + point.stop_time.toHHMMSS() + '</span></div>');
 
-        _html.push('<a href="/rady/posiedzenia/debaty#id=' + point.id +'" target="_blank"><span class="glyphicon glyphicon-arrow-right move-to-debata" aria-hidden="true"></span></a>');
+        _html.push('<a href="/krakow/rada_posiedzenia_punkty_sesja/' + point.id +'"><span class="glyphicon glyphicon-arrow-right move-to-debata" aria-hidden="true"></span></a>');
         _html.push('<span class="glyphicon glyphicon-trash remove" aria-hidden="true"></span>');
         _html.push('<span class="glyphicon glyphicon-plus-sign add" aria-hidden="true"></span>');
         _html.push('</li>');
