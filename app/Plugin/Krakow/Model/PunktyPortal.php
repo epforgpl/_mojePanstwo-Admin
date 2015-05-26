@@ -26,9 +26,11 @@ class PunktyPortal extends AppModel {
         $Punkty = new Punkty();
         $PunktyBip = new PunktyBip();
 
-        $this->deleteAll(array(
+        $doNotDelete = array();
+
+        /* $this->deleteAll(array(
             'PunktyPortal.posiedzenie_id' => $posiedzenie_id
-        ), false);
+        ), false); */
 
         foreach($data as $row) {
             $toSave = array();
@@ -80,11 +82,37 @@ class PunktyPortal extends AppModel {
             }
 
             if(count($toSave) > 0) {
-                unset($toSave['id']);
+
+                $id = $this->field(
+                    'id',
+                    array(
+                        'posiedzenie_id' => $posiedzenie_id,
+                        'punkt_id' => isset($toSave['punkt_id']) ? $toSave['punkt_id'] : 0,
+                        'punkt_bip_id' => isset($toSave['punkt_bip_id']) ? $toSave['punkt_bip_id'] : 0
+                    )
+                );
+
+                if($id)
+                    $toSave['id'] = $id;
+                else
+                    unset($toSave['id']);
+
                 $toSave['ord_panel'] = $row['ord'];
                 $this->create();
                 $this->save($toSave);
+                $id = $this->getLastInsertID();
+
+                $doNotDelete[] = $id;
             }
+        }
+
+        $punkty = $this->find('all', array(
+            'posiedzenie_id' => $posiedzenie_id,
+        ));
+
+        foreach($punkty as $punkt) {
+            if(!in_array($punkty['PunktyPortal'], $doNotDelete))
+                $this->delete($punkty['PunktyPortal']['id']);
         }
 
         return $results;
