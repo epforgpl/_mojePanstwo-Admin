@@ -2,7 +2,7 @@ body.dragging, body.dragging * {
     cursor: move !important;
 }
 
-/*.panel-items .list-group-item { border-bottom: 2px solid #aaa; }*/
+.panel-items .list-group-item { border-bottom: 2px solid #aaa; }
 
 .dragged {
     position: absolute;
@@ -32,7 +32,6 @@ ul ul {
 ul ul li:not(.placeholder) {
     margin: 0;
     padding: 15px 0 0;
-    color: #999;
     border-width: 0 !important;
 }
 
