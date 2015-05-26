@@ -24,22 +24,22 @@ ul.sortable li.placeholder:before {
     /** Define arrowhead **/
 }
 
-ul ul {
+ul.sortable ul {
     padding: 0;
     margin: 0;
 }
 
-ul ul li:not(.placeholder) {
+ul.sortable ul li:not(.placeholder) {
     margin: 0;
     padding: 15px 0 0;
     border-width: 0 !important;
 }
 
-ul li ul li {
+ul.sortable li ul li {
     padding-bottom: 0 !important;
 }
 
-ul ul ul {
+ul.sortable ul ul {
     display: none;
 }
 
