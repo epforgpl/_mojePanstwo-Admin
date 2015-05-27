@@ -95,9 +95,9 @@ class Punkty extends AppModel {
             array($item['posiedzenie_id'], $item['ord_panel'])
         );
 
-        $next = $next[0];
+        $next = @$next[0];
         $r = array();
-        foreach($next as $values)
+        foreach(@(array) $next as $values)
             $r = array_merge($r, $values);
         $next = $r;
 
@@ -131,16 +131,18 @@ class Punkty extends AppModel {
             array($item['posiedzenie_data'])
         );
 
-        $upload_session = $upload_session[0];
+        $upload_session = @$upload_session[0];
         $r = array();
-        foreach($upload_session as $values)
+        foreach(@(array) $upload_session as $values)
             $r = array_merge($r, $values);
         $upload_session = $r;
 
-        $pliki = $this->getDataSource()->fetchAll(
-            'SELECT rady_posiedzenia_pliki.id, rady_posiedzenia_pliki.filename, rady_posiedzenia_pliki.dlugosc, rady_posiedzenia_pliki.posiedzenie_czas_start FROM rady_posiedzenia_pliki JOIN krakow_upload_files ON rady_posiedzenia_pliki.id=krakow_upload_files.plik_id WHERE rady_posiedzenia_pliki.target_id=1 AND krakow_upload_files.session_id = ? ORDER BY krakow_upload_files.name ASC',
-            array($upload_session['id'])
-        );
+        if($upload_session)
+            $pliki = $this->getDataSource()->fetchAll(
+                'SELECT rady_posiedzenia_pliki.id, rady_posiedzenia_pliki.filename, rady_posiedzenia_pliki.dlugosc, rady_posiedzenia_pliki.posiedzenie_czas_start FROM rady_posiedzenia_pliki JOIN krakow_upload_files ON rady_posiedzenia_pliki.id=krakow_upload_files.plik_id WHERE rady_posiedzenia_pliki.target_id=1 AND krakow_upload_files.session_id = ? ORDER BY krakow_upload_files.name ASC',
+                array($upload_session['id'])
+            );
+        else $pliki = array();
 
         $r = array();
         foreach($pliki as $values)

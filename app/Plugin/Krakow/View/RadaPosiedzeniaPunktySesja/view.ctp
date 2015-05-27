@@ -15,8 +15,29 @@
 </ul>
 
 <div class="row margin-top-10">
+    <div class="col-sm-12">
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                <button id="save" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;
+                    Zapisz
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row margin-top-10">
     <div class="col-sm-6">
-        <form class="form-horizontal">
+        <div class="row">
+            <div class="col-sm-2 text-right">
+                <h1 class="margin-0 padding-0">#<?= $data['item']['nr']; ?></h1>
+            </div>
+            <div class="col-sm-10">
+                <h4 class="text-muted">Posiedzenie z dnia <?= $this->PLText->date($data['item']['posiedzenie_data']);?></h4>
+            </div>
+        </div>
+        <form class="form-horizontal margin-top-10">
             <div class="form-group">
                 <label for="inputTitle" class="col-sm-2 control-label">Tytuł</label>
                 <div class="col-sm-10">
@@ -30,6 +51,15 @@
                 </div>
             </div>
         </form>
+
+        <div class="row setTimes">
+            <div class="col-md-6">
+                <div data-name="config" data-type="start"></div>
+            </div>
+            <div class="col-md-6">
+                <div data-name="config" data-type="stop"></div>
+            </div>
+        </div>
 
         <h3>Następny punkt</h3>
         <? if($data['item']['next']) { ?>
@@ -50,8 +80,15 @@
         <? } ?>
     </div>
     <div class="col-sm-6">
-
+        <div data-name="video" data-type="start"></div>
+        <div data-name="video" data-type="stop"></div>
     </div>
 </div>
 
+<div id="data-id" data-value='<?= $data['item']['id']; ?>'></div>
+<div id="data-item" data-json='<?= json_encode($data['item']); ?>'></div>
+<div id="data-files" data-json='<?= json_encode($data['pliki']); ?>'></div>
+
+<link href="http://vjs.zencdn.net/4.11/video-js.css" rel="stylesheet">
+<script src="http://vjs.zencdn.net/4.11/video.js"></script>
 <? echo $this->Html->script('Krakow.RadaPosiedzeniaPunktySesja/view'); ?>

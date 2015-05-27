@@ -10,3 +10,12 @@ a:hover {cursor: pointer;}
 #ui-datepicker-div { display: block !important; margin-left: 5px !important; }
 
 .panel-items .list-group-item { border: none; border-bottom: 1px solid #eee; background-color: inherit; }
+.margin-0 { margin: 0; }
+.padding-0 { padding: 0; }
+.full-width { width: 100%; }
+
+.loader {
+    width: 16px;
+    height: 16px;
+    background: url('../img/loader.gif') no-repeat center;
+}
