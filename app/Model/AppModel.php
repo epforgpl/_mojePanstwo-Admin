@@ -64,7 +64,8 @@ class AppModel extends Model {
      *
      * @return array
      */
-    public static function getMenu() {
+    public static function getMenu()
+    {
         return array(
             'items' => array(
                 array(
@@ -77,6 +78,10 @@ class AppModel extends Model {
                         array(
                             'label' => 'Dodawanie plików',
                             'href' => '/krakow/upload_sessions/addForm'
+                        ),
+                        array(
+                            'label' => 'Zamowienia Publiczne',
+                            'href' => '/zamowienia_publiczne/dokumenty'
                         )
                     )
                 ),
@@ -142,6 +147,33 @@ class AppModel extends Model {
             'rady_druki',
             'pl_dzielnice'
         ));
+
+        $ends = array(
+            'czesci',
+            'czesci-wykonawcy',
+            'dokumenty',
+            'dokumenty-wykonawcy',
+            'dokumenty_kryteria',
+            'kryteria',
+            'paczki',
+            'rodzaje',
+            'spolki_cywilne',
+            'stats',
+            'tryby',
+            'typy',
+            'wykonawcy',
+            'zamawiajacy',
+            'zamawiajacy_rodzaje',
+            'zamowiena',
+            'zamowienia_czesci',
+            'zamowienia_czesci_kryteria'
+
+        );
+
+        $prefix = 'uzp_';
+        foreach ($ends as $table) {
+            $names[] = $prefix . $table;
+        }
 
         return $names;
     }
