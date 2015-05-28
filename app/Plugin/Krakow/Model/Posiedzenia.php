@@ -275,6 +275,23 @@ class Posiedzenia extends AppModel {
                 if(isset($punkty[$j]['found']) && $punkty[$j]['found'])
                     continue;
 
+                /* if($punktBip['nr'] == '12') {
+                    echo '<h1>Bip</h1><pre>';
+                    var_export($punktBip);
+                    echo '</pre>';
+                }
+                if($punktBip['nr'] == '12') {
+                    echo '<h1>Bip</h1><pre>';
+                    var_export($punktBip);
+                    echo '</pre>';
+                }
+
+                if($punkt['nr'] == '12') {
+                    echo '<h1>Panel</h1><pre>';
+                    var_export($punkt);
+                    die();
+                } */
+
                 // po numerze druku
                 if($punktBip['druki_nr'] > 0 && ($punktBip['druki_nr'] == $punkt['druki_nr'])) {
                     $punkty[$j]['found'] = true;
@@ -325,6 +342,20 @@ class Posiedzenia extends AppModel {
         usort($results, function($a, $b) {
             return (int) $a['nr'] > (int) $b['nr'];
         });
+
+        // dodatkowe sortowanie punktów które nie posiadają numeru np. 'Blok głosowań'
+        foreach($results as $i => $row) {
+            if($row['nr'] == '') {
+                foreach($punkty as $p => $punkt) {
+                    if($punkt['id'] == $row['id']) {
+                        if(isset($punkty[$p - 1])) {
+                            unset($results[$i]);
+                            array_splice($results, $p, 0, array($row));
+                        }
+                    }
+                }
+            }
+        }
 
         // łączenie punktów zapisanych przez użytkownika
         if(!$import && $punktyPortal) {
@@ -416,6 +447,7 @@ class Posiedzenia extends AppModel {
                 'punkt_bip_id' => $point[$name]['punkt_bip_id']
             ));
 
+        $tytul = $p['tytul'];
         $opis = '';
         $druki_str = '';
         $druki_nr = 0;
@@ -423,6 +455,7 @@ class Posiedzenia extends AppModel {
         $parts = array_filter($parts, 'strlen');
         if(count($parts) > 1) {
             if(count($parts) == 3) {
+                $tytul = @$parts[0];
                 $opis = @$parts[1];
                 $druki_str = $parts[2];
                 if(preg_match('/([0-9]{1,})/', $druki_str, $matches ) ) {
@@ -433,11 +466,12 @@ class Posiedzenia extends AppModel {
             }
         }
 
+        $p['tytul'] = $tytul;
         $p['opis'] = $opis;
         $p['druki_str'] = $druki_str;
         $p['druki_nr'] = $druki_nr;
 
-        $pattern = '/(\s+|\'|\\|\.|\,|\")/';
+        $pattern = '/[^a-zA-Z0-9]+/';
 
         $p['hash'] = strtolower(
             preg_replace($pattern, '', trim($p['tytul']))
