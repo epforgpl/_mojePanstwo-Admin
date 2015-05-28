@@ -240,7 +240,7 @@ class Posiedzenia extends AppModel {
         $punkty = $Punkty->find('all', array(
             'conditions' => array(
                 'Punkty.posiedzenie_id' => $id,
-                'Punkty.deleted LIKE' => '0'
+                //'Punkty.deleted LIKE' => '0'
             ),
             'order' => array(
                 'Punkty.ord_panel'
@@ -269,6 +269,7 @@ class Posiedzenia extends AppModel {
         // łączenie punktów
         foreach($punktyBip as $i => $punktBip) {
             $punkt_id = 0;
+            unset($_punkt);
             foreach($punkty as $j => $punkt) {
                 // czy punkt został już połączony?
                 if(isset($punkty[$j]['found']) && $punkty[$j]['found'])
@@ -278,6 +279,7 @@ class Posiedzenia extends AppModel {
                 if($punktBip['druki_nr'] > 0 && ($punktBip['druki_nr'] == $punkt['druki_nr'])) {
                     $punkty[$j]['found'] = true;
                     $punkt_id = $punkt['id'];
+                    $_punkt = $punkt;
                     break;
                 }
 
@@ -285,6 +287,7 @@ class Posiedzenia extends AppModel {
                 if($punktBip['hash'] == $punkt['hash']) {
                     $punkty[$j]['found'] = true;
                     $punkt_id = $punkt['id'];
+                    $_punkt = $punkt;
                     break;
                 }
 
@@ -292,14 +295,17 @@ class Posiedzenia extends AppModel {
                 if($punktBip['hash_opis']!= '' && $punktBip['hash_opis'] == $punkt['hash_opis']) {
                     $punkty[$j]['found'] = true;
                     $punkt_id = $punkt['id'];
+                    $_punkt = $punkt;
                     break;
                 }
             }
 
             // znaleziono połączenie
-            if($punkt_id) {
-                $punktyBip[$i]['source'] = 'panel_bip';
-                $punktyBip[$i]['punkt_id'] = $punkt_id;
+            if($punkt_id && isset($_punkt)) {
+                $punktyBip[$i]['source'] = 'bip';
+                //$punktyBip[$i]['punkt_id'] = $punkt_id;
+                $_punkt['source'] = 'panel';
+                $punktyBip[$i]['child'] = $_punkt;
             } else {
                 $punktyBip[$i]['source'] = 'bip';
             }
