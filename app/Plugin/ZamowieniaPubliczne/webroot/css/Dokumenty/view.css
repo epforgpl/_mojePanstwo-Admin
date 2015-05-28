@@ -1,0 +1,89 @@
+#parts {
+    margin-bottom: 10px;
+}
+
+#parts li {
+    overflow: hidden;
+}
+
+#parts li:hover {
+    background: #fcfcfc;
+}
+
+#parts li .remove, #parts li .add, .osoba-delete, .move-to-debata, .osoba-stoper, .item-stoper {
+    color: #999;
+    float: right;
+    margin-right: 10px;
+    padding-top: 7px;
+}
+
+#parts li .remove:hover, #parts li .add:hover, .osoba-delete:hover, .move-to-debata:hover, .osoba-stoper:hover, .item-stoper:hover {
+    cursor: pointer;
+    color: #333;
+}
+
+#parts li .handle {
+    margin-right: 10px;
+    padding-top: 7px;
+    color: #999;
+    float: left;
+}
+
+#parts li .form-group-pr {
+    margin-right: 10px;
+    width: 700px;
+    float: left;
+}
+
+#parts li .form-group-pr.sm {
+    width: 60px;
+}
+
+#parts li .form-group-pr.sm.ext {
+    width: 150px;
+}
+
+#parts li .form-group-pr.sm.ext input {
+    width: 110px;
+    float: left;
+}
+
+#parts li .form-group-pr.sm.ext button {
+    width: 25px;
+    float: right;
+}
+
+#parts li .form-group-pr .row {
+    margin-top: 10px;
+}
+
+#parts li .timers span {
+    color: #666;
+    float: left;
+    font-size: 13px;
+    padding: 10px;
+}
+
+#parts li .form-group-pr input[type=text], #parts li .form-group-pr textarea {
+    border-color: #fff;
+    box-shadow: none;
+}
+
+#parts li .form-group-pr input[type=text]:focus, #parts li .form-group-pr textarea:focus {
+    border-color: #ccc;
+}
+
+#parts li .handle:hover {
+    cursor: pointer;
+    color: #333;
+}
+
+#parts li.sortable-dragging {
+
+}
+
+#parts .sortable-placeholder {
+    border: none;
+    background: #fafafa;
+    height: 50px;
+}
