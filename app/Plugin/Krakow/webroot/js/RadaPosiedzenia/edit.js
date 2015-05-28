@@ -1,6 +1,26 @@
 
 String.prototype.toHHMMSS=function(){var sec_num=parseInt(this,10);var hours=Math.floor(sec_num/3600);var minutes=Math.floor((sec_num-(hours*3600))/60);var seconds=sec_num-(hours*3600)-(minutes*60);if(hours<10){hours="0"+hours}if(minutes<10){minutes="0"+minutes}if(seconds<10){seconds="0"+seconds}var time=hours+':'+minutes+':'+seconds;return time};
 
+var strToTime = function(i) {
+
+    var res = i.split(':');
+    if(res.length == 3) {
+        var s = res[0] + res[1] + res[2];
+    }
+
+    var v = [36000, 3600, 600, 60, 10 , 1];
+    var t = 0;
+    var str = s ? s : String(i);
+    var l = 6 - str.length + 1;
+    var m = l > 0 ? new Array(l).join('0') : '';
+    str = m + str;
+    for(var i = 0; i < str.length; i++) {
+        t += v[i] * parseInt(str[i]);
+    }
+
+    return t;
+};
+
 $.fn.StopWatch = function() {
 
     var _this = this;
@@ -20,6 +40,8 @@ $.fn.StopWatch = function() {
         if(_this.on)
             return true;
 
+        _this.find('input').attr('disabled', true);
+
         interval = setInterval(function() {
             _this.time++;
             update();
@@ -31,6 +53,8 @@ $.fn.StopWatch = function() {
     var stop = function() {
         if(!_this.on)
             return true;
+
+        _this.find('input').attr('disabled', false);
 
         clearInterval(interval);
         _this.on = false;
@@ -44,7 +68,7 @@ $.fn.StopWatch = function() {
     $(this).html([
         '<div class="input-group">',
             '<span class="input-group-addon">Stoper</span>',
-            '<input type="text" data-time="0" class="form-control" value="00:00:00" disabled>',
+            '<input type="text" data-time="0" class="form-control" value="00:00:00">',
             '<span class="input-group-btn">',
                 '<button data-action="start" class="btn btn-default" type="button">Start</button>',
                 '<button data-action="stop" class="btn btn-default" type="button">Stop</button>',
@@ -53,9 +77,10 @@ $.fn.StopWatch = function() {
         '</div>'
     ].join(''));
 
-    /* $(this).find('input')
-        .css('border-width', 0)
-        .css('box-shadow', 'none'); */
+    $(this).find('input').change(function() {
+        _this.time = strToTime($(this).val());
+        update();
+    });
 
     $(this).find('button').bind('click', function() {
         var action = $(this).attr('data-action');
@@ -147,6 +172,12 @@ var Posiedzenie = {
         });
 
         var _this = this;
+
+        $('input[name="czas"]').change(function() {
+            $(this).val(
+                String(strToTime($(this).val())).toHHMMSS()
+            );
+        });
 
         $('.osoba-delete').click(function() {
             var group = $(this).closest('.list-group-item').first();
@@ -249,7 +280,7 @@ var Posiedzenie = {
                     _html.push('<input type="text" class="form-control input-sm" name="stanowisko" placeholder="Stanowisko" value="' + osoba.stanowisko + '"/>');
                     _html.push('</div>');
                     _html.push('<div class="col-sm-2">');
-                    _html.push('<input type="text" class="form-control input-sm" name="czas" placeholder="HH:MM:SS" value="' + osoba.czas + '"/>');
+                    _html.push('<input type="text" class="form-control input-sm" name="czas" placeholder="HH:MM:SS" value="' + (osoba.czas ? osoba.czas : '') + '"/>');
                     _html.push('</div>');
                     _html.push('<div class="col-sm-2">');
                     _html.push('<span data-index="' + i + '" class="glyphicon glyphicon-trash osoba-delete" aria-hidden="true"></span>');
