@@ -13,6 +13,46 @@ class Punkty extends AppModel {
         );
     }
 
+    public function saveData($id, $data) {
+        $item = $this->getDataSource()->fetchAll("SELECT id, posiedzenie_id, ord, nr, tytul, czas_start, czas_stop, start_file_id, start_time, stop_file_id, stop_time, wystapienia_akcept FROM pl_gminy_krakow_posiedzenia_punkty WHERE id = ?", array($id));
+
+        if(!isset($item[0]['pl_gminy_krakow_posiedzenia_punkty']))
+            return false;
+
+        $item = $item[0]['pl_gminy_krakow_posiedzenia_punkty'];
+        $item = array_merge($item, array(
+            'start_file_id' => (int) $item['start_file_id'],
+            'start_time' => (float) $item['start_time'],
+            'stop_file_id' => (int) $item['stop_file_id'],
+            'stop_time' => (float) $item['stop_time'],
+        ));
+
+        $db_item = array(
+            'id' => $id,
+            'czas_akcept' => '1',
+            'wystapienia_akcept' => addslashes( '1' ),
+            'start_file_id' => (int) $data['start']['file_id'],
+            'start_time' => (float) $data['start']['time'],
+            'stop_file_id' => (int) $data['stop']['file_id'],
+            'stop_time' => (float) $data['stop']['time'],
+            'tytul' => $data['title'],
+            'opis' => $data['desc'],
+            'analiza' => '1',
+            'analiza_ts' => 'NOW()',
+        );
+
+        if( $item['start_file_id']!=$db_item['start_file_id'] ||
+            $item['start_time']!=$db_item['start_time'] ||
+            $item['stop_file_id']!=$db_item['stop_file_id'] ||
+            $item['stop_time']!=$db_item['stop_time'] ) {
+            $db_item = array_merge($db_item, array(
+                'video' => '1',
+            ));
+        }
+
+        return $this->save($db_item);
+    }
+
     public function getData($id) {
         $result = array();
         $item = $this->getDataSource()->fetchAll("

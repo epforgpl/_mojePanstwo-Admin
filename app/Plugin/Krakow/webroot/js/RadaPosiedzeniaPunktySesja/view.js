@@ -341,8 +341,12 @@ $(document).ready(function() {
                 stop: stop.config
             })
             .done(function(res) {
-                console.log(res);
-                _this.html('Zapisano poprawnie');
+                if(res.success.Punkty) {
+                    _this.html('Zapisano poprawnie');
+                } else {
+                    _this.html('Wystąpił błąd');
+                }
+
                 setTimeout(function() {
                     _this.html('<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp; Zapisz');
                     _this.removeClass('btn-success');

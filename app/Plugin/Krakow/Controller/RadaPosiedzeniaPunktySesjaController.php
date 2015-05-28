@@ -12,4 +12,10 @@ class RadaPosiedzeniaPunktySesjaController extends KrakowAppController {
         $this->set('data', $data);
     }
 
+    public function edit($id) {
+        return $this->json(array(
+            'success' => $this->Punkty->saveData($id, $this->data)
+        ));
+    }
+
 }
