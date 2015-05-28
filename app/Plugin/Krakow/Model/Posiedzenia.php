@@ -447,7 +447,6 @@ class Posiedzenia extends AppModel {
                 'punkt_bip_id' => $point[$name]['punkt_bip_id']
             ));
 
-        $tytul = $p['tytul'];
         $opis = '';
         $druki_str = '';
         $druki_nr = 0;
@@ -466,7 +465,6 @@ class Posiedzenia extends AppModel {
             }
         }
 
-        $p['tytul'] = $tytul;
         $p['opis'] = $opis;
         $p['druki_str'] = $druki_str;
         $p['druki_nr'] = $druki_nr;
@@ -474,7 +472,7 @@ class Posiedzenia extends AppModel {
         $pattern = '/[^a-zA-Z0-9]+/';
 
         $p['hash'] = strtolower(
-            preg_replace($pattern, '', trim($p['tytul']))
+            preg_replace($pattern, '', trim(isset($tytul) ? $tytul : $p['tytul']))
         );
 
         $p['hash_opis'] = strtolower(
