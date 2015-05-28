@@ -94,6 +94,7 @@ class PunktyPortal extends AppModel {
                     unset($toSave['id']);
 
                 $toSave['ord_panel'] = $row['ord'];
+                $toSave['czas_akcept'] = '1';
                 $this->create();
                 $this->save($toSave);
                 if(!$toSave['id'])
