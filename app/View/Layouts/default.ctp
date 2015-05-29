@@ -17,6 +17,7 @@
 	?>
 </head>
 <body>
+    <? if($user) { ?>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -31,7 +32,7 @@
                 </button>
             </div>
             <div class="navbar-collapse collapse" id="navbar-main">
-                <? if($user && $menu) { ?>
+                <? if($menu) { ?>
                     <ul class="nav navbar-nav">
                         <? foreach($menu['items'] as $item) { ?>
                             <? if(isset($item['childrens'])) { ?>
@@ -52,12 +53,8 @@
                     </ul>
                 <? } ?>
                 <ul class="nav navbar-nav navbar-right">
-                    <? if($user) { ?>
-                        <li><a href="#"><?= $user['email']; ?></a></li>
-                        <li><a href="/users/logout">Wyloguj się</a></li>
-                    <? } else { ?>
-                        <li><a href="/auth/mojepanstwo">Zaloguj się</a></li>
-                    <? } ?>
+                    <li><a href="#"><?= $user['email']; ?></a></li>
+                    <li><a href="/users/logout">Wyloguj się</a></li>
                 </ul>
             </div>
         </div>
@@ -91,5 +88,14 @@
             </div>
         </div>
     </div>
+    <? } else { ?>
+        <div class="container text-center">
+            <h2>_mojePanstwo-Admin</h2>
+            <a class="btn btn-primary margin-top-10" href="/auth/mojepanstwo">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                &nbsp;Zaloguj się
+            </a>
+        </div>
+    <? } ?>
 </body>
 </html>
