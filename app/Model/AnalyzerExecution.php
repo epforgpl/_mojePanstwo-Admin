@@ -80,12 +80,21 @@ class AnalyzerExecution extends AppModel
 
                 $data = array(
 
+                    'krs_downloads' => array(
+                        'downloadM' => $countM[0][0]['count'],
+                        'downloadH' => $countH[0][0]['count'],
+                        'downloadD' => $countD[0][0]['count'],
+                    ),
+
+                    'krs_new' => $krs_new,
+                    'krs_new_last_err' => $krs_new_last_err,
+                    'krs_new_last_corr' => $krs_new_last_corr,
 
                     'org_status' => $org_status,
-                    'org_status_anl' => $org_status_anl,
+                    'org_status_xml' => $org_status_xml,
                     'org_status_anl_intro' => $org_status_anl_intro,
                     'org_status_anl_addr' => $org_status_anl_addr,
-                    'org_status_xml' => $org_status_xml,
+                    'org_status_anl' => $org_status_anl,
 
                     'msig_con' => $msig_con,
                     'msig_wydania' => $msig_wydania,
@@ -112,15 +121,9 @@ class AnalyzerExecution extends AppModel
                     'krs_pos_chg_last_err' => $krs_pos_chg_last_err,
                     'krs_pos_chg_last_corr' => $krs_pos_chg_last_corr,
 
-                    'krs_new' => $krs_new,
-                    'krs_new_last_err' => $krs_new_last_err,
-                    'krs_new_last_corr' => $krs_new_last_corr,
 
-                    'krs_downloads' => array(
-                        'downloadM' => $countM[0][0]['count'],
-                        'downloadH' => $countH[0][0]['count'],
-                        'downloadD' => $countD[0][0]['count'],
-                    ),
+
+
 
                 );
 
@@ -150,6 +153,8 @@ class AnalyzerExecution extends AppModel
 
         $this->create();
         $this->save($data, false);
+
+
 
         App::import('Analyzer');
         $analyzer = new Analyzer;

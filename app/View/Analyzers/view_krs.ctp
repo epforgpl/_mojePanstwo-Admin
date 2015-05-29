@@ -1,6 +1,9 @@
 <?php
 echo $this->Html->script('highcharts');
 echo $this->Html->script('highcharts-more');
+echo $this->Html->css('Analyzer/view');
+
+
 $data = json_decode($analyzer['AnalyzerExecution']['data'], true);
 
 //debug($data);
@@ -44,7 +47,7 @@ $dict = array(
         '1' => 'W kolejce do przetwarzania',
         '2' => 'Aktualnie przetwarzane',
         '3' => 'OK',
-        '4' => 'Brak PDF\'a',
+        '4' => 'Brak PDF\\\'a',
         '5' => 'Błąd konwersji do XML',
         '6' => 'Brak daty lub działów',
     ),
@@ -199,16 +202,23 @@ $dict = array(
 
 foreach ($data as $key => $val) {
 
-    if (strpos($key, 'err') !== false || strpos($key, 'corr') !== false) {
+    if (strpos($key, 'err') !== false ){
 
         $keys = array_keys($data[$key][0]);
         $keys2 = array_keys($data[$key][0][$keys[0]]);
 
-        echo "<div class='col-sm-3'><hr>Status: " . $dict[$key][$data[$key][0][$keys[0]][$keys2[0]]] . ' z ' . $data[$key][0][$keys[0]][$keys2[1]] . '</div><BR>';
+        echo "<div class='col-sm-3 label-danger text-white'>" . $dict[$key][$data[$key][0][$keys[0]][$keys2[0]]] . ': ' . $this->Time->timeAgoInWords($data[$key][0][$keys[0]][$keys2[1]]) . '</div><BR>';
+
+    }elseif (strpos($key, 'corr') !== false) {
+
+        $keys = array_keys($data[$key][0]);
+        $keys2 = array_keys($data[$key][0][$keys[0]]);
+
+        echo "<div class='col-sm-3 label-success text-white'>" . $dict[$key][$data[$key][0][$keys[0]][$keys2[0]]] . ': ' . $this->Time->timeAgoInWords($data[$key][0][$keys[0]][$keys2[1]]) . '</div><BR>';
 
     } elseif (strpos($key, 'wydania') !== false) {
 
-        echo "<div class='col-sm-3'><hr>Najnowsze pobrane: " . $data[$key][0][$key]['data'] . '</div>';
+        echo "<div class='col-sm-3 label-info text-white'>Najnowsze pobrane: " . $this->Time->timeAgoInWords($data[$key][0][$key]['data']) . '</div>';
 
     } elseif (strpos($key, 'downloads') !== false) {
         echo "
@@ -518,7 +528,7 @@ foreach ($data as $key => $val) {
         </script>
     <?php
     } else {
-        echo "<div class='col-sm-9'><hr><div id='$key'></div></div>";
+        echo "<div class='col-sm-12'><hr></div><div class='col-sm-9'><div id='$key'></div></div>";
         ?>
 
         <script>
@@ -526,67 +536,75 @@ foreach ($data as $key => $val) {
                 $(function () {
                     $('#<?php echo $key;?>').highcharts({
                         chart: {
-                            plotBackgroundColor: null,
-                            plotBorderWidth: null,
-                            plotShadow: false
+                            type: 'bar',
+                            height: 250,
                         },
                         colors: ['#7cb5ec', '#434348', '#f7a35c', '#8085e9',
                             '#f15c80', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1'],
                         credits: {
                             enabled: false
                         },
-                        plotOptions: {
-                            pie: {
-                                size: 300,
-                                dataLabels: {
-                                    enabled: true,
-                                    format: '<b>{point.name}</b>: {point.y}'
-                                }
-                            }
-
-                        },
                         title: {
                             text: '<?php echo $dict[$key]['title']; ?>'
                         },
-                        tooltip: {
-                            pointFormat: '{series.name}: <b>{point.y}</b>'
+                        xAxis: {
+                            categories: [' ']
+
                         },
-                        series: [{
-                            type: 'pie',
-                            name: 'Ilość wystąpień',
-                            data: [
-                                <?php
-                                foreach ($val as $key1 => $val1) {
-                                    foreach ($val1 as $key2 => $val2) {
-                                        if (isset($val2['count'])) {
-                                            $count = $val2['count'];
-                                        } else {
-                                            $status = $val2['status'];
-                                            if (isset($dict[$key][$status])){
-                                            $name = $dict[$key][$status];
-                                            }else{
-                                            $name = 'Nieznany Błąd';
-                                            }
-                                        }
-                                    }
-                                    if(strpos($name,'OK')!==false){
-                                        echo "{
-                                                name: '$name',
-                                                y: $count,
-                                                sliced: true,
-                                                selected: true,
-                                                color: '#90ed7d'
-                                            },";
+                        yAxis: {
+                            min: 0,
+                            title: {
+                                text: 'Liczba rejestrów'
+                            }
+                        },
+                        legend: {
+                            reversed: true
+                        },
+                        plotOptions: {
+                            series: {
+                                stacking: 'normal'
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '',
+                            pointFormat: '{series.name}: {point.y}'
+                        },
+                        series: [
+                        <?php
+                        foreach ($val as $key1 => $val1) {
+                            foreach ($val1 as $key2 => $val2) {
+                                if (isset($val2['count'])) {
+                                    $count = $val2['count'];
+                                } else {
+                                    $status = $val2['status'];
+                                    if (isset($dict[$key][$status])){
+                                    $name = $dict[$key][$status];
                                     }else{
-                                        echo "['$name' ,$count],";
+                                    $name = 'Nieznany Błąd';
                                     }
                                 }
-                                ?>
-                            ]
-                        }]
-                    })
-                })
+                            }
+                            if(strpos($name,'OK')!==false){
+                                echo "{
+                                        name: '$name',
+                                        data: [$count],
+                                        color: '#90ed7d'
+                                    },";
+                                    }elseif(strpos($name, 'Nieprzetwarzane')!==false || strpos($name, 'Nieprzetwarzany')!==false){
+                                    echo "";
+                            }else{
+                                echo "{
+                                    name: '$name',
+                                    data: [$count]
+                                    },";
+                            }
+                        }
+                        ?>
+                    ]
+                });
             });
+            })
+            ;
         </script>
     <?php
     }
