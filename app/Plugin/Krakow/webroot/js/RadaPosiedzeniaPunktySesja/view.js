@@ -212,7 +212,7 @@ Player.prototype.getConfig = function() {
         }
 
         this.config = {
-            time: start_player_init_time,
+            time: String(start_player_init_time),
             file_id: start_player_init_file_id
         }
 
@@ -241,7 +241,7 @@ Player.prototype.getConfig = function() {
             stop_player_init_time = this.data.stop_time;
 
         this.config = {
-            time: stop_player_init_time,
+            time: String(stop_player_init_time),
             file_id: stop_player_init_file_id
         }
 
