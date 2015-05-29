@@ -6,7 +6,7 @@
  * Date: 25/05/15
  * Time: 16:38
  */
-class AnalyzersController extends AppController
+class AnalyzersController extends AnalyzerController
 {
 
     public function index()

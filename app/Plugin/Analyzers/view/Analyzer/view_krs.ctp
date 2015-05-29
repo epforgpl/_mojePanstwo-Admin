@@ -1,12 +1,10 @@
 <?php
-echo $this->Html->script('highcharts');
-echo $this->Html->script('highcharts-more');
-echo $this->Html->css('Analyzer/view');
+echo $this->Html->script('Analyzers.highcharts');
+echo $this->Html->script('Analyzers.highcharts-more');
+echo $this->Html->css('Analyzers./Analyzer/view');
 
 
 $data = json_decode($analyzer['AnalyzerExecution']['data'], true);
-
-//debug($data);
 
 $dict = array(
     'org_status' => array(
