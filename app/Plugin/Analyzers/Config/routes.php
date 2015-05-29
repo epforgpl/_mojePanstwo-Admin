@@ -1,4 +1,4 @@
 <?php
 
-Router::mapResources('Analyzer.Analyzers');
+Router::mapResources('Analyzers.Analyzer');
 Router::parseExtensions();

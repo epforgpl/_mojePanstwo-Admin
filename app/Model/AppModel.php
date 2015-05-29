@@ -82,6 +82,10 @@ class AppModel extends Model {
                         array(
                             'label' => 'Zamowienia Publiczne',
                             'href' => '/zamowienia_publiczne/dokumenty'
+                        ),
+                        array(
+                            'label' => 'Analizator',
+                            'href' => '/analyzers'
                         )
                     )
                 ),

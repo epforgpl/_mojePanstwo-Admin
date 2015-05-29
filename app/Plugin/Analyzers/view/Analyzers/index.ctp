@@ -4,7 +4,7 @@
         ?>
 
         <li><?= $this->Html->link($analyzer['Analyzer']['id'], array(
-                'controller' => 'Analyzer.Analyzers',
+                'controller' => 'analyzer',
                 'action' => 'view',
                 'id' => $analyzer['Analyzer']['id'],
             )) ?></li>

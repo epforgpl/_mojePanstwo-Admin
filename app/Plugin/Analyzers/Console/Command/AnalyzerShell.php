@@ -6,9 +6,9 @@
  * Date: 25/05/15
  * Time: 15:02
  */
-class AnalyzerShell extends AppShell
+class AnalyzerShell extends Shell
 {
-    public $uses = array('Analyzer', 'AnalyzerExecution');
+    public $uses = array('Analyzers.Analyzer', 'Analyzers.AnalyzerExecution');
 
     public function ExecutionLoop()
     {

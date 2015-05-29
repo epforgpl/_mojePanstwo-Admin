@@ -6,12 +6,13 @@
  * Date: 25/05/15
  * Time: 13:23
  */
-class AnalyzerExecution extends AppModel
+class AnalyzerExecution extends AnalyzersAppModel
 {
     public $useTable = 'analyzers_executions';
+
     public $hasOne = array(
         'analyzer_id' => array(
-            'className' => 'Analyzer',
+            'className' => 'Analyzers.Analyzer',
             'foreignKey' => 'analyzer_id',
         ),
     );

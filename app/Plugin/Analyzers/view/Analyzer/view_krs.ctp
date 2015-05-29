@@ -1,10 +1,12 @@
 <?php
 echo $this->Html->script('Analyzers.highcharts');
 echo $this->Html->script('Analyzers.highcharts-more');
+echo $this->Html->script('Analyzers.refresher');
 echo $this->Html->css('Analyzers./Analyzer/view');
 
 
 $data = json_decode($analyzer['AnalyzerExecution']['data'], true);
+
 
 $dict = array(
     'org_status' => array(
@@ -197,6 +199,12 @@ $dict = array(
     ),
 );
 
+$jsdict=json_encode($dict);
+?>
+<script>
+    var dict=<?php echo $jsdict; ?>;
+</script>
+<?php
 
 foreach ($data as $key => $val) {
 
@@ -205,18 +213,18 @@ foreach ($data as $key => $val) {
         $keys = array_keys($data[$key][0]);
         $keys2 = array_keys($data[$key][0][$keys[0]]);
 
-        echo "<div class='col-sm-3 label-danger text-white'>" . $dict[$key][$data[$key][0][$keys[0]][$keys2[0]]] . ': ' . $this->Time->timeAgoInWords($data[$key][0][$keys[0]][$keys2[1]]) . '</div><BR>';
+        echo "<div id='$key' class='col-sm-3 label-danger text-white'>" . $dict[$key][$data[$key][0][$keys[0]][$keys2[0]]] . ': ' . $this->Time->timeAgoInWords($data[$key][0][$keys[0]][$keys2[1]]) . '</div><BR>';
 
     }elseif (strpos($key, 'corr') !== false) {
 
         $keys = array_keys($data[$key][0]);
         $keys2 = array_keys($data[$key][0][$keys[0]]);
 
-        echo "<div class='col-sm-3 label-success text-white'>" . $dict[$key][$data[$key][0][$keys[0]][$keys2[0]]] . ': ' . $this->Time->timeAgoInWords($data[$key][0][$keys[0]][$keys2[1]]) . '</div><BR>';
+        echo "<div id='$key' class='col-sm-3 label-success text-white'>" . $dict[$key][$data[$key][0][$keys[0]][$keys2[0]]] . ': ' . $this->Time->timeAgoInWords($data[$key][0][$keys[0]][$keys2[1]]) . '</div><BR>';
 
     } elseif (strpos($key, 'wydania') !== false) {
 
-        echo "<div class='col-sm-3 label-info text-white'>Najnowsze pobrane: " . $this->Time->timeAgoInWords($data[$key][0][$key]['data']) . '</div>';
+        echo "<div id='$key' class='col-sm-3 label-info text-white'>Najnowsze pobrane: " . $this->Time->timeAgoInWords($data[$key][0][$key]['data']) . '</div>';
 
     } elseif (strpos($key, 'downloads') !== false) {
         echo "
@@ -282,7 +290,7 @@ foreach ($data as $key => $val) {
                     // the value axis
                     yAxis: {
                         min: 0,
-                        max: 200,
+                        max: 250,
 
                         minorTickInterval: 'auto',
                         minorTickWidth: 1,
@@ -304,15 +312,15 @@ foreach ($data as $key => $val) {
                         },
                         plotBands: [{
                             from: 0,
-                            to: 120,
+                            to: 150,
                             color: '#55BF3B' // green
                         }, {
-                            from: 120,
-                            to: 160,
+                            from: 150,
+                            to: 200,
                             color: '#DDDF0D' // yellow
                         }, {
-                            from: 160,
-                            to: 200,
+                            from: 200,
+                            to: 250,
                             color: '#DF5353' // red
                         }]
                     },
@@ -380,7 +388,7 @@ foreach ($data as $key => $val) {
                     // the value axis
                     yAxis: {
                         min: 0,
-                        max: 50,
+                        max: 100,
 
                         minorTickInterval: 'auto',
                         minorTickWidth: 1,
@@ -402,15 +410,15 @@ foreach ($data as $key => $val) {
                         },
                         plotBands: [{
                             from: 0,
-                            to: 30,
+                            to: 60,
                             color: '#55BF3B' // green
                         }, {
-                            from: 30,
-                            to: 40,
+                            from: 60,
+                            to: 80,
                             color: '#DDDF0D' // yellow
                         }, {
-                            from: 40,
-                            to: 50,
+                            from: 80,
+                            to: 100,
                             color: '#DF5353' // red
                         }]
                     },
@@ -582,6 +590,7 @@ foreach ($data as $key => $val) {
                                     }
                                 }
                             }
+                                $name.= " ($status)";
                             if(strpos($name,'OK')!==false){
                                 echo "{
                                         name: '$name',
