@@ -19,3 +19,5 @@ a:hover {cursor: pointer;}
     height: 16px;
     background: url('../img/loader.gif') no-repeat center;
 }
+
+.panel-heading:hover {cursor: pointer;}

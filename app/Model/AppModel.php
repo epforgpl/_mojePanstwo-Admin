@@ -42,6 +42,28 @@ class AppModel extends Model {
 
     public static $databaseType = array();
 
+    /**
+     * Przywileje użytkowników
+     *
+     * @var array
+     */
+    private static $privilegesRules = array(
+        array(
+            'groups' => array('admin'),
+            'plugin' => '*',
+            'controller' => '*',
+            'action' => '*',
+            'access' => 'allow'
+        ),
+        array(
+            'groups' => array('pk-admin'),
+            'plugin' => array('Krs', 'Krakow'),
+            'controller' => '*',
+            'action' => 'index',
+            'access' => 'allow'
+        ),
+    );
+
     public function __construct() {
         parent::__construct();
 
@@ -57,6 +79,10 @@ class AppModel extends Model {
         }
 
         $this->useDbConfig = self::$databaseType['key'];
+    }
+
+    public static function checkAccess() {
+        return;
     }
 
     /**

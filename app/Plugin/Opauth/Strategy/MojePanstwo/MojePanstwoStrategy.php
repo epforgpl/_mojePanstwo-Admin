@@ -92,7 +92,7 @@ class MojePanstwoStrategy extends OpauthStrategy {
     }
 
     private function userinfo($access_token) {
-        $me = $this->serverGet($this->strategy['userinfo_url'], array('access_token' => $access_token), null, $headers);
+        $me = $this->serverGet($this->strategy['userinfo_url'], array('access_token' => $access_token, 'groups' => 'admin'), null, $headers);
         if (!empty($me)){
             return json_decode($me);
         }

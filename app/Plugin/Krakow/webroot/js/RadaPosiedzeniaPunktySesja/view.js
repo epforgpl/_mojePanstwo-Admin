@@ -16,6 +16,8 @@ function Player(options) {
     this.type = options.type;
     this.files = options.files;
     this.data = options.data;
+    this.active = options.active;
+    this.toggleActiveCallback = function() {};
     this.video = false;
     this.config = false;
     this.time = 0;
@@ -37,6 +39,11 @@ Player.prototype.initialize = function() {
 
     this.getElement().find('select').first().change(function(e) {
         _this.setConfig();
+    });
+
+    this.getElement().find('.panel-heading').first().click(function(e) {
+        if(!_this.active)
+            _this.setActive(true);
     });
 };
 
@@ -133,9 +140,24 @@ Player.prototype.getFormSelectDOM = function() {
     return h.join('');
 };
 
+Player.prototype.onActive = function() {};
+
+Player.prototype.setActive = function(active) {
+    this.active = active;
+    var panel = this.getElement().find('.panel').first();
+    if(this.active) {
+        panel.removeClass('panel-default');
+        panel.addClass('panel-info');
+        this.onActive();
+    } else {
+        panel.removeClass('panel-info');
+        panel.addClass('panel-default');
+    }
+};
+
 Player.prototype.getDOM = function() {
     return [
-        '<div class="panel panel-default">',
+        '<div class="panel ' + (this.active ? 'panel-info' : 'panel-default') + '">',
             '<div class="panel-heading">',
                 '<div class="loader pull-right hidden"></div>',
                 '<h3 class="panel-title">' + (this.type.charAt(0).toUpperCase() + this.type.substring(1)) + '</h3>',
@@ -301,6 +323,73 @@ Player.prototype.updateCurrentTime = function() {
         .val(String(this.video.currentTime()).toHHMMSS());
 };
 
+Player.prototype.playToggle = function() {
+    if(!this.video || !this.active)
+        return;
+
+    if(this.video.paused)
+        this.video.play();
+    else
+        this.video.pause();
+
+    this.updateCurrentTime();
+};
+
+Player.prototype.rewind = function() {
+    if(!this.video || !this.active)
+        return;
+
+    this.video.currentTime(
+        this.video.currentTime() - 3
+    );
+
+    this.updateCurrentTime();
+};
+
+Player.prototype.rewindLong = function() {
+    if(!this.video || !this.active)
+        return;
+
+    this.video.currentTime(
+        this.video.currentTime() - 30
+    );
+
+    this.updateCurrentTime();
+};
+
+Player.prototype.forward = function() {
+    if(!this.video || !this.active)
+        return;
+
+    this.video.currentTime(
+        this.video.currentTime() + 3
+    );
+
+    this.updateCurrentTime();
+};
+
+Player.prototype.forwardLong = function() {
+    if(!this.video || !this.active)
+        return;
+
+    this.video.currentTime(
+        this.video.currentTime() + 30
+    );
+
+    this.updateCurrentTime();
+};
+
+Player.prototype.reset = function() {
+    if(!this.video || !this.active)
+        return;
+
+    var video = this.video;
+
+    video.dispose();
+    video.createVideo();
+    video.pause();
+};
+
 $(document).ready(function() {
 
     var data = JSON.parse(
@@ -317,46 +406,71 @@ $(document).ready(function() {
     var start = new Player({
         type: 'start',
         files: files,
-        data: data
+        data: data,
+        active: true
     });
 
     var stop = new Player({
         type: 'stop',
         files: files,
-        data: data
+        data: data,
+        active: false
     });
 
-    $('#save').click(function() {
-        console.log(1);
+    start.onActive = function() {
+        stop.setActive(false);
+    };
+
+    stop.onActive = function() {
+        start.setActive(false);
+    };
+
+    var save = function() {
         var id = $('#data-id').attr('data-value');
         var title = $('#inputTitle').val();
         var desc = $('#inputDesc').val();
-        var _this = $(this);
+        var saveBtn = $('#save');
 
         $.post('/krakow/rada_posiedzenia_punkty_sesja/' + id, {
-                id: id,
-                title: title,
-                desc: desc,
-                start: start.config,
-                stop: stop.config
-            })
+            id: id,
+            title: title,
+            desc: desc,
+            start: start.config,
+            stop: stop.config
+        })
             .done(function(res) {
                 if(res.success.Punkty) {
-                    _this.html('Zapisano poprawnie');
+                    saveBtn.html('Zapisano poprawnie');
                 } else {
-                    _this.html('Wystąpił błąd');
+                    saveBtn.html('Wystąpił błąd');
                 }
 
                 setTimeout(function() {
-                    _this.html('<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp; Zapisz');
-                    _this.removeClass('btn-success');
-                    _this.addClass('btn-default');
+                    saveBtn.html('<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp; Zapisz');
+                    saveBtn.removeClass('btn-success');
+                    saveBtn.addClass('btn-default');
                 }, 2000);
             });
 
-        $(this).html('Trwa zapisywanie...');
-        $(this).removeClass('btn-default');
-        $(this).addClass('btn-success');
+        saveBtn.html('Trwa zapisywanie...');
+        saveBtn.removeClass('btn-default');
+        saveBtn.addClass('btn-success');
+    };
+
+    $(this).keyup(function(event) {
+        var s = (event.ctrlKey || event.altKey);
+        if(s && event.keyCode == 83) { save(); return false; } // s
+        else if(s && event.keyCode == 75) { stop.playToggle(); start.playToggle(); return false; } // k
+        else if(s && event.keyCode == 72) { stop.rewindLong(); start.rewindLong(); return false; } // h
+        else if(s && event.keyCode == 74) { stop.rewind(); start.rewind(); return false; } // j
+        else if(s && event.keyCode == 76) { stop.forward(); start.forward(); return false; } // l
+        else if(s && event.keyCode == 82) { start.reset(); return false; } // r
+        else if(s && event.keyCode == 84) { stop.reset(); return false; } // t
+        else if(s && (event.keyCode == 59 || event.keyCode == 186)) { stop.forwardLong(); start.forwardLong(); return false; } // semi-colon
+    });
+
+    $('#save').click(function() {
+        save();
     });
 
 });
