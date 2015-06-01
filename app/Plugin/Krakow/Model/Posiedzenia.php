@@ -194,7 +194,8 @@ class Posiedzenia extends AppModel {
 
         $this->id = $id;
         $this->save(array(
-            'porzadek_akcept' => '1'
+            'porzadek_akcept' => '1',
+            'polacz_punkty_status' => '0'
         ));
 
         return true;
