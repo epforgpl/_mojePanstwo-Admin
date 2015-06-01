@@ -49,18 +49,46 @@ class AppModel extends Model {
      */
     private static $privilegesRules = array(
         array(
+            'groups' => '*',
+            'plugin' => 'opauth',
+            'controller' => '*',
+            'action' => '*'
+        ),
+        array(
+            'groups' => '*',
+            'plugin' => '',
+            'controller' => 'users',
+            'action' => '*'
+        ),
+        array(
+            'groups' => '*',
+            'plugin' => '',
+            'controller' => 'pages',
+            'action' => '*'
+        ),
+        array(
             'groups' => array('admin'),
             'plugin' => '*',
             'controller' => '*',
-            'action' => '*',
-            'access' => 'allow'
+            'action' => '*'
         ),
         array(
             'groups' => array('pk-admin'),
-            'plugin' => array('Krs', 'Krakow'),
+            'plugin' => array('krs', 'krakow'),
             'controller' => '*',
-            'action' => 'index',
-            'access' => 'allow'
+            'action' => '*'
+        ),
+        array(
+            'groups' => array('pk-rada'),
+            'plugin' => array('krakow'),
+            'controller' => 'rada_posiedzenia',
+            'action' => '*'
+        ),
+        array(
+            'groups' => array('pk-dzielnica6', 'pk-dzielnica14'),
+            'plugin' => array('krakow'),
+            'controller' => 'upload_sessions',
+            'action' => '*'
         ),
     );
 
@@ -81,8 +109,78 @@ class AppModel extends Model {
         $this->useDbConfig = self::$databaseType['key'];
     }
 
-    public static function checkAccess() {
-        return;
+    private static function accessPluginValidation($request, $rules) {
+        $plugin = strtolower(trim($request['plugin']));
+        if($rules['plugin'] == '*')
+            return true;
+        if(is_array($rules['plugin']) && in_array($plugin, $rules['plugin']))
+            return true;
+        if(!is_array($rules['plugin']) && $rules['plugin'] == $plugin)
+            return true;
+        return false;
+    }
+
+    private static function accessControllerValidation($request, $rules) {
+        $controller = strtolower(trim($request['controller']));
+        if($rules['controller'] == '*')
+            return true;
+        if(is_array($rules['controller']) && in_array($controller, $rules['controller']))
+            return true;
+        if(!is_array($rules['controller']) && $rules['controller'] == $controller)
+            return true;
+        return false;
+    }
+
+    private static function accessActionValidation($request, $rules) {
+        $action = strtolower(trim($request['action']));
+        if($rules['action'] == '*')
+            return true;
+        if(is_array($rules['action']) && in_array($action, $rules['action']))
+            return true;
+        if(!is_array($rules['action']) && $rules['action'] == $action)
+            return true;
+        return false;
+    }
+
+    private static function accessGroupValidation($user, $rules) {
+        $groups = $rules['groups'];
+        if(!is_array($groups) && $groups == '*')
+            return true;
+
+        if($user)
+        {
+            if(!isset($user['admin_groups']) || count($user['admin_groups']) == 0)
+                return false;
+
+            if(!is_array($groups) && in_array(strtolower(trim($groups)), $user['admin_groups']))
+                return true;
+
+            if(is_array($groups)) {
+                foreach($groups as $group) {
+                    if(in_array(strtolower(trim($group)), $user['admin_groups']))
+                        return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static function checkAccess($request, $user) {
+        $allow = false;
+        foreach(self::$privilegesRules as $rules) {
+            if(self::accessPluginValidation($request, $rules)) {
+                if(self::accessControllerValidation($request, $rules)) {
+                    if(self::accessActionValidation($request, $rules)) {
+                        if(self::accessGroupValidation($user, $rules)) {
+                            $allow = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $allow;
     }
 
     /**
@@ -90,28 +188,32 @@ class AppModel extends Model {
      *
      * @return array
      */
-    public static function getMenu()
+    public static function getMenu($user)
     {
-        return array(
+        $menu = array(
             'items' => array(
                 array(
                     'label' => 'Dane',
                     'childrens' => array(
                         array(
                             'label' => 'Posiedzenia Rady Miasta',
-                            'href' => '/krakow/rada_posiedzenia'
+                            'href' => '/krakow/rada_posiedzenia',
+                            'groups' => array('admin', 'pk-admin', 'pk-rada')
                         ),
                         array(
                             'label' => 'Dodawanie plików',
-                            'href' => '/krakow/upload_sessions/addForm'
+                            'href' => '/krakow/upload_sessions/addForm',
+                            'groups' => array('admin', 'pk-admin', 'pk-dzielnica6', 'pk-dzielnica14')
                         ),
                         array(
                             'label' => 'Zamowienia Publiczne',
-                            'href' => '/zamowienia_publiczne/dokumenty'
+                            'href' => '/zamowienia_publiczne/dokumenty',
+                            'groups' => array('admin')
                         ),
                         array(
                             'label' => 'Analizator',
-                            'href' => '/analyzers'
+                            'href' => '/analyzers',
+                            'groups' => array('admin')
                         )
                     )
                 ),
@@ -120,12 +222,42 @@ class AppModel extends Model {
                     'childrens' => array(
                         array(
                             'label' => 'Synchronizacja bazy',
-                            'href' => '/settings/syncDatabase'
+                            'href' => '/settings/syncDatabase',
+                            'groups' => array('admin')
                         )
                     )
                 )
             )
         );
+
+        if(!$user)
+            return array();
+
+        if(!isset($user['admin_groups']) || count($user['admin_groups']) == 0)
+            return array();
+
+        $groups = $user['admin_groups'];
+        foreach($menu['items'] as $i => $item) {
+            if(isset($item['childrens']) && is_array($item['childrens'])) {
+                foreach($item['childrens'] as $c => $child) {
+                    if(isset($child['groups'])) {
+                        $enabled = false;
+                        foreach($groups as $group) {
+                            if(in_array($group, $child['groups'])) {
+                                $enabled = true;
+                                break;
+                            }
+                        }
+
+                        if(!$enabled) {
+                            unset($menu['items'][$i]['childrens'][$c]);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $menu;
     }
 
     /**
