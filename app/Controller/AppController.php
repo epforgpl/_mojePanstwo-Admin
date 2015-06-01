@@ -44,16 +44,27 @@ class AppController extends Controller {
         )
     );
 
+    public $uses = array(
+        'Access'
+    );
+
     public function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allow();
+        ClassRegistry::init('AppModel');
+        $allow = AppModel::checkAccess($this->request->params, $this->Auth->user());
+        if(!$allow) {
+            $this->Session->setFlash('Nie posiadasz odpowiednich uprawnień', 'default', array(), 'allow_error');
+            $this->redirect(
+                '/'
+            );
+        } else $this->Auth->allow();
     }
 
     public function beforeRender() {
         ClassRegistry::init('AppModel');
         $this->set('databaseTypes', AppModel::$databaseTypes);
         $this->set('databaseType', AppModel::$databaseType);
-        $this->set('menu', AppModel::getMenu());
+        $this->set('menu', AppModel::getMenu($this->Auth->user()));
         $this->set('user', $this->Auth->user());
     }
 
