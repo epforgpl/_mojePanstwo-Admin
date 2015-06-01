@@ -1,7 +1,8 @@
 <?php
 echo $this->Html->script('Analyzers.highcharts');
 echo $this->Html->script('Analyzers.highcharts-more');
-echo $this->Html->script('Analyzers.refresher');
+echo $this->Html->script('Analyzers.timeago');
+echo $this->Html->script('Analyzers.refresherKRS');
 echo $this->Html->css('Analyzers./Analyzer/view');
 
 
@@ -47,7 +48,7 @@ $dict = array(
         '1' => 'W kolejce do przetwarzania',
         '2' => 'Aktualnie przetwarzane',
         '3' => 'OK',
-        '4' => 'Brak PDF\\\'a',
+        '4' => 'Brak PDFa',
         '5' => 'Błąd konwersji do XML',
         '6' => 'Brak daty lub działów',
     ),
@@ -199,421 +200,35 @@ $dict = array(
     ),
 );
 
-$jsdict=json_encode($dict);
+$jsdict = json_encode($dict);
 ?>
-<script>
-    var dict=<?php echo $jsdict; ?>;
-</script>
+    <script>
+        var dict =<?php echo $jsdict; ?>;
+    </script>
 <?php
 
 foreach ($data as $key => $val) {
 
-    if (strpos($key, 'err') !== false ){
+    if (strpos($key, 'err') !== false) {
 
-        $keys = array_keys($data[$key][0]);
-        $keys2 = array_keys($data[$key][0][$keys[0]]);
+        echo "<div id='$key' class='col-sm-3 label-danger text-white'></div><BR>";
 
-        echo "<div id='$key' class='col-sm-3 label-danger text-white'>" . $dict[$key][$data[$key][0][$keys[0]][$keys2[0]]] . ': ' . $this->Time->timeAgoInWords($data[$key][0][$keys[0]][$keys2[1]]) . '</div><BR>';
+    } elseif (strpos($key, 'corr') !== false) {
 
-    }elseif (strpos($key, 'corr') !== false) {
-
-        $keys = array_keys($data[$key][0]);
-        $keys2 = array_keys($data[$key][0][$keys[0]]);
-
-        echo "<div id='$key' class='col-sm-3 label-success text-white'>" . $dict[$key][$data[$key][0][$keys[0]][$keys2[0]]] . ': ' . $this->Time->timeAgoInWords($data[$key][0][$keys[0]][$keys2[1]]) . '</div><BR>';
+        echo "<div id='$key' class='col-sm-3 label-success text-white'></div><BR>";
 
     } elseif (strpos($key, 'wydania') !== false) {
 
-        echo "<div id='$key' class='col-sm-3 label-info text-white'>Najnowsze pobrane: " . $this->Time->timeAgoInWords($data[$key][0][$key]['data']) . '</div>';
+        echo "<div id='$key' class='col-sm-3 label-info text-white'></div>";
 
     } elseif (strpos($key, 'downloads') !== false) {
-        echo "
-                <div>
+        echo "<div>
                     <div class='col-sm-4' id='krs_downloads_day'></div>
                     <div class='col-sm-4' id='krs_downloads_hour'></div>
                     <div class='col-sm-4' id='krs_downloads_minute'></div>
                 </div>";
-        ?>
-        <script>
-            $(document).ready(function () {
-                $('#krs_downloads_day').highcharts({
-
-                    chart: {
-                        type: 'gauge',
-                        plotBackgroundColor: null,
-                        plotBackgroundImage: null,
-                        plotBorderWidth: 0,
-                        plotShadow: false
-                    },
-
-                    credits: {
-                        enabled: false
-                    },
-
-                    title: {
-                        text: 'KRS Pobrania Dzień'
-                    },
-
-                    pane: {
-                        startAngle: -150,
-                        endAngle: 150,
-                        background: [{
-                            backgroundColor: {
-                                linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
-                                stops: [
-                                    [0, '#FFF'],
-                                    [1, '#333']
-                                ]
-                            },
-                            borderWidth: 0,
-                            outerRadius: '109%'
-                        }, {
-                            backgroundColor: {
-                                linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
-                                stops: [
-                                    [0, '#333'],
-                                    [1, '#FFF']
-                                ]
-                            },
-                            borderWidth: 1,
-                            outerRadius: '107%'
-                        }, {
-                            // default background
-                        }, {
-                            backgroundColor: '#DDD',
-                            borderWidth: 0,
-                            outerRadius: '105%',
-                            innerRadius: '103%'
-                        }]
-                    },
-
-                    // the value axis
-                    yAxis: {
-                        min: 0,
-                        max: 250,
-
-                        minorTickInterval: 'auto',
-                        minorTickWidth: 1,
-                        minorTickLength: 10,
-                        minorTickPosition: 'inside',
-                        minorTickColor: '#666',
-
-                        tickPixelInterval: 30,
-                        tickWidth: 2,
-                        tickPosition: 'inside',
-                        tickLength: 10,
-                        tickColor: '#666',
-                        labels: {
-                            step: 2,
-                            rotation: 'auto'
-                        },
-                        title: {
-                            text: 'pobrań/dzień'
-                        },
-                        plotBands: [{
-                            from: 0,
-                            to: 150,
-                            color: '#55BF3B' // green
-                        }, {
-                            from: 150,
-                            to: 200,
-                            color: '#DDDF0D' // yellow
-                        }, {
-                            from: 200,
-                            to: 250,
-                            color: '#DF5353' // red
-                        }]
-                    },
-
-                    series: [{
-                        name: 'Dzień',
-                        data: [<?php echo $data['krs_downloads']['downloadD']; ?>],
-                        tooltip: {
-                            valueSuffix: ' pobrań'
-                        }
-                    }]
-
-                });
-                $('#krs_downloads_hour').highcharts({
-
-                    chart: {
-                        type: 'gauge',
-                        plotBackgroundColor: null,
-                        plotBackgroundImage: null,
-                        plotBorderWidth: 0,
-                        plotShadow: false
-                    },
-
-                    credits: {
-                        enabled: false
-                    },
-
-                    title: {
-                        text: 'KRS Pobrania Godzina'
-                    },
-
-                    pane: {
-                        startAngle: -150,
-                        endAngle: 150,
-                        background: [{
-                            backgroundColor: {
-                                linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
-                                stops: [
-                                    [0, '#FFF'],
-                                    [1, '#333']
-                                ]
-                            },
-                            borderWidth: 0,
-                            outerRadius: '109%'
-                        }, {
-                            backgroundColor: {
-                                linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
-                                stops: [
-                                    [0, '#333'],
-                                    [1, '#FFF']
-                                ]
-                            },
-                            borderWidth: 1,
-                            outerRadius: '107%'
-                        }, {
-                            // default background
-                        }, {
-                            backgroundColor: '#DDD',
-                            borderWidth: 0,
-                            outerRadius: '105%',
-                            innerRadius: '103%'
-                        }]
-                    },
-
-                    // the value axis
-                    yAxis: {
-                        min: 0,
-                        max: 100,
-
-                        minorTickInterval: 'auto',
-                        minorTickWidth: 1,
-                        minorTickLength: 10,
-                        minorTickPosition: 'inside',
-                        minorTickColor: '#666',
-
-                        tickPixelInterval: 30,
-                        tickWidth: 2,
-                        tickPosition: 'inside',
-                        tickLength: 10,
-                        tickColor: '#666',
-                        labels: {
-                            step: 2,
-                            rotation: 'auto'
-                        },
-                        title: {
-                            text: 'pobrań/godzinę'
-                        },
-                        plotBands: [{
-                            from: 0,
-                            to: 60,
-                            color: '#55BF3B' // green
-                        }, {
-                            from: 60,
-                            to: 80,
-                            color: '#DDDF0D' // yellow
-                        }, {
-                            from: 80,
-                            to: 100,
-                            color: '#DF5353' // red
-                        }]
-                    },
-
-                    series: [{
-                        name: 'Godzina',
-                        data: [<?php echo $data['krs_downloads']['downloadH']; ?>],
-                        tooltip: {
-                            valueSuffix: ' pobrań'
-                        }
-                    }]
-
-                });
-                $('#krs_downloads_minute').highcharts({
-
-                    chart: {
-                        type: 'gauge',
-                        plotBackgroundColor: null,
-                        plotBackgroundImage: null,
-                        plotBorderWidth: 0,
-                        plotShadow: false
-                    },
-
-                    credits: {
-                        enabled: false,
-                    },
-
-                    title: {
-                        text: 'KRS Pobrania Minuta'
-                    },
-
-                    pane: {
-                        startAngle: -150,
-                        endAngle: 150,
-                        background: [{
-                            backgroundColor: {
-                                linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
-                                stops: [
-                                    [0, '#FFF'],
-                                    [1, '#333']
-                                ]
-                            },
-                            borderWidth: 0,
-                            outerRadius: '109%'
-                        }, {
-                            backgroundColor: {
-                                linearGradient: {x1: 0, y1: 0, x2: 0, y2: 1},
-                                stops: [
-                                    [0, '#333'],
-                                    [1, '#FFF']
-                                ]
-                            },
-                            borderWidth: 1,
-                            outerRadius: '107%'
-                        }, {
-                            // default background
-                        }, {
-                            backgroundColor: '#DDD',
-                            borderWidth: 0,
-                            outerRadius: '105%',
-                            innerRadius: '103%'
-                        }]
-                    },
-
-                    // the value axis
-                    yAxis: {
-                        min: 0,
-                        max: 15,
-
-                        minorTickInterval: 'auto',
-                        minorTickWidth: 1,
-                        minorTickLength: 10,
-                        minorTickPosition: 'inside',
-                        minorTickColor: '#666',
-
-                        tickPixelInterval: 30,
-                        tickWidth: 2,
-                        tickPosition: 'inside',
-                        tickLength: 10,
-                        tickColor: '#666',
-                        labels: {
-                            step: 2,
-                            rotation: 'auto'
-                        },
-                        title: {
-                            text: 'pobrań/minutę'
-                        },
-                        plotBands: [{
-                            from: 0,
-                            to: 8,
-                            color: '#55BF3B' // green
-                        }, {
-                            from: 8,
-                            to: 12,
-                            color: '#DDDF0D' // yellow
-                        }, {
-                            from: 12,
-                            to: 15,
-                            color: '#DF5353' // red
-                        }]
-                    },
-
-                    series: [{
-                        name: 'Minuta',
-                        data: [<?php echo $data['krs_downloads']['downloadM']; ?>],
-                        tooltip: {
-                            valueSuffix: ' pobrań'
-                        }
-                    }]
-
-                });
-            });
-        </script>
-    <?php
     } else {
         echo "<div class='col-sm-12'><hr></div><div class='col-sm-9'><div id='$key'></div></div>";
-        ?>
-
-        <script>
-            $(document).ready(function () {
-                $(function () {
-                    $('#<?php echo $key;?>').highcharts({
-                        chart: {
-                            type: 'bar',
-                            height: 250,
-                        },
-                        colors: ['#7cb5ec', '#434348', '#f7a35c', '#8085e9',
-                            '#f15c80', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1'],
-                        credits: {
-                            enabled: false
-                        },
-                        title: {
-                            text: '<?php echo $dict[$key]['title']; ?>'
-                        },
-                        xAxis: {
-                            categories: [' ']
-
-                        },
-                        yAxis: {
-                            min: 0,
-                            title: {
-                                text: 'Liczba rejestrów'
-                            }
-                        },
-                        legend: {
-                            reversed: true
-                        },
-                        plotOptions: {
-                            series: {
-                                stacking: 'normal'
-                            }
-                        },
-                        tooltip: {
-                            headerFormat: '',
-                            pointFormat: '{series.name}: {point.y}'
-                        },
-                        series: [
-                        <?php
-                        foreach ($val as $key1 => $val1) {
-                            foreach ($val1 as $key2 => $val2) {
-                                if (isset($val2['count'])) {
-                                    $count = $val2['count'];
-                                } else {
-                                    $status = $val2['status'];
-                                    if (isset($dict[$key][$status])){
-                                    $name = $dict[$key][$status];
-                                    }else{
-                                    $name = 'Nieznany Błąd';
-                                    }
-                                }
-                            }
-                                $name.= " ($status)";
-                            if(strpos($name,'OK')!==false){
-                                echo "{
-                                        name: '$name',
-                                        data: [$count],
-                                        color: '#90ed7d'
-                                    },";
-                                    }elseif(strpos($name, 'Nieprzetwarzane')!==false || strpos($name, 'Nieprzetwarzany')!==false){
-                                    echo "";
-                            }else{
-                                echo "{
-                                    name: '$name',
-                                    data: [$count]
-                                    },";
-                            }
-                        }
-                        ?>
-                    ]
-                });
-            });
-            })
-            ;
-        </script>
-    <?php
     }
 }
 ?>

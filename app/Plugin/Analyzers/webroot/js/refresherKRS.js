@@ -15,18 +15,18 @@ $(document).ready(function () {
                 if (key.indexOf('err') != -1) {
 
                     var html = value[0][Object.keys(value[0])[0]];
-                    $("#" + key + "").html(dict[key][value[0][Object.keys(value[0])][Object.keys(html)[0]]] + ": " + value[0][Object.keys(value[0])][Object.keys(html)[1]]);
+                    $("#" + key + "").html(dict[key][value[0][Object.keys(value[0])][Object.keys(html)[0]]] + ": " + $.timeago(value[0][Object.keys(value[0])][Object.keys(html)[1]]));
 
 
                 } else if (key.indexOf('corr') != -1) {
 
                     var html = value[0][Object.keys(value[0])[0]];
-                    $("#" + key + "").html(dict[key][value[0][Object.keys(value[0])][Object.keys(html)[0]]] + ": " + value[0][Object.keys(value[0])][Object.keys(html)[1]]);
+                    $("#" + key + "").html(dict[key][value[0][Object.keys(value[0])][Object.keys(html)[0]]] + ": " + $.timeago(value[0][Object.keys(value[0])][Object.keys(html)[1]]));
 
                 } else if (key.indexOf('wydania') != -1) {
 
                     var html = value[0][Object.keys(value[0])[0]];
-                    $("#" + key + "").html("Najnowsze pobrane: " + value[0][Object.keys(value[0])][Object.keys(html)[0]]);
+                    $("#" + key + "").html("Najnowsze pobrane: " + $.timeago(value[0][Object.keys(value[0])][Object.keys(html)[0]]));
 
                 } else if (key.indexOf('downloads') != -1) {
                     $('#krs_downloads_day').html('');

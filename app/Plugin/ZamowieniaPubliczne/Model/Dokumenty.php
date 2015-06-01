@@ -85,5 +85,3 @@ class Dokumenty extends AppModel
         );
     }
 }
-
-//id, numer, nazwa, data_zam, cena, cena_min, cena_max

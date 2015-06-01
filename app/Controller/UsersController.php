@@ -8,6 +8,7 @@ class UsersController extends AppController {
     );
 
     public function opauth_complete() {
+
         try {
             if(!isset($this->data['auth']['raw']))
                 throw new Exception(self::$errors[0]);
