@@ -167,7 +167,6 @@ class AppModel extends Model {
     }
 
     public static function checkAccess($request, $user) {
-        return true;
         $allow = false;
         foreach(self::$privilegesRules as $rules) {
             if(self::accessPluginValidation($request, $rules)) {

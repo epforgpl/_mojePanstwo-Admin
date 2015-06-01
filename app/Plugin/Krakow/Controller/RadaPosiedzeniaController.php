@@ -14,7 +14,7 @@ class RadaPosiedzeniaController extends KrakowAppController {
         'Paginator'
     );
 
-    public function index() {;
+    public function index() {
         $modes = array(
             'all' => 'Wszystkie',
             'accepted' => 'Zaakceptowane',
