@@ -227,6 +227,17 @@ class AnalyzerExecution extends AnalyzersAppModel
                 );
                 break;
             }
+            case 'Indeksowanie' :{
+                $nazwy = $this->query("SELECT id, name, base_alias FROM api_datasets");
+                $wartosci = $this->query("SELECT dataset, a, COUNT(*) AS 'count' FROM objects GROUP BY dataset, a");
+        //        $date = $this->query("SELECT dataset_id, date, id FROM objects ");
+
+                $data = array(
+                    'nazwy'=> $nazwy,
+                    'wartosci'=>$wartosci,
+                );
+                break;
+            }
 
         }
 

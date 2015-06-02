@@ -41,6 +41,10 @@ class AnalyzerController extends AnalyzersAppController
                 $this->render('view_zp');
                 break;
             }
+            case 'Indeksowanie': {
+                $this->render('view_indeks');
+                break;
+            }
         }
 
     }}
