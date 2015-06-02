@@ -1,39 +1,58 @@
-<? echo $this->Html->css('Krakow.UploadSessions/jquery-ui.min'); ?>
-<? echo $this->Html->css('Krakow.UploadSessions/jquery-ui.theme.min'); ?>
+<? echo $this->Html->css('Krakow.UploadSessions/add_form'); ?>
+<? echo $this->Html->css('datepicker'); ?>
 
 <ol class="breadcrumb">
     <li><a href="/">Dane</a></li>
     <li class="active">Dodawanie plików</li>
 </ol>
 
+<div class="row margin-top-10">
+    <div class="col-sm-12">
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                <button id="create" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>&nbsp;
+                    Utwórz sesje
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <form action="" method="post">
     <div class="row margin-top-10">
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div id="posiedzenie_input" class="form-group">
                 <h3 class="text-muted">Posiedzenia</h3>
-                <div class="radio">
-                    <label>
-                        <input type="radio" class="posRadio" name="typ_id" value="1">
-                        Rada Miasta
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" class="posRadio" name="typ_id" value="2">
-                        Komisja Rady Miasta
-                    </label>
-                </div>
-                <div class="radio">
-                    <label>
-                        <input type="radio" class="posRadio" name="typ_id" value="3">
-                        Dzielnica Rady Miasta
-                    </label>
-                </div>
+                <? if($this->Access->has(array('admin', 'pk-admin', 'pk-rada'))) { ?>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" class="posRadio" name="typ_id" value="1">
+                            Rada Miasta
+                        </label>
+                    </div>
+                <? } ?>
+                <? if(!$this->Access->has('pk-rada')) { ?>
+                    <? if(!$this->Access->has(array('pk-dzielnica6', 'pk-dzielnica14'))) { ?>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" class="posRadio" name="typ_id" value="2">
+                                Komisja Rady Miasta
+                            </label>
+                        </div>
+                    <? } ?>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" class="posRadio" name="typ_id" value="3">
+                            Dzielnica Rady Miasta
+                        </label>
+                    </div>
+                <? } ?>
             </div>
         </div>
 
-        <div class="col-lg-4 height-transition">
-            <div class="form-group" id="form_group_komisja">
+        <div class="col-lg-6 height-transition">
+            <div class="form-group hidden" id="form_group_komisja">
                 <h3 class="text-muted">Komisje</h3>
                 <?php foreach($komisje as $komisja) { ?>
                     <div class="radio">
@@ -44,7 +63,7 @@
                     </div>
                 <?php } ?>
             </div>
-            <div class="form-group" id="form_group_dzielnica">
+            <div class="form-group hidden" id="form_group_dzielnica">
                 <h3 class="text-muted">Dzielnice</h3>
                 <?php foreach($dzielnice as $dzielnica) { ?>
                     <div class="radio">
@@ -56,18 +75,15 @@
                 <?php } ?>
             </div>
         </div>
-        <div class="col-lg-4">
-            <div class="form-group" id="dateEl">
-                <h3 class="text-muted">Data</h3>
-                <input class="form-control" name="date" type="text" style="width: 280px;" value="<?= date('Y-m-d'); ?>" id="date"/>
-            </div>
+        <div class="col-lg-3">
+            <h3 class="text-muted">Data</h3>
+            <div id="date" data-date="<?= date('Y-m-d'); ?>"></div>
+            <input type="hidden" id="date_value" />
         </div>
     </div>
 
-    <div class="col-lg-12 text-center btn-cont">
-        <input class="btn btn-md btn-primary" type="submit" name="create_upload_session" value="Wgraj pliki" />
-    </div>
 </form>
 
-<? echo $this->Html->script('Krakow.UploadSessions/jquery-ui.min'); ?>
+<? echo $this->Html->script('bootstrap-datepicker'); ?>
+<? echo $this->Html->script('bootstrap-datepicker.pl'); ?>
 <? echo $this->Html->script('Krakow.UploadSessions/add_form'); ?>
