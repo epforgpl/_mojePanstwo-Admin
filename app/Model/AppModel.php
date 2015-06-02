@@ -81,11 +81,11 @@ class AppModel extends Model {
         array(
             'groups' => array('pk-rada'),
             'plugin' => array('krakow'),
-            'controller' => 'rada_posiedzenia',
+            'controller' => '*',
             'action' => '*'
         ),
         array(
-            'groups' => array('pk-dzielnica6', 'pk-dzielnica14'),
+            'groups' => array('pk-rada', 'pk-dzielnica6', 'pk-dzielnica14'),
             'plugin' => array('krakow'),
             'controller' => 'upload_sessions',
             'action' => '*'
@@ -203,7 +203,7 @@ class AppModel extends Model {
                         array(
                             'label' => 'Dodawanie plików',
                             'href' => '/krakow/upload_sessions/addForm',
-                            'groups' => array('admin', 'pk-admin', 'pk-dzielnica6', 'pk-dzielnica14')
+                            'groups' => array('admin', 'pk-admin', 'pk-rada', 'pk-dzielnica6', 'pk-dzielnica14')
                         ),
                         array(
                             'label' => 'Zamowienia Publiczne',
