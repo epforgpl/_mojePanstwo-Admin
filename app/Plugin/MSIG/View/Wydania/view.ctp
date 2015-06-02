@@ -1,22 +1,21 @@
 <ol class="breadcrumb">
     <li><a href="/">Dane</a></li>
-    <li><a href="/msig/wydania">MSiG Wydania</li>
-    </a></li>
+    <li><a href="/msig/wydania">MSiG Wydania</a></li>
     <li class="active"><?= $wydanie['Wydania']['rocznik']; ?> nr. <?= $wydanie['Wydania']['nr']; ?>
         z <?= $this->PLText->date($wydanie['Wydania']['data']);; ?></li>
 </ol>
 
 <ul class="nav nav-tabs">
     <li role="presentation"<?= ($this->action == 'view') ? ' class="active"' : ''; ?>><a
-            href="/zamowienia_publiczne/wydaniey/<?= $wydanie['Wydania']['id']; ?>">Dane</a></li>
+            href="/msig/wydania/<?= $wydanie['Wydania']['id']; ?>">Dane</a></li>
     <? if (isset($wydanie['Wydania']['next']) && is_array($wydanie['Wydania']['next'])) { ?>
         <li role="presentation" class="pull-right"><a
-                href="/zamowienia_publiczne/wydaniey/<?= $wydanie['Wydania']['next']['Wydania']['id']; ?>">Następne
+                href="/msig/wydania/<?= $wydanie['Wydania']['next']['Wydania']['id']; ?>">Następne
                 <span aria-hidden="true">&raquo;</span></a></li>
     <? } ?>
     <? if (isset($wydanie['Wydania']['prev']) && is_array($wydanie['Wydania']['prev'])) { ?>
         <li role="presentation" class="pull-right"><a
-                href="/zamowienia_publiczne/wydaniey/<?= $wydanie['Wydania']['prev']['Wydania']['id']; ?>"><span
+                href="/msig/wydania/<?= $wydanie['Wydania']['prev']['Wydania']['id']; ?>"><span
                     aria-hidden="true">&laquo;</span> Poprzednie</a></li>
     <? } ?>
 </ul>

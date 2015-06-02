@@ -13,15 +13,20 @@ $(document).ready(function () {
             $.each(obj, function (key, value) {
 
                 if (key.indexOf('err') != -1) {
-
-                    var html = value[0][Object.keys(value[0])[0]];
-                    $("#" + key + "").html(dict[key][value[0][Object.keys(value[0])][Object.keys(html)[0]]] + ": " + $.timeago(value[0][Object.keys(value[0])][Object.keys(html)[1]]));
-
-
+                    if(value[0] !== undefined){
+                        var html = value[0][Object.keys(value[0])[0]];
+                        $("#" + key + "").html(dict[key][value[0][Object.keys(value[0])][Object.keys(html)[0]]] + ": " + $.timeago(value[0][Object.keys(value[0])][Object.keys(html)[1]]));
+                    }else{
+                        $("#" + key + "").removeClass('label-danger');
+                    }
                 } else if (key.indexOf('corr') != -1) {
 
-                    var html = value[0][Object.keys(value[0])[0]];
-                    $("#" + key + "").html(dict[key][value[0][Object.keys(value[0])][Object.keys(html)[0]]] + ": " + $.timeago(value[0][Object.keys(value[0])][Object.keys(html)[1]]));
+                    if(value[0] !== undefined){
+                        var html = value[0][Object.keys(value[0])[0]];
+                        $("#" + key + "").html(dict[key][value[0][Object.keys(value[0])][Object.keys(html)[0]]] + ": " + $.timeago(value[0][Object.keys(value[0])][Object.keys(html)[1]]));
+                    }else{
+                        $("#" + key + "").removeClass('label-success');
+                    }
 
                 } else if (key.indexOf('wydania') != -1) {
 
@@ -359,7 +364,6 @@ $(document).ready(function () {
                     });
                     serie = serie.substring(0, serie.length - 1);
                     serie += ']}';
-                    console.log(serie);
                     var dane = JSON.parse(serie);
 
                     var options = {

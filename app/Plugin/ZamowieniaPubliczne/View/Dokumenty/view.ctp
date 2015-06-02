@@ -1,7 +1,6 @@
 <ol class="breadcrumb">
     <li><a href="/">Dane</a></li>
-    <li><a href="/zamowienia_publiczne/dokumenty">Zamówienia Publiczne</li>
-    </a></li>
+    <li><a href="/zamowienia_publiczne/dokumenty">Zamówienia Publiczne</a></li>
     <li class="active"><?= $dokument['Dokumenty']['zamawiajacy_nazwa']; ?>
         z <?= $this->PLText->date($dokument['Dokumenty']['data_publikacji']);; ?></li>
 </ol>
