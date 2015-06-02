@@ -26,9 +26,13 @@ $jsdict = json_encode($dict);
         var dict =<?php echo $jsdict; ?>;
     </script>
 <?php
-
+$temp = array();
 foreach ($data['wartosci'] as $key => $val) {
-        echo "<div class='col-sm-12'><hr></div><div class='col-sm-9'><div id='{$val['objects']['dataset']}'></div></div>";
+    if (!isset($temp[$val['objects']['dataset']])) {
+        if ($val['objects']['dataset'] !== '') {
+            echo "<div class='col-sm-12'><hr></div><div class='col-sm-12'><div id='{$val['objects']['dataset']}'></div></div>";
+        }
+    }
+    $temp[$val['objects']['dataset']] = $val['objects']['dataset'];
 }
-debug($data);
 ?>
