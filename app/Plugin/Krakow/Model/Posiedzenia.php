@@ -100,6 +100,45 @@ class Posiedzenia extends AppModel {
     }
 
     /**
+     * Aktualizuje statusy analizy na 0 (do analizy)
+     * dla tabel bezpośrednio połączonych z danym
+     * posiedzeniem (po ręcznej aktualizacji z panelu)
+     *
+     * @param $id int Posiedzenie id
+     */
+    public function updateAnalyzers($id) {
+        $this->getDataSource()->query("
+            UPDATE pl_gminy_krakow_posiedzenia_punkty_portal
+                SET analiza = '0'
+            WHERE
+              posiedzenie_id = ?
+        ", array($id));
+
+        $points = $this->getDataSource()->fetchAll("
+            SELECT
+              punkt_bip_id
+            FROM
+              pl_gminy_krakow_posiedzenia_punkty_portal
+            WHERE
+              punkt_bip_id > 0
+        ", array($id));
+
+        $ids = array();
+        foreach($points as $point) {
+            $ids[] = $point['pl_gminy_krakow_posiedzenia_punkty_portal']['punkt_bip_id'];
+        }
+
+        $idsStr = implode(', ', $ids);
+
+        $this->getDataSource()->query("
+            UPDATE pl_gminy_krakow_glosowania_bip
+                SET analiza = '0'
+            WHERE
+              punkt_id IN(".$idsStr.")
+        ");
+    }
+
+    /**
      * @param $id int Posiedzenie
      * @param $data array Dane
      * @return bool
@@ -197,6 +236,8 @@ class Posiedzenia extends AppModel {
             'porzadek_akcept' => '1',
             'polacz_punkty_status' => '0'
         ));
+
+        $this->updateAnalyzers($id);
 
         return true;
     }
