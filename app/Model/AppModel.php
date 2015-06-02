@@ -195,6 +195,11 @@ class AppModel extends Model {
                             'groups' => array('admin', 'pk-admin', 'pk-rada')
                         ),
                         array(
+                            'label' => 'Punkty posiedzenia Rady Miasta',
+                            'href' => '/krakow/rada_posiedzenia_punkty_sesja',
+                            'groups' => array('admin', 'pk-admin', 'pk-rada')
+                        ),
+                        array(
                             'label' => 'Dodawanie plików',
                             'href' => '/krakow/upload_sessions/addForm',
                             'groups' => array('admin', 'pk-admin', 'pk-rada', 'pk-dzielnica6', 'pk-dzielnica14')
