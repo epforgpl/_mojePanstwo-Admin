@@ -57,13 +57,7 @@ class AppModel extends Model {
         array(
             'groups' => '*',
             'plugin' => '',
-            'controller' => 'users',
-            'action' => '*'
-        ),
-        array(
-            'groups' => '*',
-            'plugin' => '',
-            'controller' => 'pages',
+            'controller' => array('users', 'pages', 'settings'),
             'action' => '*'
         ),
         array(
