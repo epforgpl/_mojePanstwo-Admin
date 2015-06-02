@@ -23,7 +23,7 @@ class AnalyzerShell extends Shell
         }
     }
 
-    public function cleanUp()
+    public function CleanUp()
     {
         $this->AnalyzerExecution->cleanUp();
     }

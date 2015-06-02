@@ -2,7 +2,7 @@
 echo $this->Html->script('Analyzers.highcharts');
 echo $this->Html->script('Analyzers.highcharts-more');
 echo $this->Html->script('Analyzers.timeago');
-echo $this->Html->script('Analyzers.refresherKRS');
+echo $this->Html->script('Analyzers.refresher');
 echo $this->Html->css('Analyzers./Analyzer/view');
 
 

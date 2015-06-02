@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: tomekdrazewski
- * Date: 29/05/15
- * Time: 13:08
- */
 
 class AnalyzerController extends AnalyzersAppController
 {
@@ -36,7 +30,16 @@ class AnalyzerController extends AnalyzersAppController
         switch ($id) {
 
             case 'Krs': {
-                $this->render('viewKrs');
+                $this->render('view_krs');
+                break;
+            }
+            case 'Prawo': {
+                $this->render('view_prawo');
+                break;
+            }
+            case 'Zamowienia Publiczne': {
+                $this->render('view_zp');
+                break;
             }
         }
 
