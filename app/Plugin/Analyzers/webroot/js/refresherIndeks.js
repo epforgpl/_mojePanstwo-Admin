@@ -39,6 +39,7 @@ $(document).ready(function () {
 
                     name = dict[key1];
                     count = val1;
+                    name+=' ('+key1+')';
                     if (name.indexOf('OK') != -1) {
                         serie += '{ "name" : "' + name + '", "data" : [' + parseInt(count) + '], "color" : "#90ed7d" },';
 
@@ -49,6 +50,7 @@ $(document).ready(function () {
                         serie += '{ "name" : "' + name + '", "data" : [' + parseInt(count) + ']},';
                     }
                 });
+
 
                 serie = serie.substring(0, serie.length - 1);
                 serie += ']}';
@@ -100,11 +102,15 @@ $(document).ready(function () {
 
             });
         });
-    }
+
+    };
 
     pageReload();
-    setTimeout(function () {
+
+    setInterval(function () {
             pageReload();
         }
         , 5 * 60 * 1000);
+
+
 });

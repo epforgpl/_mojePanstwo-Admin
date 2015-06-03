@@ -76,9 +76,15 @@ class WydaniaController extends MsigAppController
         if (!$data)
             throw new NotFoundException;
 
+        if(
+        ($doc = file_get_contents('https://mojepanstwo.pl/docs/' . $data['wydanie']['Wydania']['dokument_id'] . '.json')) &&
+        ($doc = json_decode($doc, true))) {
 
-        $dzialy = json_encode($data['dzialy']);//str_replace("'", "", json_encode($data['czesci']));
+            $this->set('doc', $doc);
+
+        }
+
         $this->set('wydanie', $data['wydanie']);
-        $this->set('dzialy', $dzialy);
+        $this->set('dzialy', $data['dzialy']);
     }
 }

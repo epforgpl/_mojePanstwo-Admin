@@ -2,7 +2,7 @@
 
     var d = $('#data');
     var parts = $.parseJSON(
-        $('#data-json').attr('data-value')
+        $('#data').attr('data-value')
     );
 
     if (parts.length == 0) {

@@ -13,18 +13,18 @@ $(document).ready(function () {
             $.each(obj, function (key, value) {
 
                 if (key.indexOf('err') != -1) {
-                    if(value[0] !== undefined){
+                    if (value[0] !== undefined) {
                         var html = value[0][Object.keys(value[0])[0]];
                         $("#" + key + "").html(dict[key][value[0][Object.keys(value[0])][Object.keys(html)[0]]] + ": " + $.timeago(value[0][Object.keys(value[0])][Object.keys(html)[1]]));
-                    }else{
+                    } else {
                         $("#" + key + "").removeClass('label-danger');
                     }
                 } else if (key.indexOf('corr') != -1) {
 
-                    if(value[0] !== undefined){
+                    if (value[0] !== undefined) {
                         var html = value[0][Object.keys(value[0])[0]];
                         $("#" + key + "").html(dict[key][value[0][Object.keys(value[0])][Object.keys(html)[0]]] + ": " + $.timeago(value[0][Object.keys(value[0])][Object.keys(html)[1]]));
-                    }else{
+                    } else {
                         $("#" + key + "").removeClass('label-success');
                     }
 
@@ -91,7 +91,7 @@ $(document).ready(function () {
                         // the value axis
                         yAxis: {
                             min: 0,
-                            max: 250,
+                            max: 10000,
 
                             minorTickInterval: 'auto',
                             minorTickWidth: 1,
@@ -113,15 +113,15 @@ $(document).ready(function () {
                             },
                             plotBands: [{
                                 from: 0,
-                                to: 150,
+                                to: 5000,
                                 color: '#55BF3B' // green
                             }, {
-                                from: 150,
-                                to: 200,
+                                from: 5000,
+                                to: 8000,
                                 color: '#DDDF0D' // yellow
                             }, {
-                                from: 200,
-                                to: 250,
+                                from: 8000,
+                                to: 10000,
                                 color: '#DF5353' // red
                             }]
                         },
@@ -188,7 +188,7 @@ $(document).ready(function () {
                         // the value axis
                         yAxis: {
                             min: 0,
-                            max: 100,
+                            max: 400,
 
                             minorTickInterval: 'auto',
                             minorTickWidth: 1,
@@ -210,15 +210,15 @@ $(document).ready(function () {
                             },
                             plotBands: [{
                                 from: 0,
-                                to: 60,
+                                to: 200,
                                 color: '#55BF3B' // green
                             }, {
-                                from: 60,
-                                to: 80,
+                                from: 200,
+                                to: 320,
                                 color: '#DDDF0D' // yellow
                             }, {
-                                from: 80,
-                                to: 100,
+                                from: 320,
+                                to: 400,
                                 color: '#DF5353' // red
                             }]
                         },
@@ -309,10 +309,10 @@ $(document).ready(function () {
                             },
                             plotBands: [{
                                 from: 0,
-                                to: 8,
+                                to: 7.5,
                                 color: '#55BF3B' // green
                             }, {
-                                from: 8,
+                                from: 7.5,
                                 to: 12,
                                 color: '#DDDF0D' // yellow
                             }, {
@@ -410,9 +410,10 @@ $(document).ready(function () {
             });
         });
     }
+
     pageReload();
-    setTimeout(function () {
+    setInterval(function () {
             pageReload();
         }
-        , 60 * 1000);
+        , 5 * 60 * 1000);
 });

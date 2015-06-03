@@ -20,12 +20,27 @@
     <? } ?>
 </ul>
 
-<div class="margin-top-10 list-group list-group-item">
-    <h4><?= $wydanie['Wydania']['rocznik']; ?> nr. <?= $wydanie['Wydania']['nr']; ?> z <?= $this->PLtext->date($wydanie['Wydania']['data']); ?></h4>
+<h1><?= $wydanie['Wydania']['rocznik']; ?> nr. <?= $wydanie['Wydania']['nr']; ?> z <?= $this->PLtext->date($wydanie['Wydania']['data']); ?></h1>
 
+<div class="row">
+    <div class="col-sm-3">
+        <ul class="list-group dzialy">
+            <? foreach( $dzialy as $dzial ) {?>
+            <li class="list-group-item">
+                <h5><?= $dzial['nazwa'] ?></h5>
+                <p class="text-center"><span class="label <? if($dzial['strona_od']) {?>label-normal<? } else { ?>label-danger<? } ?>"><?= $dzial['strona_od'] ?></span> - <span class="label <? if($dzial['strona_do']) {?>label-normal<? } else { ?>label-danger<? } ?>"><?= $dzial['strona_do'] ?></span></p>
+            </li>
+        <? } ?>
+    </div>
+    <div class="col-sm-9">
+        <? if( isset($doc) ) {?>
+
+            <div id="page-container"><?= debug($doc['Package']); ?></div>
+
+       <? } ?>
+    </div>
 </div>
-<div id="data"></div>
 
-<div id="data-json" data-value='<?= $dzialy; ?>'></div>
-<? echo $this->Html->script('Msig.Wydania/view'); ?>
+
+<? // echo $this->Html->script('Msig.Wydania/view'); ?>
 <? echo $this->Html->css('Msig.Wydania/view'); ?>

@@ -130,9 +130,9 @@ class AnalyzerExecution extends AnalyzersAppModel
                 $ISAP_analiza_last_err = $this->query("SELECT analiza, analiza_ts FROM ISAP_pozycje WHERE analiza IN ('4','5','6','7','8') ORDER BY analiza_ts DESC LIMIT 1");
                 $ISAP_analiza_last_corr = $this->query("SELECT analiza, analiza_ts FROM ISAP_pozycje WHERE analiza='3' ORDER BY analiza_ts DESC LIMIT 1");
 
-                $ISAP_analiza_isip = $this->query("SELECT COUNT(*) AS 'count', analiza_isip AS status FROM ISAP_pozycje GROUP BY analiza");
-                $ISAP_analiza_isip_last_err = $this->query("SELECT analiza_isip, analiza_isip_ts FROM ISAP_pozycje WHERE analiza IN ('4','5','6','7','8') ORDER BY analiza_ts DESC LIMIT 1");
-                $ISAP_analiza_isip_last_corr = $this->query("SELECT analiza_isip, analiza_isip_ts FROM ISAP_pozycje WHERE analiza='3' ORDER BY analiza_ts DESC LIMIT 1");
+                $ISAP_analiza_isip = $this->query("SELECT COUNT(*) AS 'count', analiza_isip AS status FROM ISAP_pozycje GROUP BY analiza_isip");
+                $ISAP_analiza_isip_last_err = $this->query("SELECT analiza_isip, analiza_isip_ts FROM ISAP_pozycje WHERE analiza_isip IN ('4','5','6','7','8') ORDER BY analiza_isip_ts DESC LIMIT 1");
+                $ISAP_analiza_isip_last_corr = $this->query("SELECT analiza_isip, analiza_isip_ts FROM ISAP_pozycje WHERE analiza_isip='3' ORDER BY analiza_ts DESC LIMIT 1");
 
 
                 $DzU_analiza = $this->query("SELECT COUNT(*) AS 'count', analiza AS status FROM DzU_pozycje GROUP BY analiza");
@@ -149,13 +149,13 @@ class AnalyzerExecution extends AnalyzersAppModel
                 $prawo_analiza_last_err = $this->query("SELECT analiza, analiza_ts FROM prawo WHERE analiza IN ('4','5','6') ORDER BY analiza_ts DESC LIMIT 1");
                 $prawo_analiza_last_corr = $this->query("SELECT analiza, analiza_ts FROM prawo WHERE analiza='3' ORDER BY analiza_ts DESC LIMIT 1");
 
-                $prawo_analiza_status = $this->query("SELECT COUNT(*) AS 'count', analiza_status AS status FROM prawo GROUP BY analiza");
-                $prawo_analiza_status_last_err = $this->query("SELECT analiza_status, analiza_status_ts FROM prawo WHERE analiza IN ('4','5','6') ORDER BY analiza_ts DESC LIMIT 1");
-                $prawo_analiza_status_last_corr = $this->query("SELECT analiza_status, analiza_status_ts FROM prawo WHERE analiza='3' ORDER BY analiza_ts DESC LIMIT 1");
+                $prawo_analiza_status = $this->query("SELECT COUNT(*) AS 'count', analiza_status AS status FROM prawo GROUP BY analiza_status");
+                $prawo_analiza_status_last_err = $this->query("SELECT analiza_status, analiza_status_ts FROM prawo WHERE analiza_status IN ('4','5','6') ORDER BY analiza_status_ts DESC LIMIT 1");
+                $prawo_analiza_status_last_corr = $this->query("SELECT analiza_status, analiza_status_ts FROM prawo WHERE analiza_status='3' ORDER BY analiza_status_ts DESC LIMIT 1");
 
-                $prawo_analiza_powiazania = $this->query("SELECT COUNT(*) AS 'count', analiza_powiazania AS status FROM prawo GROUP BY analiza");
-                $prawo_analiza_powiazania_last_err = $this->query("SELECT analiza_powiazania, analiza_powiazania_ts FROM prawo WHERE analiza IN ('4','5','6') ORDER BY analiza_ts DESC LIMIT 1");
-                $prawo_analiza_powiazania_last_corr = $this->query("SELECT analiza_powiazania, analiza_powiazania_ts FROM prawo WHERE analiza='3' ORDER BY analiza_ts DESC LIMIT 1");
+                $prawo_analiza_powiazania = $this->query("SELECT COUNT(*) AS 'count', analiza_powiazania AS status FROM prawo GROUP BY analiza_powiazania");
+                $prawo_analiza_powiazania_last_err = $this->query("SELECT analiza_powiazania, analiza_powiazania_ts FROM prawo WHERE analiza_powiazania IN ('4','5','6') ORDER BY analiza_powiazania_ts DESC LIMIT 1");
+                $prawo_analiza_powiazania_last_corr = $this->query("SELECT analiza_powiazania, analiza_powiazania_ts FROM prawo WHERE analiza_powiazania='3' ORDER BY analiza_powiazania_ts DESC LIMIT 1");
 
 
                 $data = array(

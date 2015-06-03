@@ -9,7 +9,7 @@ $data = json_decode($analyzer['AnalyzerExecution']['data'], true);
 
 $dict = array(
     'uzp_dokumenty' => array(
-        'title' => ' ',
+        'title' => 'uzp_dokumenty',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',
@@ -44,7 +44,7 @@ $dict = array(
 
 
     'uzp_wykonawcy' => array(
-        'title' => ' ',
+        'title' => 'uzp_wykonawcy',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',
@@ -81,7 +81,7 @@ $dict = array(
 
 
     'uzp_zamawiajacy' => array(
-        'title' => ' ',
+        'title' => 'uzp_zamawiajacy',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',

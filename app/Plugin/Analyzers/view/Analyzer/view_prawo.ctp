@@ -9,7 +9,7 @@ $data = json_decode($analyzer['AnalyzerExecution']['data'], true);
 
 $dict = array(
     'ISAP_status' => array(
-        'title' => ' ',
+        'title' => 'ISAP_status',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',
@@ -43,7 +43,7 @@ $dict = array(
     ),
 
     'ISAP_analiza' => array(
-        'title' => ' ',
+        'title' => 'ISAP_analiza',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',
@@ -77,7 +77,7 @@ $dict = array(
     ),
 
     'ISAP_analiza_isip' => array(
-        'title' => ' ',
+        'title' => 'ISAP_analiza_isip',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',
@@ -112,7 +112,7 @@ $dict = array(
 
 
     'DzU_analiza' => array(
-        'title' => ' ',
+        'title' => 'DzU_analiza',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',
@@ -147,7 +147,7 @@ $dict = array(
 
 
     'MP_analiza' => array(
-        'title' => ' ',
+        'title' => 'MP_analiza',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',
@@ -182,7 +182,7 @@ $dict = array(
 
 
     'prawo_analiza' => array(
-        'title' => ' ',
+        'title' => 'prawo_analiza',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',
@@ -216,7 +216,7 @@ $dict = array(
     ),
 
     'prawo_analiza_status' => array(
-        'title' => ' ',
+        'title' => 'prawo_analiza_status',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',
@@ -250,7 +250,7 @@ $dict = array(
     ),
 
     'prawo_analiza_powiazania' => array(
-        'title' => ' ',
+        'title' => 'prawo_analiza_powiazania',
         '0' => ' ',
         '1' => ' ',
         '2' => ' ',
