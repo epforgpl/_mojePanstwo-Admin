@@ -17,7 +17,7 @@
             <li class="list-group-item">
                 <span class="pull-right">Liczba działów: <?= $row['Wydania']['liczba_dzialow']; ?></span>
                 <a href="/msig/wydania/view/<?= $row['Wydania']['id']; ?>">
-                    <?= $row['Wydania']['rocznik']; ?> nr. <?= $row['Wydania']['nr']; ?> z <?= $this->PLtext->date($row['Wydania']['data']); ?>
+                    <?= $row['Wydania']['rocznik']; ?> nr. <?= $row['Wydania']['nr']; ?> z <?= $this->PLText->date($row['Wydania']['data']); ?>
                 </a>
             </li>
         <? } ?>
