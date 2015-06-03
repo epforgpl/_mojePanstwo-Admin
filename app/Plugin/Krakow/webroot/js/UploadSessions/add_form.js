@@ -62,7 +62,7 @@ $(document).ready(function() {
         $.post('/krakow/upload_sessions/addForm/', { data: data })
             .done(function(res) {
                 var id = res.id;
-                $(location).attr('href', '/krakow/upload_sessions/addFilesForm/' + id);
+                $(location).attr('href', '/krakow/upload_sessions/view/' + id);
             });
     });
 

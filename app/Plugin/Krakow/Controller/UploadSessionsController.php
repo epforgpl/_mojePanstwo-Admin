@@ -6,6 +6,7 @@ class UploadSessionsController extends KrakowAppController {
         'Krakow.Komisje',
         'Krakow.Dzielnice',
         'Krakow.UploadSessions',
+        'Krakow.UploadFiles',
         'PLText'
     );
 
@@ -38,12 +39,49 @@ class UploadSessionsController extends KrakowAppController {
         $this->set('dzielnice', $dzielnice);
     }
 
-    public function addFilesForm($id) {
+    public function view($id) {
         $session = $this->UploadSessions->findById($id);
         if(!$session)
             throw new NotFoundException;
 
+        $config = Configure::read('Amazonsdk.credentials');
+        unset($config['secret']);
+
+        $this->set('config', json_encode($config));
         $this->set('session', $session);
+    }
+
+    public function uploadSuccess($id) {
+        $session = $this->UploadSessions->findById($id);
+        if(!$session)
+            throw new NotFoundException;
+
+        $this->UploadFiles->create();
+        $this->UploadFiles->save(array(
+            'session_id' => $session['UploadSessions']['id'],
+            'session_hash' => $session['UploadSessions']['hash'],
+            'key' => $this->data['key'],
+            'uuid' => $this->data['uuid'],
+            'name' => $this->data['name'],
+            'bucket' => $this->data['bucket'],
+            'etag' => $this->data['etag'],
+            'ip' => $_SERVER['REMOTE_ADDR']
+        ));
+
+        $count = $this->UploadFiles->find('count', array(
+            'conditions' => array(
+                'UploadFiles.session_id' => $session['UploadSessions']['id'],
+            ),
+        ));
+
+        $this->UploadSessions->id = $session['UploadSessions']['id'];
+        $this->UploadSessions->save(array(
+            'files_count' => $count
+        ));
+
+        $this->json(array(
+            'success' => true
+        ));
     }
 
 }

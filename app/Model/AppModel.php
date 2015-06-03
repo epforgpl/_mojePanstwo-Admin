@@ -57,7 +57,7 @@ class AppModel extends Model {
         array(
             'groups' => '*',
             'plugin' => '',
-            'controller' => array('users', 'pages', 'settings'),
+            'controller' => array('users', 'pages', 'settings', 'amazon'),
             'action' => '*'
         ),
         array(
@@ -200,7 +200,7 @@ class AppModel extends Model {
                             'groups' => array('admin', 'pk-admin', 'pk-rada')
                         ),
                         array(
-                            'label' => 'Dodawanie plików',
+                            'label' => 'Dodawanie sesji',
                             'href' => '/krakow/upload_sessions/addForm',
                             'groups' => array('admin', 'pk-admin', 'pk-rada', 'pk-dzielnica6', 'pk-dzielnica14')
                         ),

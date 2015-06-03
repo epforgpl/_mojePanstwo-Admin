@@ -1,0 +1,22 @@
+#fine-uploader {
+    margin-top: 0;
+    padding: 0 15px;
+}
+
+#fine-uploader .qq-upload-list li {
+    margin: 10px 0;
+    border-radius: 3px;
+}
+
+#fine-uploader .qq-upload-button {
+    background-color: #007fff;
+    border-color: #007fff;
+    color: #ffffff;
+    border-radius: 3px;
+}
+
+#fine-uploader .qq-upload-list {
+    border-top: 1px solid #DDD;
+    margin-top: 15px;
+    padding-top: 5px;
+}

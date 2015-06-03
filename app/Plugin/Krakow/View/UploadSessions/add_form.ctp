@@ -3,7 +3,8 @@
 
 <ol class="breadcrumb">
     <li><a href="/">Dane</a></li>
-    <li class="active">Dodawanie plików</li>
+    <li><a href="/krakow/upload_sessions/">Sesje</a></li>
+    <li class="active">Dodawanie sesji</li>
 </ol>
 
 <div class="row margin-top-10">
