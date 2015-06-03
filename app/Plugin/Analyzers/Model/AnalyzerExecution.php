@@ -227,14 +227,21 @@ class AnalyzerExecution extends AnalyzersAppModel
                 );
                 break;
             }
-            case 'Indeksowanie' :{
+            case 'Indeksowanie' : {
                 $nazwy = $this->query("SELECT id, name, base_alias FROM api_datasets");
                 $wartosci = $this->query("SELECT dataset, a, COUNT(*) AS 'count' FROM objects GROUP BY dataset, a");
-        //        $date = $this->query("SELECT dataset_id, date, id FROM objects ");
+                //        $date = $this->query("SELECT dataset_id, date, id FROM objects ");
 
                 $data = array(
-                    'nazwy'=> $nazwy,
-                    'wartosci'=>$wartosci,
+                    'nazwy' => $nazwy,
+                    'wartosci' => $wartosci,
+                );
+                break;
+            }
+            case 'Cluster' : {
+                $cluster = $this->query("SELECT server_name, free_space, avg1, insert_ts FROM  watcher_log ORDER BY server_name, insert_ts ASC");
+                $data = array(
+                    'cluster' => $cluster,
                 );
                 break;
             }

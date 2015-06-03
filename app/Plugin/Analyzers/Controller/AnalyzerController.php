@@ -45,6 +45,10 @@ class AnalyzerController extends AnalyzersAppController
                 $this->render('view_indeks');
                 break;
             }
+            case 'Cluster': {
+                $this->render('view_cluster');
+                break;
+            }
         }
 
     }}
