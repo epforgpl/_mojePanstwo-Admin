@@ -20,7 +20,7 @@
     <? } ?>
 </ul>
 
-<h1><?= $wydanie['Wydania']['rocznik']; ?> nr. <?= $wydanie['Wydania']['nr']; ?> z <?= $this->PLtext->date($wydanie['Wydania']['data']); ?></h1>
+<h1><?= $wydanie['Wydania']['rocznik']; ?> nr. <?= $wydanie['Wydania']['nr']; ?> z <?= $this->PLText->date($wydanie['Wydania']['data']); ?></h1>
 
 <div class="row">
     <div class="col-sm-3">
