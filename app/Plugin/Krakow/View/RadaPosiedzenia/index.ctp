@@ -35,6 +35,6 @@
 <span class="pull-right">
     <? echo $this->Paginator->counter(
         'Strona {:page} z {:pages}, wyświetla {:current} rekordów z
-     {:count} wszystkich, od {:start}, do {:end}.'
+     {:count} wszystkich, od {:start} do {:end}.'
     ); ?>
 </span>

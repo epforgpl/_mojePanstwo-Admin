@@ -3,6 +3,7 @@ h2.header { margin-bottom: 20px; }
 .margin-top-5 { margin-top: 5px; }
 .margin-top-10 { margin-top: 10px; }
 .margin-top-20 { margin-top: 20px; }
+.border-top-1 { border-top: 1px solid #eee; }
 .block { display: block; }
 .padding-top-10 { padding-top: 10px; }
 .breadcrumb { margin-bottom: 10px; border-bottom-width: 1px; }

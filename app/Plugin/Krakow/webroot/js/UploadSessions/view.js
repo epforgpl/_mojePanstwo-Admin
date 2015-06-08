@@ -77,13 +77,25 @@ $(document).ready(function() {
         .on('allComplete', function(event, id, name, response) {
             $('#finish-session-submit').attr('disabled', false);
 
-            if( $('#autoclose_checkbox').prop('checked') ) {
-                $('#form-upload').submit();
+            if($('#autoclose_checkbox').prop('checked') ) {
+                finishSession();
             }
 
         })
         .on('submit', function(event, id, name, response) {
             $('#finish-session-submit').attr('disabled', 'disabled');
         });
+
+    var finishSession = function() {
+        var btn = $('#finish-session-submit');
+        btn.html('Kończenie sesji...');
+        btn.removeClass('btn-default');
+        btn.addClass('btn-info');
+        btn.attr('disabled', 'disabled');
+    };
+
+    $('#finish-session-submit').click(function() {
+        finishSession();
+    });
 
 });

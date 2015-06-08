@@ -200,8 +200,8 @@ class AppModel extends Model {
                             'groups' => array('admin', 'pk-admin', 'pk-rada')
                         ),
                         array(
-                            'label' => 'Dodawanie sesji',
-                            'href' => '/krakow/upload_sessions/addForm',
+                            'label' => 'Sesje',
+                            'href' => '/krakow/upload_sessions',
                             'groups' => array('admin', 'pk-admin', 'pk-rada', 'pk-dzielnica6', 'pk-dzielnica14')
                         ),
                         array(

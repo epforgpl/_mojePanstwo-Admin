@@ -8,9 +8,31 @@
 </ol>
 
 <div class="row margin-top-10">
+    <div class="col-sm-4">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" id="autoclose_checkbox">
+                Automatycznie zakończ sesję, gdy wszystkie pliki będą wgrane.
+            </label>
+        </div>
+    </div>
+    <div class="col-sm-8">
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                <button <?= (count($files) == 0) ? 'disabled="disabled"': ''; ?> id="finish-session-submit" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;
+                    Zakończ sesje
+                </button>
+            </div>
+        </div>
+        <p class="help-block">Wciśnij ten przycisk, gdy wszystkie pliki dla posiedzenia będą dodane i poprawnie wgrane.</p>
+    </div>
+</div>
+
+<div class="row margin-top-10 border-top-1">
     <div class="col-md-4">
         <dl>
-            <dt>Posiedzenie</dt>
+            <dt><h4 class="text-muted">Posiedzenie</h4></dt>
             <dd><?
                 switch($session['UploadSessions']['typ_id']) {
                     case '1': echo 'Rada Miasta'; break;
@@ -22,20 +44,20 @@
     </div>
     <div class="col-md-4">
         <dl>
-            <dt>Nazwa</dt>
+            <dt><h4 class="text-muted">Nazwa</h4></dt>
             <dd><?= $session['UploadSessions']['label']; ?></dd>
         </dl>
     </div>
     <div class="col-md-4">
         <dl>
-            <dt>Data</dt>
+            <dt><h4 class="text-muted">Data</h4></dt>
             <dd><?= $this->PLText->date($session['UploadSessions']['date']); ?></dd>
         </dl>
     </div>
 </div>
 
 <? if(count($files) > 0) { ?>
-    <div class="row">
+    <div class="row border-top-1">
         <div class="col-md-12">
             <h3 class="text-muted">Wgrane pliki</h3>
             <table class="table table-striped table-hover">

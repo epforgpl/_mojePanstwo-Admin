@@ -7,7 +7,6 @@ class UploadSessions extends AppModel {
     public $useTable = 'krakow_upload_sessions';
 
     public function createFromForm($data, $user_id) {
-
         $row = array(
             'hash' => uniqid(),
             'date' => $data['date'],
