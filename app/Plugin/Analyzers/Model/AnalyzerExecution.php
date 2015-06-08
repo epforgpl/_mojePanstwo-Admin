@@ -239,9 +239,95 @@ class AnalyzerExecution extends AnalyzersAppModel
                 break;
             }
             case 'Cluster' : {
-                $cluster = $this->query("SELECT server_name, free_space, avg1, insert_ts FROM  watcher_log ORDER BY server_name, insert_ts ASC");
+                $cluster = $this->query("SELECT server_name, space_free, space_usage, avg1, insert_ts FROM watcher_log WHERE insert_ts>'$minushour' ORDER BY server_name, insert_ts ASC");
+
+                $Portal = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
+                $MySQL = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
+                $Main = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
+                $CPU_HOG = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
+                $Video = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
+                $ES1 = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
+                $ES2 = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
+                $ES3 = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
+                $ES4 = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
+
+                foreach ($cluster as $key => $val) {
+                    switch ($val['watcher_log']['server_name']) {
+                        case 'Portal': {
+                            $Portal['avg1'][] = $val['watcher_log']['avg1'];
+                            $Portal['space_free'][] = $val['watcher_log']['space_free'];
+                            $Portal['space_usage'][] = $val['watcher_log']['space_usage'];
+                            $Portal['insert_ts'][] = $val['watcher_log']['insert_ts'];
+                            break;
+                        }
+                        case 'MySQL': {
+                            $MySQL['avg1'][] = $val['watcher_log']['avg1'];
+                            $MySQL['space_free'][] = $val['watcher_log']['space_free'];
+                            $MySQL['space_usage'][] = $val['watcher_log']['space_usage'];
+                            $MySQL['insert_ts'][] = $val['watcher_log']['insert_ts'];
+                            break;
+                        }
+                        case 'Main': {
+                            $Main['avg1'][] = $val['watcher_log']['avg1'];
+                            $Main['space_free'][] = $val['watcher_log']['space_free'];
+                            $Main['space_usage'][] = $val['watcher_log']['space_usage'];
+                            $Main['insert_ts'][] = $val['watcher_log']['insert_ts'];
+                            break;
+                        }
+                        case 'CPU-HOG': {
+                            $CPU_HOG['avg1'][] = $val['watcher_log']['avg1'];
+                            $CPU_HOG['space_free'][] = $val['watcher_log']['space_free'];
+                            $CPU_HOG['space_usage'][] = $val['watcher_log']['space_usage'];
+                            $CPU_HOG['insert_ts'][] = $val['watcher_log']['insert_ts'];
+                            break;
+                        }
+                        case 'video': {
+                            $Video['avg1'][] = $val['watcher_log']['avg1'];
+                            $Video['space_free'][] = $val['watcher_log']['space_free'];
+                            $Video['space_usage'][] = $val['watcher_log']['space_usage'];
+                            $Video['insert_ts'][] = $val['watcher_log']['insert_ts'];
+                            break;
+                        }
+                        case 'ES1': {
+                            $ES1['avg1'][] = $val['watcher_log']['avg1'];
+                            $ES1['space_free'][] = $val['watcher_log']['space_free'];
+                            $ES1['space_usage'][] = $val['watcher_log']['space_usage'];
+                            $ES1['insert_ts'][] = $val['watcher_log']['insert_ts'];
+                            break;
+                        }
+                        case 'ES2': {
+                            $ES2['avg1'][] = $val['watcher_log']['avg1'];
+                            $ES2['space_free'][] = $val['watcher_log']['space_free'];
+                            $ES2['space_usage'][] = $val['watcher_log']['space_usage'];
+                            $ES2['insert_ts'][] = $val['watcher_log']['insert_ts'];
+                            break;
+                        }
+                        case 'ES3': {
+                            $ES3['avg1'][] = $val['watcher_log']['avg1'];
+                            $ES3['space_free'][] = $val['watcher_log']['space_free'];
+                            $ES3['space_usage'][] = $val['watcher_log']['space_usage'];
+                            $ES3['insert_ts'][] = $val['watcher_log']['insert_ts'];
+                            break;
+                        }
+                        case 'ES4': {
+                            $ES4['avg1'][] = $val['watcher_log']['avg1'];
+                            $ES4['space_free'][] = $val['watcher_log']['space_free'];
+                            $ES4['space_usage'][] = $val['watcher_log']['space_usage'];
+                            $ES4['insert_ts'][] = $val['watcher_log']['insert_ts'];
+                            break;
+                        }
+                    }
+                }
                 $data = array(
-                    'cluster' => $cluster,
+                    'Portal' => $Portal,
+                    'MySQL' => $MySQL,
+                    'Main' => $Main,
+                    'CPU-HOG' => $CPU_HOG,
+                    'Video' => $Video,
+                    'ES1' => $ES1,
+                    'ES2' => $ES2,
+                    'ES3' => $ES3,
+                    'ES4' => $ES4
                 );
                 break;
             }
@@ -273,7 +359,7 @@ class AnalyzerExecution extends AnalyzersAppModel
             'execution_id' => $this->id,
             'execution_ts' => $data['completition_ts'],
         ));
-        echo "WORKS!";
+        echo "$id ";
     }
 
     public function cleanUp()
