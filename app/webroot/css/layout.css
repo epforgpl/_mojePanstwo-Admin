@@ -22,3 +22,5 @@ a:hover {cursor: pointer;}
 }
 
 .panel-heading:hover {cursor: pointer;}
+
+table p { margin: 0; padding: 0; }

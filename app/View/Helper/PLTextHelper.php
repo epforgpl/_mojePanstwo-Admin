@@ -70,10 +70,12 @@ class PLTextHelper extends AppHelper {
         return $output;
     }
 
-    public function formatBytes($size, $precision = 2) {
+    public function bytes($size, $precision = 2) {
+        if(!$size)
+            return '0 B';
         $base = log($size, 1024);
-        $suffixes = array('', 'KB','MB','GB','TB','PB','EB','ZB','YB');
-        return round(pow(1024, $base - floor($base)), $precision) . $suffixes[floor($base)];
+        $suffixes = array('B', 'KB','MB','GB','TB','PB','EB','ZB','YB');
+        return round(pow(1024, $base - floor($base)), $precision) . ' ' . $suffixes[floor($base)];
     }
 
 }

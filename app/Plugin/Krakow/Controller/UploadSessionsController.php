@@ -47,7 +47,10 @@ class UploadSessionsController extends KrakowAppController {
         $config = Configure::read('Amazonsdk.credentials');
         unset($config['secret']);
 
+        $files = $this->UploadFiles->getFiles($id);
+
         $this->set('config', json_encode($config));
+        $this->set('files', $files);
         $this->set('session', $session);
     }
 

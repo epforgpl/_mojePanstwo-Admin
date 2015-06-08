@@ -34,7 +34,50 @@
     </div>
 </div>
 
-<div class="row">
+<? if(count($files) > 0) { ?>
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text-muted">Wgrane pliki</h3>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <th>ID</th>
+                    <th>Nazwa</th>
+                    <th>Rozmiar</th>
+                    <th>Przetwarzanie pliku</th>
+                    <th>Generowanie podglądu</th>
+                </thead>
+                <tbody>
+                    <? foreach($files as $file) { ?>
+                        <tr>
+                            <td><?= $file['krakow_upload_files']['id']; ?></td>
+                            <td>
+                                <a href="/amazon/download/<?= $file['krakow_upload_files']['id']; ?>" target="_blank">
+                                    <span class="glyphicon glyphicon-download" aria-hidden="true"></span> &nbsp;
+                                    <?= $file['krakow_upload_files']['name']; ?>
+                                </a>
+                            </td>
+                            <td><?= $this->PLText->bytes((int) $file['rady_posiedzenia_pliki']['size_origin']); ?></td>
+                            <td>
+                                <span class="small pull-right"><?= $this->PLText->date($file['rady_posiedzenia_pliki']['mpg_status_ts']); ?></span>
+                                <p class="text-<?= $file['rady_posiedzenia_pliki']['mpg_label'][1]; ?>">
+                                    <?= $file['rady_posiedzenia_pliki']['mpg_label'][0]; ?>
+                                </p>
+                            </td>
+                            <td>
+                                <span class="small pull-right"><?= $this->PLText->date($file['rady_posiedzenia_pliki']['preview_status_ts']); ?></span>
+                                <p class="text-<?= $file['rady_posiedzenia_pliki']['preview_label'][1]; ?>">
+                                    <?= $file['rady_posiedzenia_pliki']['preview_label'][0]; ?>
+                                </p>
+                            </td>
+                        </tr>
+                    <? } ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+<? } ?>
+
+<div class="row margin-top-20">
     <div id="fine-uploader"></div>
     <script type="text/template" id="qq-template">
         <div class="qq-uploader-selector qq-uploader">
