@@ -1,11 +1,12 @@
 <?php
-
 /**
  * Created by PhpStorm.
  * User: tomekdrazewski
  * Date: 25/05/15
  * Time: 15:02
  */
+App::uses('CakeEmail', 'Network/Email');
+
 class AnalyzerShell extends Shell
 {
     public $uses = array('Analyzers.Analyzer', 'Analyzers.AnalyzerExecution');
@@ -26,6 +27,13 @@ class AnalyzerShell extends Shell
     public function CleanUp()
     {
         $this->AnalyzerExecution->cleanUp();
+    }
+
+    public function MailAlerts()
+    {
+        $this->AnalyzerExecution->spaceCheck();
+
+        $this->AnalyzerExecution->reportCheck();
     }
 
 }

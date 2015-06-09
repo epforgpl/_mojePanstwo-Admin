@@ -374,4 +374,57 @@ class AnalyzerExecution extends AnalyzersAppModel
             'AnalyzerExecution.completition_ts <' => date('Y-m-d H:i:s', $newer_than),
         ), false);
     }
+
+    public function spaceCheck()
+    {
+        date_default_timezone_set('Europe/Warsaw');
+
+        $time = time();
+        $minus3minutes = date('Y-m-d H:i:s', $time - 180);
+
+        $pamiec = $this->query("SELECT server_name, space_free FROM watcher_log WHERE space_free<0.1 AND insert_ts>'$minus3minutes' GROUP BY server_name");
+        echo "Query done. ";
+        if (sizeof($pamiec) != 0) {
+            $Tresc = "Uwaga wymienione serwery mają poniżej 10% wolnego miejsca na dysku:
+";
+            foreach ($pamiec as $key => $val) {
+                $Tresc .= "         {$val['watcher_log']['server_name']}: {$val['watcher_log']['space_free']}
+";
+            }
+            $Email = new CakeEmail();
+            $Email->from(array('no-reply@mojepanstwo.pl' => 'MojePanstwo.pl'));
+            $Email->to('tomek.drazewski@epf.org.pl');
+            $Email->subject('[SERVER ALERT] Low disk space');
+            $Email->send($Tresc . "Mail wysłany automatycznie");
+            echo "Sent! ";
+        }
+    }
+
+    public function reportCheck()
+    {
+        date_default_timezone_set('Europe/Warsaw');
+
+        $time = time();
+        $minus3minutes = date('Y-m-d H:i:s', $time - 180);
+
+        $raport = $this->query("SELECT server_name FROM watcher_log WHERE server_name NOT IN (SELECT server_name FROM watcher_log WHERE insert_ts>'$minus3minutes') GROUP BY server_name");
+        echo "Query done. ";
+        if (sizeof($raport) != 0) {
+            $Tresc = "Uwaga wymienione serwery nie wysłały raportu w ciągu ostatnich 3 minut:
+
+";
+            foreach ($raport as $key => $val) {
+                $Tresc .= "         {$val['watcher_log']['server_name']}
+
+";
+            }
+            $Email = new CakeEmail();
+            $Email->from(array('no-reply@mojepanstwo.pl' => 'MojePanstwo.pl'));
+            $Email->to('tomek.drazewski@epf.org.pl');
+            $Email->subject('[SERVER ALERT] No Report');
+            $Email->send($Tresc);
+            echo "Sent! ";
+        }
+    }
+
 }
