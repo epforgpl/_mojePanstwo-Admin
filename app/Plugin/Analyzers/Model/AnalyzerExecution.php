@@ -393,7 +393,7 @@ class AnalyzerExecution extends AnalyzersAppModel
             }
             $Email = new CakeEmail();
             $Email->from(array('no-reply@mojepanstwo.pl' => 'MojePanstwo.pl'));
-            $Email->to('tomek.drazewski@epf.org.pl');
+            $Email->to('daniel.macuszyn@epf.org.pl');
             $Email->subject('[SERVER ALERT] Low disk space');
             $Email->send($Tresc . "Mail wysłany automatycznie");
             echo "Sent! ";
@@ -420,7 +420,7 @@ class AnalyzerExecution extends AnalyzersAppModel
             }
             $Email = new CakeEmail();
             $Email->from(array('no-reply@mojepanstwo.pl' => 'MojePanstwo.pl'));
-            $Email->to('tomek.drazewski@epf.org.pl');
+            $Email->to('daniel.macuszyn@epf.org.pl');
             $Email->subject('[SERVER ALERT] No Report');
             $Email->send($Tresc);
             echo "Sent! ";
