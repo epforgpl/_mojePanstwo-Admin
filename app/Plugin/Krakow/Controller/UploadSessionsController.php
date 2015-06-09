@@ -211,10 +211,10 @@ class UploadSessionsController extends KrakowAppController {
         if(!$session)
             throw new NotFoundException;
 
-        $this->UploadSessions->read(null, $session['id']);
+        $this->UploadSessions->read(null, $session['UploadSessions']['id']);
         $this->UploadSessions->set(array(
-            'finish_ts = NOW()',
-            'finished' => '1' // @todo sprawdzić czy zapisuje prawidłowo
+            'finish_ts' => date('Y-m-d H:i:s'),
+            'finished' => '1'
         ));
         $this->UploadSessions->save();
 

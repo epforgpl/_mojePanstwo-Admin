@@ -92,6 +92,11 @@ $(document).ready(function() {
         btn.removeClass('btn-default');
         btn.addClass('btn-info');
         btn.attr('disabled', 'disabled');
+
+        $.post('/krakow/upload_sessions/finishSession/' + id)
+            .done(function(res) {
+                $(location).attr('href', '/krakow/upload_sessions');
+            });
     };
 
     $('#finish-session-submit').click(function() {

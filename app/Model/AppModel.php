@@ -310,6 +310,8 @@ class AppModel extends Model {
             'rady_posiedzenia_pliki',
             'rady_posiedzenia_debaty_oznaczone_wystapienia',
             'rady_komisje',
+            'rady_komisje_posiedzenia',
+            'rady_dzielnice_posiedzenia',
             'rady_druki',
             'pl_dzielnice'
         ));
