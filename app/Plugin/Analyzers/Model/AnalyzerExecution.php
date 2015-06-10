@@ -427,4 +427,14 @@ class AnalyzerExecution extends AnalyzersAppModel
         }
     }
 
+    public function cleanUpReports($days=30)
+    {
+        date_default_timezone_set('Europe/Warsaw');
+        $current_time = time();
+        $minusdays = $days * 24 * 3600;
+
+        $newer_than = $current_time - $minusdays;
+
+        $this->query("DELETE FROM watcher_log where insertion_ts<date('Y-m-d H:i:s', $newer_than)");
+    }
 }

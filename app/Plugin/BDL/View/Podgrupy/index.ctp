@@ -1,21 +1,20 @@
 <ol class="breadcrumb">
     <li><a href="/">Dane</a></li>
-    <li class="active">MSiG Wydania</li>
+    <li><a href="/bdl">BDL</a></li>
+    <li><a href="/bdl/kategorie">Kategorie</a></li>
+    <li><a href="/bdl/grupy">Grupy</a></li>
+    <li class="active">Podgrupy</li>
 </ol>
 
-<ul class="nav nav-tabs">
-    <?php foreach($modes as $key => $label) { ?>
-        <li role="presentation" <?= ($mode == $key) ? 'class="active"' : ''; ?>><a href="/msig/wydania?mode=<?= $key; ?>"><?= $label; ?></a></li>
-    <? } ?>
-</ul>
 
-<? if(count($data)) { ?>
+
+<?if(count($data)) { ?>
     <ul class="list-group margin-top-5 panel-items">
         <? foreach($data as $row) { ?>
             <li class="list-group-item">
-                <span class="pull-right">Liczba działów: <?= $row['Wydania']['liczba_dzialow']; ?></span>
-                <a href="/msig/wydania/view/<?= $row['Wydania']['id']; ?>">
-                    <?= $row['Wydania']['rocznik']; ?> nr. <?= $row['Wydania']['nr']; ?> z <?= $this->PLText->date($row['Wydania']['data']); ?>
+                <span class="pull-right">ID: <?= $row['Podgrupy']['id']; ?></span>
+                <a href="/bdl/podgrupy/view/<?= $row['Podgrupy']['id']; ?>">
+                    <?= $row['Podgrupy']['tytul']; ?>
                 </a>
             </li>
         <? } ?>
