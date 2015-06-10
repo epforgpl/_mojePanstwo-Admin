@@ -211,6 +211,16 @@ class AppModel extends Model
                             'groups' => array('admin', 'pk-admin', 'pk-rada', 'pk-dzielnica6', 'pk-dzielnica14')
                         ),
                         array(
+                            'label' => 'Posiedzenia Dzielnice',
+                            'href' => '/krakow/posiedzenia_dzielnice',
+                            'groups' => array('admin', 'pk-admin', 'pk-rada')
+                        ),
+                        array(
+                            'label' => 'Posiedzenia Komisje',
+                            'href' => '/krakow/posiedzenia_komisje',
+                            'groups' => array('admin', 'pk-admin', 'pk-rada')
+                        ),
+                        array(
                             'label' => 'Zamowienia Publiczne',
                             'href' => '/zamowienia_publiczne/dokumenty',
                             'groups' => array('admin')
@@ -325,7 +335,8 @@ class AppModel extends Model
             'rady_komisje_posiedzenia',
             'rady_dzielnice_posiedzenia',
             'rady_druki',
-            'pl_dzielnice'
+            'pl_dzielnice',
+            'rady_posiedzenia_osoby'
         ));
 
         $ends = array(
