@@ -36,4 +36,7 @@ class AnalyzerShell extends Shell
         $this->AnalyzerExecution->reportCheck();
     }
 
+    public function CleanUpReports($days){
+        $this->AnalyzerExecution->cleanUpReports($days);
+    }
 }

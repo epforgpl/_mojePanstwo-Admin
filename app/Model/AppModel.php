@@ -29,7 +29,8 @@ App::uses('Model', 'Model');
  *
  * @package       app.Model
  */
-class AppModel extends Model {
+class AppModel extends Model
+{
 
     public $uses = array(
         'Session'
@@ -86,10 +87,11 @@ class AppModel extends Model {
         ),
     );
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
-        if(!count(self::$databaseType)) {
+        if (!count(self::$databaseType)) {
             App::uses('CakeSession', 'Model/Datasource');
             $type = in_array(CakeSession::read('Database.type'), array_keys(self::$databaseTypes)) ?
                 CakeSession::read('Database.type') : array_keys(self::$databaseTypes)[1];
@@ -103,55 +105,58 @@ class AppModel extends Model {
         $this->useDbConfig = self::$databaseType['key'];
     }
 
-    private static function accessPluginValidation($request, $rules) {
+    private static function accessPluginValidation($request, $rules)
+    {
         $plugin = strtolower(trim($request['plugin']));
-        if($rules['plugin'] == '*')
+        if ($rules['plugin'] == '*')
             return true;
-        if(is_array($rules['plugin']) && in_array($plugin, $rules['plugin']))
+        if (is_array($rules['plugin']) && in_array($plugin, $rules['plugin']))
             return true;
-        if(!is_array($rules['plugin']) && $rules['plugin'] == $plugin)
+        if (!is_array($rules['plugin']) && $rules['plugin'] == $plugin)
             return true;
         return false;
     }
 
-    private static function accessControllerValidation($request, $rules) {
+    private static function accessControllerValidation($request, $rules)
+    {
         $controller = strtolower(trim($request['controller']));
-        if($rules['controller'] == '*')
+        if ($rules['controller'] == '*')
             return true;
-        if(is_array($rules['controller']) && in_array($controller, $rules['controller']))
+        if (is_array($rules['controller']) && in_array($controller, $rules['controller']))
             return true;
-        if(!is_array($rules['controller']) && $rules['controller'] == $controller)
+        if (!is_array($rules['controller']) && $rules['controller'] == $controller)
             return true;
         return false;
     }
 
-    private static function accessActionValidation($request, $rules) {
+    private static function accessActionValidation($request, $rules)
+    {
         $action = strtolower(trim($request['action']));
-        if($rules['action'] == '*')
+        if ($rules['action'] == '*')
             return true;
-        if(is_array($rules['action']) && in_array($action, $rules['action']))
+        if (is_array($rules['action']) && in_array($action, $rules['action']))
             return true;
-        if(!is_array($rules['action']) && $rules['action'] == $action)
+        if (!is_array($rules['action']) && $rules['action'] == $action)
             return true;
         return false;
     }
 
-    private static function accessGroupValidation($user, $rules) {
+    private static function accessGroupValidation($user, $rules)
+    {
         $groups = $rules['groups'];
-        if(!is_array($groups) && $groups == '*')
+        if (!is_array($groups) && $groups == '*')
             return true;
 
-        if($user)
-        {
-            if(!isset($user['admin_groups']) || count($user['admin_groups']) == 0)
+        if ($user) {
+            if (!isset($user['admin_groups']) || count($user['admin_groups']) == 0)
                 return false;
 
-            if(!is_array($groups) && in_array(strtolower(trim($groups)), $user['admin_groups']))
+            if (!is_array($groups) && in_array(strtolower(trim($groups)), $user['admin_groups']))
                 return true;
 
-            if(is_array($groups)) {
-                foreach($groups as $group) {
-                    if(in_array(strtolower(trim($group)), $user['admin_groups']))
+            if (is_array($groups)) {
+                foreach ($groups as $group) {
+                    if (in_array(strtolower(trim($group)), $user['admin_groups']))
                         return true;
                 }
             }
@@ -160,13 +165,14 @@ class AppModel extends Model {
         return false;
     }
 
-    public static function checkAccess($request, $user) {
+    public static function checkAccess($request, $user)
+    {
         $allow = false;
-        foreach(self::$privilegesRules as $rules) {
-            if(self::accessPluginValidation($request, $rules)) {
-                if(self::accessControllerValidation($request, $rules)) {
-                    if(self::accessActionValidation($request, $rules)) {
-                        if(self::accessGroupValidation($user, $rules)) {
+        foreach (self::$privilegesRules as $rules) {
+            if (self::accessPluginValidation($request, $rules)) {
+                if (self::accessControllerValidation($request, $rules)) {
+                    if (self::accessActionValidation($request, $rules)) {
+                        if (self::accessGroupValidation($user, $rules)) {
                             $allow = true;
                         }
                     }
@@ -218,6 +224,11 @@ class AppModel extends Model {
                             'label' => 'Analizator',
                             'href' => '/analyzers',
                             'groups' => array('admin')
+                        ),
+                        array(
+                            'label' => 'BDL',
+                            'href' => '/bdl/podgrupy',
+                            'groups' => array('admin')
                         )
                     )
                 ),
@@ -234,26 +245,26 @@ class AppModel extends Model {
             )
         );
 
-        if(!$user)
+        if (!$user)
             return array();
 
-        if(!isset($user['admin_groups']) || count($user['admin_groups']) == 0)
+        if (!isset($user['admin_groups']) || count($user['admin_groups']) == 0)
             return array();
 
         $groups = $user['admin_groups'];
-        foreach($menu['items'] as $i => $item) {
-            if(isset($item['childrens']) && is_array($item['childrens'])) {
-                foreach($item['childrens'] as $c => $child) {
-                    if(isset($child['groups'])) {
+        foreach ($menu['items'] as $i => $item) {
+            if (isset($item['childrens']) && is_array($item['childrens'])) {
+                foreach ($item['childrens'] as $c => $child) {
+                    if (isset($child['groups'])) {
                         $enabled = false;
-                        foreach($groups as $group) {
-                            if(in_array($group, $child['groups'])) {
+                        foreach ($groups as $group) {
+                            if (in_array($group, $child['groups'])) {
                                 $enabled = true;
                                 break;
                             }
                         }
 
-                        if(!$enabled) {
+                        if (!$enabled) {
                             unset($menu['items'][$i]['childrens'][$c]);
                         }
                     }
@@ -269,7 +280,8 @@ class AppModel extends Model {
      *
      * @return array
      */
-    public static function getTables() {
+    public static function getTables()
+    {
         $names = array();
         $ends = array(
             'dzielnice',
@@ -300,7 +312,7 @@ class AppModel extends Model {
         );
 
         $prefix = 'pl_gminy_krakow_';
-        foreach($ends as $table) {
+        foreach ($ends as $table) {
             $names[] = $prefix . $table;
         }
 
