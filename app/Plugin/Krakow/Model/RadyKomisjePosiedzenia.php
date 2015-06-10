@@ -86,10 +86,11 @@ class RadyKomisjePosiedzenia extends AppModel {
             }
 
             $data[] = array(
-                'id'    => $debata['RadyKomisjePosiedzeniaDebaty']['id'],
-                'tytul' => $debata['RadyKomisjePosiedzeniaDebaty']['tytul'],
-                'ord'   => $debata['RadyKomisjePosiedzeniaDebaty']['ord'],
-                'mowcy' => $mowcy
+                'id'            => $debata['RadyKomisjePosiedzeniaDebaty']['id'],
+                'tytul'         => $debata['RadyKomisjePosiedzeniaDebaty']['tytul'],
+                'video_start'   => $debata['RadyKomisjePosiedzeniaDebaty']['video_start'],
+                'ord'           => $debata['RadyKomisjePosiedzeniaDebaty']['ord'],
+                'mowcy'         => $mowcy
             );
         }
 

@@ -15,6 +15,25 @@
     <? } ?>
 </ul>
 
+<div class="row margin-top-10">
+    <div class="col-sm-12">
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                <button id="add" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;
+                    Nowy punkt
+                </button>
+            </div>
+            <div class="btn-group" role="group">
+                <button id="save" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;
+                    Zapisz
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="posiedzenie"></div>
 
 <div id="data-posiedzenie-id" data-value="<?=$posiedzenie['RadyKomisjePosiedzenia']['id'];?>"></div>
