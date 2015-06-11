@@ -57,4 +57,20 @@ class PosiedzeniaDzielniceController extends KrakowAppController {
         $this->set('data', $data);
     }
 
+    public function view($id) {
+        if(isset($this->data) && is_array($this->data) && count($this->data) > 0) {
+            return $this->json(array(
+                'success' => $this->RadyDzielnicePosiedzenia->saveData($id, $this->data)
+            ));
+        }
+
+        $data = $this->RadyDzielnicePosiedzenia->getData($id);
+        if(!$data)
+            throw new NotFoundException;
+
+        $debaty = str_replace("'", "", json_encode($data['debaty']));
+        $this->set('posiedzenie', $data['posiedzenie']);
+        $this->set('debaty', $debaty);
+    }
+
 }

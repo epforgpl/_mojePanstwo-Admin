@@ -333,9 +333,11 @@ class AppModel extends Model
             'rady_posiedzenia_debaty_oznaczone_wystapienia',
             'rady_komisje',
             'rady_komisje_posiedzenia',
-            'rady_dzielnice_posiedzenia',
             'rady_komisje_posiedzenia_debaty',
             'rady_komisje_posiedzenia_debaty_mowcy',
+            'rady_dzielnice_posiedzenia',
+            'rady_dzielnice_posiedzenia_punkty',
+            'rady_dzielnice_posiedzenia_punkty_mowcy',
             'rady_druki',
             'pl_dzielnice',
             'rady_posiedzenia_osoby'

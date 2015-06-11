@@ -6,7 +6,6 @@ class PosiedzeniaKomisjeController extends KrakowAppController {
 
     public $uses = array(
         'Krakow.RadyKomisjePosiedzenia',
-        'Krakow.RadyKomisjePosiedzeniaDebaty',
         'Krakow.Osoby',
         'PLText',
         'Paginator'
