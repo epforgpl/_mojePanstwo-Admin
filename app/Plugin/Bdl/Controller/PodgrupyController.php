@@ -28,12 +28,11 @@ class PodgrupyController extends BdlAppController
         $grupy = new Grupy();
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            //debug($_POST);
-            $conditions=array();
+            $conditions = array();
             if ($_POST['Kategoria'] == 'all') {
                 if ($_POST['Grupa'] == 'all') {
 
-                    $conditions=array('1');
+                    $conditions = array('1');
 
                     $kategorie = $kategorie->find('list', array(
                         'fields' => array('Kategorie.id', 'Kategorie.tytul'),
@@ -42,8 +41,8 @@ class PodgrupyController extends BdlAppController
                     $grupy = $grupy->find('list', array(
                         'fields' => array('Grupy.id', 'Grupy.tytul'),
                     ));
-                }else{
-                    $conditions=array('Podgrupy.grupa_id'=>$_POST['Grupa']);
+                } else {
+                    $conditions = array('Podgrupy.grupa_id' => $_POST['Grupa']);
 
                     $grupy = $grupy->find('list', array(
                         'fields' => array('Grupy.id', 'Grupy.tytul'),
@@ -54,9 +53,9 @@ class PodgrupyController extends BdlAppController
                         'conditions' => array('Kategorie.id' => array_keys($grupy)[0])
                     ));
                 }
-            }else{
+            } else {
 
-                $conditions=array('Podgrupy.grupa_id'=>$_POST['Kategoria']);
+                $conditions = array('Podgrupy.grupa_id' => $_POST['Kategoria']);
 
                 $grupy = $grupy->find('list', array(
                     'fields' => array('Grupy.id', 'Grupy.tytul'),
@@ -112,14 +111,16 @@ class PodgrupyController extends BdlAppController
         $this->set('grupa', $data['grupa']);
     }
 
-    public function update(){
+    public function update()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $opis = trim($_POST['opis']);
             $this->Podgrupy->id = $_POST['id'];
-
-            debug($_POST);
+            $odp = $this->Podgrupy->saveField('opis', $opis);
+            $this->json($odp);
+        } else {
+            $this->json(false);
         }
-
         $this->autoRender = false;
-        //$this->json('AAAAAAAAA');
     }
 }
