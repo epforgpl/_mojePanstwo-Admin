@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
     <li><a href="/">Dane</a></li>
-    <li><a href="/bdl">BDL</a></li>
+    <li><a href="/bdl/podgrupy">BDL</a></li>
     <? if (sizeof($kategorie) == 1) { ?>
         <li>
             <a href="/bdl/kategorie/index/<? echo array_keys($kategorie)[0]; ?>"> <?= $kategorie[array_keys($kategorie)[0]] ?></a>
@@ -18,26 +18,35 @@
     <li class="active">Podgrupy</li>
 </ol>
 <div class="row">
-    <form method="post" action="">
+    <form method="get" action="" id="wybor" action="../bld/podgrupy/index">
         <div class="col-sm-8">
             <label>Kategoria:</label>
-            <select name="Kategoria">
+            <select name="Kategoria" id="kat">
                 <option value="all">Wszystkie</option>
                 <? foreach ($kategorie as $key => $title) { ?>
-                    <option value="<?= $key ?>"><?= $title ?></option>
+                    <option value="<?= $key ?>"<?
+                    if (isset($this->params['url']['Kategoria'])) {
+                        if ($key == $this->params['url']['Kategoria']) {
+                            echo "selected";
+                        }
+                    }
+                    ?>><?= $title ?></option>
                 <? } ?>
             </select>
             <br>
             <label>Grupa:</label>
-            <select name="Grupa">
+            <select name="Grupa" id="grp">
                 <option value="all">Wszystkie</option>
                 <? foreach ($grupy as $key => $title) { ?>
-                    <option value="<?= $key ?>"><?= $title ?></option>
+                    <option value="<?= $key ?>"<?
+                    if (isset($this->params['url']['Grupa'])) {
+                        if ($key == $this->params['url']['Grupa']) {
+                            echo "selected";
+                        }
+                    }
+                    ?>><?= $title ?></option>
                 <? } ?>
             </select>
-        </div>
-        <div class="col-sm-2 pull-right">
-            <button class="btn-lg btn-primary btn-block">Wybierz</button>
         </div>
     </form>
 </div>
@@ -71,3 +80,5 @@
      {:count} wszystkich, od {:start}, do {:end}.'
     ); ?>
 </span>
+
+<? echo $this->HTML->script('Bdl.Podgrupy/index'); ?>

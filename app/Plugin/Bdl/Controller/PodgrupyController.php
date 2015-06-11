@@ -20,84 +20,81 @@ class PodgrupyController extends BdlAppController
         'Paginator'
     );
 
-    public function index()
+    public function index($cat = 'all', $grp = 'all')
     {
+        if (isset($this->params['url']['Grupa'])) {
+            $grp = $this->params['url']['Grupa'];
+        }
+        if (isset($this->params['url']['Kategoria'])) {
+            $cat = $this->params['url']['Kategoria'];
+        }
+
         ClassRegistry::init('Bdl.Grupy');
         ClassRegistry::init('Bdl.Kategorie');
-        $kategorie = new Kategorie();
-        $grupy = new Grupy();
+        $kategoria = new Kategorie();
+        $grupa = new Grupy();
 
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            $conditions = array();
-            if ($_POST['Kategoria'] == 'all') {
-                if ($_POST['Grupa'] == 'all') {
+        $conditions = array();
+        if ($cat == 'all') {
+            if ($grp == 'all') {
 
-                    $conditions = array('1');
+                $conditions = array('1');
 
-                    $kategorie = $kategorie->find('list', array(
-                        'fields' => array('Kategorie.id', 'Kategorie.tytul'),
-                    ));
-
-                    $grupy = $grupy->find('list', array(
-                        'fields' => array('Grupy.id', 'Grupy.tytul'),
-                    ));
-                } else {
-                    $conditions = array('Podgrupy.grupa_id' => $_POST['Grupa']);
-
-                    $grupy = $grupy->find('list', array(
-                        'fields' => array('Grupy.id', 'Grupy.tytul'),
-                        'conditions' => array('Grupy.id' => $_POST['Grupa'])
-                    ));
-                    $kategorie = $kategorie->find('list', array(
-                        'fields' => array('Kategorie.id', 'Kategorie.tytul'),
-                        'conditions' => array('Kategorie.id' => array_keys($grupy)[0])
-                    ));
-                }
+                 $grupy = $grupa->find('list', array(
+                       'fields' => array('Grupy.id', 'Grupy.tytul'),
+                   ));
             } else {
+                $conditions = array('Podgrupy.grupa_id' => $grp);
 
-                $conditions = array('Podgrupy.grupa_id' => $_POST['Kategoria']);
-
-                $grupy = $grupy->find('list', array(
+                $grupy = $grupa->find('list', array(
                     'fields' => array('Grupy.id', 'Grupy.tytul'),
-                    'conditions' => array('Grupy.kat_id' => $_POST['Kategoria'])
-                ));
-
-                $kategorie = $kategorie->find('list', array(
-                    'fields' => array('Kategorie.id', 'Kategorie.tytul'),
-                    'conditions' => array('Kategorie.id' => $_POST['Kategoria'])
                 ));
             }
-
-            $this->Paginator->settings = array(
-                'paramType' => 'querystring',
-                'Podgrupy' => array(
-                    'limit' => 25,
-                    'order' => array('id' => 'desc'),
-                    'conditions' => $conditions
-                )
-            );
-
         } else {
-            $this->Paginator->settings = array(
-                'paramType' => 'querystring',
-                'Podgrupy' => array(
-                    'limit' => 25,
-                    'order' => array('id' => 'desc'),
-                )
-            );
-
-            $kategorie = $kategorie->find('list', array(
-                'fields' => array('Kategorie.id', 'Kategorie.tytul'),
-            ));
-
-            $grupy = $grupy->find('list', array(
+            if ($grp == 'all') {
+                $conditions = array('Podgrupy.kategoria_id' => $cat);
+            } else {
+                $conditions = array(
+                    'Podgrupy.kategoria_id' => $cat,
+                    'Podgrupy.grupa_id' => $grp
+                );
+            }
+            $grupy = $grupa->find('list', array(
                 'fields' => array('Grupy.id', 'Grupy.tytul'),
+                'conditions' => array('Grupy.kat_id' => $cat)
             ));
         }
+
+        $this->Paginator->settings = array(
+            'paramType' => 'querystring',
+            'Podgrupy' => array(
+                'limit' => 25,
+                'order' => array('id' => 'desc'),
+                'conditions' => $conditions
+            )
+        );
+
+        $kategorie = $kategoria->find('list', array(
+            'fields' => array('Kategorie.id', 'Kategorie.tytul'),
+        ));
+        try {
+            $this->Paginator->paginate('Podgrupy');
+        } catch (NotFoundException $e) {
+            $this->redirect(array(
+                'controller' => 'Podgrupy',
+                'action' => 'index',
+                '?' => array(
+                    'Kategoria' => $cat,
+                    'Grupa' => $grp
+                )));
+        }
+
         $data = $this->Paginator->paginate('Podgrupy');
         $this->set('data', $data);
         $this->set('kategorie', $kategorie);
         $this->set('grupy', $grupy);
+
+
     }
 
     public function view($id)
