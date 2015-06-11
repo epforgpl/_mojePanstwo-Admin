@@ -329,6 +329,12 @@ Posiedzenie.prototype.showEditPanel = function(id) {
                             $(this).remove();
                             t.setActive();
                         });
+
+                        if(t.data.length == 0) {
+                            var l = t.el.find('.posiedzenie-list').first();
+                            l.html(t.getListDOM());
+                        }
+
                         break;
                     }
                 }
@@ -419,7 +425,7 @@ Posiedzenie.prototype.updateVideoTimer = function() {
 
 Posiedzenie.prototype.getListDOM = function() {
     if(this.data.length == 0) {
-        return '<div class="alert alert-info" role="alert">Brak punktw</div>';
+        return '<div class="alert alert-info" role="alert">Brak punktów</div>';
     }
 
     var h = ['<div class="list-group debaty">'];
@@ -447,7 +453,7 @@ Posiedzenie.prototype.getListDOM = function() {
 Posiedzenie.prototype.createNewElemenet = function() {
     var t = this;
 
-    var ord = (t.data.length > 0) ? t.data[t.data.length - 1].ord : 0;
+    var ord = (t.data.length > 0) ? parseInt(t.data[t.data.length - 1].ord) + 1: 0;
     var id = '_' + t.i;
 
     t.data.push({
@@ -475,6 +481,11 @@ Posiedzenie.prototype.createNewElemenet = function() {
     t.i++;
 };
 
+Posiedzenie.prototype.getData = function() {
+    var d = this.data;
+    return d;
+};
+
 $(document).ready(function() {
     var data = JSON.parse(
         $('#data-json').attr('data-value')
@@ -490,6 +501,37 @@ $(document).ready(function() {
 
     $('#add').click(function() {
         p.createNewElemenet();
+    });
+
+    $('#save').click(function() {
+        var data = p.getData();
+        if(data.length == 0) {
+            alert('Brak danych do zapisania');
+            return false;
+        }
+
+        var btn = $(this);
+
+        btn.html('Trwa zapisywanie...')
+            .removeClass('btn-default')
+            .addClass('btn-info');
+
+        $.post('/krakow/posiedzenia_komisje/view/' + p.id, { data: data })
+            .done(function(res) {
+                console.log(res);
+
+                btn.html('Zapisano poprawnie')
+                    .removeClass('btn-info')
+                    .addClass('btn-success');
+
+                setTimeout(function() {
+                    btn.html('<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp; Zapisz')
+                        .removeClass('btn-success')
+                        .addClass('btn-default');
+                }, 2000);
+            });
+
+        console.log(data);
     });
 
 });

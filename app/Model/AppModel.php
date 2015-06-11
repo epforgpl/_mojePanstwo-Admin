@@ -334,6 +334,8 @@ class AppModel extends Model
             'rady_komisje',
             'rady_komisje_posiedzenia',
             'rady_dzielnice_posiedzenia',
+            'rady_komisje_posiedzenia_debaty',
+            'rady_komisje_posiedzenia_debaty_mowcy',
             'rady_druki',
             'pl_dzielnice',
             'rady_posiedzenia_osoby'

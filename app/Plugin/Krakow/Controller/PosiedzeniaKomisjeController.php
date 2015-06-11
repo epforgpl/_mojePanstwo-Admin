@@ -59,6 +59,12 @@ class PosiedzeniaKomisjeController extends KrakowAppController {
     }
 
     public function view($id) {
+        if(isset($this->data) && is_array($this->data) && count($this->data) > 0) {
+            return $this->json(array(
+                'success' => $this->RadyKomisjePosiedzenia->saveData($id, $this->data)
+            ));
+        }
+
         $data = $this->RadyKomisjePosiedzenia->getData($id);
         if(!$data)
             throw new NotFoundException;
