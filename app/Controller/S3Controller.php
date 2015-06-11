@@ -21,15 +21,16 @@ class S3Controller extends AppController {
             Configure::read('S3.secret_key')
         );
 
-        $s3->setEndpoint(
+        /* $s3->setEndpoint(
             Configure::read('S3.endpoint')
-        );
+        ); */
 
         return $this->json(array(
             'url' => $s3->getAuthenticatedURL(
                 $this->request->data['bucket'],
                 $this->request->data['uri'],
-                self::$lifetime
+                self::$lifetime,
+                Configure::read('S3.endpoint')
             )
         ));
     }
