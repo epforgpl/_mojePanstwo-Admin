@@ -36,7 +36,10 @@ var Posiedzenie = function(id, data, el) {
     this.el = el;
     this.video = null;
     this.active = null;
+    this.i = 0;
     this.init();
+
+    console.log(data);
 };
 
 Posiedzenie.prototype.init = function() {
@@ -166,6 +169,13 @@ Posiedzenie.prototype.getVideoSrc = function(onSuccess) {
 Posiedzenie.prototype.setActive = function(el) {
     var t = this;
     var e = t.el;
+
+    if(el === undefined) {
+        var a = e.find('.list-group.debaty a').first();
+        if(a)
+            el = a;
+    }
+
     e.find('.list-group.debaty a').each(function() {
         $(this).removeClass('active');
     });
@@ -270,6 +280,60 @@ Posiedzenie.prototype.showEditPanel = function(id) {
                 t.addMowca(suggestion.value, suggestion.id, id);
             }
         });
+
+        $('#save_active_time').click(function() {
+            if(t.active && t.video) {
+
+                t.active.video_start = t.video.currentTime();
+                var e = $('.list-group.debaty a[data-id="' + t.active.id + '"] code.time').first();
+                e.html(
+                    String(t.active.video_start).toHHMMSS()
+                );
+
+                for(var i = 0; i < t.data.length; i++) {
+                    if(t.data.hasOwnProperty(i)) {
+                        t.data[i].video_start = t.active.video_start;
+                        break;
+                    }
+                }
+            }
+        });
+
+        $('#save_title').click(function() {
+            var title = String($('#title').val()).replace(/<\/?[^>]+(>|$)/g, '');
+            if(t.active && title != '') {
+                for(var i = 0; i < t.data.length; i++) {
+                    if (t.data.hasOwnProperty(i)) {
+                        if (t.data[i].id == t.active.id) {
+                            t.data[i].tytul = title;
+                            var span = $('.list-group.debaty a[data-id="' + t.active.id + '"] .title').first();
+                            span.html(
+                                title
+                            );
+                        }
+                    }
+                }
+            }
+        });
+
+        $('#delete').click(function() {
+            if(!confirm('Czy na pewno chcesz usunac ten punkt?'))
+                return false;
+
+            for(var i = 0; i < t.data.length; i++) {
+                if(t.data.hasOwnProperty(i)) {
+                    if(t.data[i].id == t.active.id) {
+                        t.data.splice(i, 1);
+                        var a = $('.list-group.debaty a[data-id="' + t.active.id + '"]').first();
+                        a.hide(200, function() {
+                            $(this).remove();
+                            t.setActive();
+                        });
+                        break;
+                    }
+                }
+            }
+        });
     }
 };
 
@@ -277,7 +341,7 @@ Posiedzenie.prototype.getEditPanelDOM = function(ob) {
     var h = [
         '<div class="panel panel-default">',
             '<div class="panel-body">',
-                '<textarea class="form-control" rows="5">' + ob.tytul + '</textarea>',
+                '<textarea class="form-control" id="title" rows="5">' + ob.tytul + '</textarea>',
                 '<ul class="list-group mowcy margin-top-10">'
     ];
 
@@ -302,19 +366,19 @@ Posiedzenie.prototype.getEditPanelDOM = function(ob) {
             '<div class="panel-footer">',
                 '<div class="btn-group btn-group-sm btn-group-justified" role="group">',
                     '<div class="btn-group" role="group">',
-                        '<button id="close" type="button" class="btn btn-default">',
+                        '<button id="delete" type="button" class="btn btn-default">',
                             '<span class="glyphicon glyphicon-trash" aria-hidden="true"></span>&nbsp;',
                             'Usuń',
                         '</button>',
                     '</div>',
                     '<div class="btn-group" role="group">',
-                        '<button id="save" type="button" class="btn btn-default">',
+                        '<button id="save_active_time" type="button" class="btn btn-default">',
                             '<span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;',
                             'Zapisz czas',
                         '</button>',
                     '</div>',
                     '<div class="btn-group" role="group">',
-                        '<button id="save" type="button" class="btn btn-default">',
+                        '<button id="save_title" type="button" class="btn btn-default">',
                             '<span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>&nbsp;',
                             'Zapisz',
                         '</button>',
@@ -354,6 +418,10 @@ Posiedzenie.prototype.updateVideoTimer = function() {
 };
 
 Posiedzenie.prototype.getListDOM = function() {
+    if(this.data.length == 0) {
+        return '<div class="alert alert-info" role="alert">Brak punktw</div>';
+    }
+
     var h = ['<div class="list-group debaty">'];
 
     for(var i = 0; i < this.data.length; i++) {
@@ -364,7 +432,9 @@ Posiedzenie.prototype.getListDOM = function() {
                     '<code class="time">',
                         String(o.video_start).toHHMMSS(),
                     '</code>',
-                    o.tytul,
+                    '<span class="title">',
+                        o.tytul,
+                    '</span>',
                 '</a>'
             ].join(''));
         }
@@ -372,6 +442,37 @@ Posiedzenie.prototype.getListDOM = function() {
 
     h.push('</div>');
     return h.join('');
+};
+
+Posiedzenie.prototype.createNewElemenet = function() {
+    var t = this;
+
+    var ord = (t.data.length > 0) ? t.data[t.data.length - 1].ord : 0;
+    var id = '_' + t.i;
+
+    t.data.push({
+        id: id,
+        mowcy: [],
+        ord: ord,
+        tytul: 'Tytuł',
+        video_start: '0'
+    });
+
+    var l = t.el.find('.posiedzenie-list').first();
+    l.html(t.getListDOM());
+
+    var el = $('.list-group.debaty a[data-id="' + id + '"]').first();
+    t.setActive(el);
+
+    $('.list-group.debaty a').click(function() {
+        t.setActive(
+            $(this)
+        );
+
+        return false;
+    });
+
+    t.i++;
 };
 
 $(document).ready(function() {
@@ -386,5 +487,9 @@ $(document).ready(function() {
         data,
         $('#posiedzenie')
     );
+
+    $('#add').click(function() {
+        p.createNewElemenet();
+    });
 
 });
