@@ -143,7 +143,13 @@ class RadyKomisjePosiedzenia extends AppModel {
             );
         }
 
-        return $dodanePunkty;
+        $this->id = $posiedzenie_id;
+        $this->save(array(
+            'porzadek_akcept' => '1',
+            'analiza' => '1'
+        ));
+
+        return true;
     }
 
     /**
