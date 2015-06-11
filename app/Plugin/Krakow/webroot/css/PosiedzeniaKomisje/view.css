@@ -9,3 +9,6 @@
 .autocomplete-group strong { display: block; border-bottom: 1px solid #000; }
 .autocomplete-suggestion:hover {
     cursor: pointer; }
+
+.debaty code.time { display: block; margin-bottom: 10px; }
+.debaty .active code.time { background: #2C416C; color: #DBE8EA; }
