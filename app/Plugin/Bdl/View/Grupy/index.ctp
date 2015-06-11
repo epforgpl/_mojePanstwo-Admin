@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
     <li><a href="/">Dane</a></li>
-    <li><a href="/bdl">BDL</a></li>
+    <li><a href="/bdl/podgrupy">BDL</a></li>
     <li><a href="/bdl/kategorie/index/<?= $kategoria['Kategorie']['id'] ?>"><?= $kategoria['Kategorie']['tytul'] ?></a></li>
     <li class="active"><?= $grupa['Grupy']['tytul'] ?></li>
 </ol>
