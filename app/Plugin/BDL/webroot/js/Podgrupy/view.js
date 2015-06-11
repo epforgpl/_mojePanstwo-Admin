@@ -1,3 +1,8 @@
 $(document).ready(function () {
-    $('#editor').wysiwyg();
+    $('#editor').wysihtml5({
+        'locale': 'pl-PL',
+        parser: function (html) {
+            return html;
+        }
+    });
 });
