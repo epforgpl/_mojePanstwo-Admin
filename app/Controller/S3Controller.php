@@ -30,7 +30,7 @@ class S3Controller extends AppController {
                 $this->request->data['bucket'],
                 $this->request->data['uri'],
                 self::$lifetime,
-                Configure::read('S3.endpoint')
+                true
             )
         ));
     }
