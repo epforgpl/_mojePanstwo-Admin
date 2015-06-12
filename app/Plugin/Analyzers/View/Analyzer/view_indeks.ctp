@@ -18,6 +18,7 @@ $dict = array(
     '5' => 'Błąd',
     '6' => 'Błąd',
     '7' => 'Błąd',
+    '8' => 'Błąd'
 );
 
 $jsdict = json_encode($dict);

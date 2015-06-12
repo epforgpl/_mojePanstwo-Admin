@@ -9,57 +9,43 @@ $(document).ready(function () {
 
     function pageReload() {
         $.getJSON(url, function (data) {
+
             obj = data.analyzer.AnalyzerExecution['data'];
 
             obj = JSON.parse(obj);
 
             var nazwy = obj.nazwy;
             var wartosci = obj.wartosci;
-          /*  $.each(obj.nazwy, function (key, value) {
-                var id = value.api_datasets.id;
-                var name = value.api_datasets.name;
-                var base_alias = value.api_datasets.base_alias;
-                nazwy[base_alias] = {"name": name, "id": id};
-            });
-            $.each(obj.wartosci, function (key, value) {
-                var id = value.objects.dataset;
-                var a = value.objects.a;
-                var count = value[0].count;
 
-                if (id != '') {
-                    if (!wartosci[id]) {
-                        wartosci[id] = {};
-                    }
-                    wartosci[id][a] = count;
-                }
-            });*/
             $.each(wartosci, function (key, value) {
-                var serie = '{"series":[';
-                $.each(value, function (key1, val1) {
+                var series = [];
 
-                    name = dict[key1];
-                    count = val1;
-                    name+=' ('+key1+')';
-                    if (name.indexOf('OK') != -1) {
-                        serie += '{ "name" : "' + name + '", "data" : [' + parseInt(count) + '], "color" : "#90ed7d" },';
+                $.each(value, function (k, v) {
+                    if(dict.hasOwnProperty(k)) {
+                        var name = dict[k];
 
-                    } else if (name.indexOf('Nieprzetwarzane') != -1 || name.indexOf('Nieprzetwarzany') !== -1) {
-                        serie += '';
-                    }
-                    else {
-                        serie += '{ "name" : "' + name + '", "data" : [' + parseInt(count) + ']},';
-                    }
+                        if (name.indexOf('OK') != -1) {
+                            series.push({
+                                name: name + '(' + k + ')',
+                                data: [parseInt(v)],
+                                color: "#90ed7d"
+                            });
+                        } else if (name.indexOf('Nieprzetwarzane') != -1 || name.indexOf('Nieprzetwarzany') !== -1) {
+
+                        }
+                        else {
+                            series.push({
+                                name: name + '(' + k + ')',
+                                data: [parseInt(v)]
+                            });
+                        }
+                    } else alert(k);
                 });
-
-
-                serie = serie.substring(0, serie.length - 1);
-                serie += ']}';
-                var dane = JSON.parse(serie);
 
                 var options = {
                     chart: {
                         type: 'bar',
-                        height: 250,
+                        height: 250
                     },
                     colors: ['#7cb5ec', '#434348', '#f7a35c', '#8085e9',
                         '#f15c80', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1'],
@@ -89,14 +75,14 @@ $(document).ready(function () {
                         headerFormat: '',
                         pointFormat: '{series.name}: {point.y}'
                     },
-                    series: [{}]
+                    series: series
                 };
                 if (key in nazwy) {
                     options.title.text = nazwy[key]['name'];
                 } else {
                     options.title.text = key;
                 }
-                options.series = dane.series;
+                // options.series = dane.series;
                 options.chart.renderTo = "" + key + "";
                 var chart = new Highcharts.Chart(options);
 
