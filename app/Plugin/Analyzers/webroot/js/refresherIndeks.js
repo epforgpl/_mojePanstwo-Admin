@@ -13,9 +13,9 @@ $(document).ready(function () {
 
             obj = JSON.parse(obj);
 
-            var nazwy = {};
-            var wartosci = {};
-            $.each(obj.nazwy, function (key, value) {
+            var nazwy = obj.nazwy;
+            var wartosci = obj.wartosci;
+          /*  $.each(obj.nazwy, function (key, value) {
                 var id = value.api_datasets.id;
                 var name = value.api_datasets.name;
                 var base_alias = value.api_datasets.base_alias;
@@ -32,7 +32,7 @@ $(document).ready(function () {
                     }
                     wartosci[id][a] = count;
                 }
-            });
+            });*/
             $.each(wartosci, function (key, value) {
                 var serie = '{"series":[';
                 $.each(value, function (key1, val1) {

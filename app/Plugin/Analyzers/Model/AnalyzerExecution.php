@@ -29,6 +29,8 @@ class AnalyzerExecution extends AnalyzersAppModel
         $minushour = date('Y-m-d H:i:s', $time - 3600);
         $minusday = date('Y-m-d H:i:s', $time - 86400);
 
+        $id = 'Indeksowanie';
+
         switch ($id) {
 
             case 'Krs': {
@@ -232,9 +234,26 @@ class AnalyzerExecution extends AnalyzersAppModel
                 $wartosci = $this->query("SELECT dataset, a, COUNT(*) AS 'count' FROM objects GROUP BY dataset, a");
                 //        $date = $this->query("SELECT dataset_id, date, id FROM objects ");
 
+                $nazwa = array();
+                foreach ($nazwy as $key => $val) {
+                    $nazwa[$val['api_datasets']['base_alias']] = array(
+                        'name' => $val['api_datasets']['name'],
+                        'id' => $val['api_datasets']['id']
+                    );
+                }
+                $wartosc = array();
+                foreach ($wartosci as $key => $val) {
+                    if ($val['objects']['dataset'] != '') {
+                        if (!isset($val['objects']['dataset'])) {
+                            $wartosc[$val['objects']['dataset']] = array();
+                        }
+                        $wartosc[$val['objects']['dataset']][$val['objects']['a']] = $val[0]['count'];
+                    }
+                }
+                debug($wartosc);
                 $data = array(
-                    'nazwy' => $nazwy,
-                    'wartosci' => $wartosci,
+                    'nazwy' => $nazwa,
+                    'wartosci' => $wartosc,
                 );
                 break;
             }
@@ -328,6 +347,30 @@ class AnalyzerExecution extends AnalyzersAppModel
                     'ES2' => $ES2,
                     'ES3' => $ES3,
                     'ES4' => $ES4
+                );
+                break;
+            }
+
+            case 'BDL' : {
+                $BDL_kategorie_status = $this->query("SELECT COUNT(*) AS 'count', status  FROM BDL_kategorie GROUP BY status");
+
+                $BDL_kategorie_status_s = $this->query("SELECT COUNT(*) AS 'count', status_s AS status  FROM BDL_kategorie GROUP BY status_s");
+
+                $BDL_grupy_status = $this->query("SELECT COUNT(*) AS 'count', status  FROM BDL_grupy GROUP BY status");
+
+                $BDL_grupy_status_s = $this->query("SELECT COUNT(*) AS 'count', status_s AS status  FROM BDL_grupy GROUP BY status_s");
+
+                $BDL_podgrupy_status = $this->query("SELECT COUNT(*) AS 'count', status  FROM BDL_podgrupy GROUP BY status");
+
+                $BDL_podgrupy_status_s = $this->query("SELECT COUNT(*) AS 'count', status_s AS status  FROM BDL_podgrupy GROUP BY status_s");
+
+
+                $data = array(
+                    'BDL_kategorie_status' => $BDL_kategorie_status,
+                    'BDL_kategorie_status_ts' => $BDL_kategorie_status_ts,
+                    'BDL_kategorie_status_s' => $BDL_kategorie_status_s,
+                    'BDL_kategorie_status_ts' => $BDL_kategorie_status_s_ts,
+
                 );
                 break;
             }
@@ -427,7 +470,7 @@ class AnalyzerExecution extends AnalyzersAppModel
         }
     }
 
-    public function cleanUpReports($days=30)
+    public function cleanUpReports($days = 30)
     {
         date_default_timezone_set('Europe/Warsaw');
         $current_time = time();
