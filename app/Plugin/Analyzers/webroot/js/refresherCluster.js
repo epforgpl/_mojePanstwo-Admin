@@ -12,19 +12,17 @@ $(document).ready(function () {
     function pageReload() {
         $.getJSON(url, function (data) {
             obj = data.analyzer.AnalyzerExecution['data'];
-
             obj = JSON.parse(obj);
             $.each(obj, function (key, value) {
+                var series = [];
                 if (value['avg1'][0]) {
-                    var serie = '{"series":[{"name": "Obciążenie Serwera", "data":[';
                     $.each(value['avg1'], function (k, v) {
-                        serie += '{ "x":' + Date.parse(value['insert_ts'][k]) + ',"y":' + v + '},';
-                    })
-                    serie = serie.substring(0, serie.length - 1);
-                    serie += ']}]}';
-
-                    var dane = JSON.parse(serie);
-
+                        var date = String(value['insert_ts'][k]).replace(/-/g, "/");
+                        series.push({
+                            "x": new Date(date),
+                            "y": parseFloat(v)
+                        });
+                    });
                     var options = {
                         chart: {},
                         credits: {
@@ -51,9 +49,13 @@ $(document).ready(function () {
                             }]
                         },
                         tooltip: {},
-                        series: [{}]
+                        series: [
+                            {
+                                name: "Test",
+                                data: series
+                            }
+                        ]
                     };
-                    options.series = dane.series;
                     options.chart.renderTo = "" + key + "_la";
                     var chart = new Highcharts.Chart(options);
                 }
