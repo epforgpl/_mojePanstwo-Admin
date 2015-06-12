@@ -49,6 +49,10 @@ class AnalyzerController extends AnalyzersAppController
                 $this->render('view_cluster');
                 break;
             }
+            case 'BDL': {
+                $this->render('view_bdl');
+                break;
+            }
         }
 
     }}

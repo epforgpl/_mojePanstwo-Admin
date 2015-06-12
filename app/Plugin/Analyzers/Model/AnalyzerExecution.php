@@ -29,8 +29,6 @@ class AnalyzerExecution extends AnalyzersAppModel
         $minushour = date('Y-m-d H:i:s', $time - 3600);
         $minusday = date('Y-m-d H:i:s', $time - 86400);
 
-        $id = 'Indeksowanie';
-
         switch ($id) {
 
             case 'Krs': {
@@ -250,7 +248,6 @@ class AnalyzerExecution extends AnalyzersAppModel
                         $wartosc[$val['objects']['dataset']][$val['objects']['a']] = $val[0]['count'];
                     }
                 }
-                debug($wartosc);
                 $data = array(
                     'nazwy' => $nazwa,
                     'wartosci' => $wartosc,
@@ -352,24 +349,58 @@ class AnalyzerExecution extends AnalyzersAppModel
             }
 
             case 'BDL' : {
-                $BDL_kategorie_status = $this->query("SELECT COUNT(*) AS 'count', status  FROM BDL_kategorie GROUP BY status");
 
-                $BDL_kategorie_status_s = $this->query("SELECT COUNT(*) AS 'count', status_s AS status  FROM BDL_kategorie GROUP BY status_s");
+                $BDL_kategorie_status = $this->query("SELECT COUNT(*) AS 'count', status  FROM BDL_kategorie GROUP BY status");
+                $BDL_kategorie_status_last_err = $this->query("SELECT status, status_ts FROM BDL_kategorie WHERE status IN ('4','5','6') ORDER BY status_ts DESC LIMIT 1");
+                $BDL_kategorie_status_last_corr = $this->query("SELECT status, status_ts FROM BDL_kategorie WHERE status='3' ORDER BY status_ts DESC LIMIT 1");
+
+
+                $BDL_kategorie_s_status = $this->query("SELECT COUNT(*) AS 'count', s_status AS status  FROM BDL_kategorie GROUP BY s_status");
+                $BDL_kategorie_s_status_last_err = $this->query("SELECT s_status AS status, s_status_ts FROM BDL_kategorie WHERE s_status IN ('4','5','6') ORDER BY s_status_ts DESC LIMIT 1");
+                $BDL_kategorie_s_status_last_corr = $this->query("SELECT s_status AS status, s_status_ts FROM BDL_kategorie WHERE s_status='3' ORDER BY s_status_ts DESC LIMIT 1");
 
                 $BDL_grupy_status = $this->query("SELECT COUNT(*) AS 'count', status  FROM BDL_grupy GROUP BY status");
+                $BDL_grupy_status_last_err = $this->query("SELECT status, status_ts FROM BDL_grupy WHERE status IN ('4','5','6') ORDER BY status_ts DESC LIMIT 1");
+                $BDL_grupy_status_last_corr = $this->query("SELECT status, status_ts FROM BDL_grupy WHERE status='3' ORDER BY status_ts DESC LIMIT 1");
 
-                $BDL_grupy_status_s = $this->query("SELECT COUNT(*) AS 'count', status_s AS status  FROM BDL_grupy GROUP BY status_s");
+                $BDL_grupy_s_status = $this->query("SELECT COUNT(*) AS 'count', s_status AS status  FROM BDL_grupy GROUP BY s_status");
+                $BDL_grupy_s_status_last_err = $this->query("SELECT s_status AS status, s_status_ts FROM BDL_grupy WHERE s_status IN ('4','5','6') ORDER BY s_status_ts DESC LIMIT 1");
+                $BDL_grupy_s_status_last_corr = $this->query("SELECT s_status AS status, s_status_ts FROM BDL_grupy WHERE s_status='3' ORDER BY s_status_ts DESC LIMIT 1");
+
 
                 $BDL_podgrupy_status = $this->query("SELECT COUNT(*) AS 'count', status  FROM BDL_podgrupy GROUP BY status");
+                $BDL_podgrupy_status_last_err = $this->query("SELECT status, status_ts FROM BDL_podgrupy WHERE status IN ('4','5','6') ORDER BY status_ts DESC LIMIT 1");
+                $BDL_podgrupy_status_last_corr = $this->query("SELECT status, status_ts FROM BDL_podgrupy WHERE status='3' ORDER BY status_ts DESC LIMIT 1");
 
-                $BDL_podgrupy_status_s = $this->query("SELECT COUNT(*) AS 'count', status_s AS status  FROM BDL_podgrupy GROUP BY status_s");
+                $BDL_podgrupy_s_status = $this->query("SELECT COUNT(*) AS 'count', s_status AS status  FROM BDL_podgrupy GROUP BY s_status");
+                $BDL_podgrupy_s_status_last_err = $this->query("SELECT s_status AS status, s_status_ts FROM BDL_podgrupy WHERE s_status IN ('4','5','6') ORDER BY s_status_ts DESC LIMIT 1");
+                $BDL_podgrupy_s_status_last_corr = $this->query("SELECT s_status AS status, s_status_ts FROM BDL_podgrupy WHERE s_status='3' ORDER BY s_status_ts DESC LIMIT 1");
 
 
                 $data = array(
                     'BDL_kategorie_status' => $BDL_kategorie_status,
-                    'BDL_kategorie_status_ts' => $BDL_kategorie_status_ts,
-                    'BDL_kategorie_status_s' => $BDL_kategorie_status_s,
-                    'BDL_kategorie_status_ts' => $BDL_kategorie_status_s_ts,
+                    'BDL_kategorie_status_last_err' => $BDL_kategorie_status_last_err,
+                    'BDL_kategorie_status_last_corr' => $BDL_kategorie_status_last_corr,
+
+                    'BDL_kategorie_s_status' => $BDL_kategorie_s_status,
+                    'BDL_kategorie_s_status_last_err' => $BDL_kategorie_s_status_last_err,
+                    'BDL_kategorie_s_status_last_corr' => $BDL_kategorie_s_status_last_corr,
+
+                    'BDL_grupy_status' => $BDL_grupy_status,
+                    'BDL_grupy_status_last_err' => $BDL_grupy_status_last_err,
+                    'BDL_grupy_status_last_corr' => $BDL_grupy_status_last_corr,
+
+                    'BDL_grupy_s_status' => $BDL_grupy_s_status,
+                    'BDL_grupy_s_status_last_err' => $BDL_grupy_s_status_last_err,
+                    'BDL_grupy_s_status_last_corr' => $BDL_grupy_s_status_last_corr,
+
+                    'BDL_podgrupy_status' => $BDL_podgrupy_status,
+                    'BDL_podgrupy_status_last_err' => $BDL_podgrupy_status_last_err,
+                    'BDL_podgrupy_status_last_corr' => $BDL_podgrupy_status_last_corr,
+
+                    'BDL_podgrupy_s_status' => $BDL_podgrupy_s_status,
+                    'BDL_podgrupy_s_status_last_err' => $BDL_podgrupy_s_status_last_err,
+                    'BDL_podgrupy_s_status_last_corr' => $BDL_podgrupy_s_status_last_corr
 
                 );
                 break;
