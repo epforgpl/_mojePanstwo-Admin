@@ -31,6 +31,7 @@ App::uses('Model', 'Model');
  */
 class AppModel extends Model
 {
+public $useTable='instytucje-tagi';
 
     public $uses = array(
         'Session'
@@ -238,6 +239,11 @@ class AppModel extends Model
                         array(
                             'label' => 'BDL',
                             'href' => '/bdl/podgrupy',
+                            'groups' => array('admin')
+                        ),
+                        array(
+                            'label' => 'Instytucje',
+                            'href' => '/instytucje',
                             'groups' => array('admin')
                         )
                     )
