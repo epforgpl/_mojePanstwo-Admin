@@ -1,6 +1,6 @@
 #editor {
     max-height: 450px;
-    height: 450px;
+    height: 350px;
     background-color: white;
     border-collapse: separate;
     border: 1px solid rgb(204, 204, 204);
@@ -36,4 +36,15 @@ div[data-role="editor-toolbar"] {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.mid {
+    position: relative;
+    top: 50%;
+    transform: translateY(50%);
+}
+
+label {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }

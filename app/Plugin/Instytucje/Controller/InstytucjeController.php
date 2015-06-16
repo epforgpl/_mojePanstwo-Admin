@@ -29,7 +29,7 @@ class InstytucjeController extends InstytucjeAppController
 
         ClassRegistry::init('Instytucje.Tagi');
         $tagi = new Tagi();
-$conditions=array('Instytucje.deleted LIKE'=>'0');
+        $conditions = array('Instytucje.deleted LIKE' => '0');
         if ($tag !== 'all') {
             $conditions[] = array('tag_id' => $tag);
         }
@@ -41,18 +41,18 @@ $conditions=array('Instytucje.deleted LIKE'=>'0');
             'paramType' => 'querystring',
             'Instytucje' => array(
                 'limit' => 25,
-                'order' => array('id' => 'asc'),
+                'order' => array('id' => 'desc'),
                 'fields' => array('id', 'nazwa'),
                 'conditions' => $conditions,
                 'joins' => array(
                     array(
-                        'type'=>'LEFT',
+                        'type' => 'LEFT',
                         'table' => 'instytucje-tagi',
                         'alias' => 'IT',
                         'conditions' => array('Instytucje.id = IT.instytucja_id')
                     ),
                     array(
-                        'type'=>'LEFT',
+                        'type' => 'LEFT',
                         'table' => 'instytucje_tagi',
                         'alias' => 'Tagi',
                         'conditions' => array('Tagi.id = IT.tag_id')
@@ -81,28 +81,61 @@ $conditions=array('Instytucje.deleted LIKE'=>'0');
         $this->set('tagi', $tagi);
     }
 
-    public function view($id)
+    public function view($id = '')
     {
+        if ($id !== '') {
+            $data = $this->Instytucje->getData($id);
+            if (!$data)
+                throw new NotFoundException;
+            $this->Tagi->contain();
+            $tags = $this->Tagi->find('list', array(
+                'fields' => array('Tagi.id', 'Tagi.nazwa'),
+            ));
 
-        $data = $this->Instytucje->getData($id);
-        if (!$data)
-            throw new NotFoundException;
-
-        $this->set('instytucja', $data['instytucja']);
+            $this->set('instytucja', $data['instytucja']);
+            $this->set('tags', $tags);
+        }
     }
 
     public function add()
     {
 
 
+    }
 
+    public function update(){
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+$gender=str_replace('gender=','',$_POST['gender']);
+            $instytucja=$this->Instytucje->findById($_POST['id']);
+            $tagi=str_replace('tagi=','',$_POST['tagi']);
+            $tagi=explode('&',$tagi);
+            $instytucja['Tagi']=array('Tagi'=>$tagi);
+            $instytucja['Instytucje']['gender']=$gender;
+            $instytucja['Instytucje']['phone']=$_POST['phone'];
+            $instytucja['Instytucje']['email']=$_POST['email'];
+            $instytucja['Instytucje']['nazwa']=$_POST['nazwa'];
+            $instytucja['Instytucje']['adres_str']=$_POST['adres_str'];
+            $instytucja['Instytucje']['fax']=$_POST['fax'];
+            $instytucja['Instytucje']['www']=$_POST['www'];
+            preg_match('/[0-9]{2}-[0-9]{3}/',$_POST['adres_str'],$match);
+            $instytucja['Instytucje']['kod_pocztowy_str']=$match[0];
+            $instytucja['Instytucje']['opis_html']=$_POST['opis_html'];
+            $instytucja['Instytucje']['modified']=date('Y-m-d H:i:s',time());
+                debug($_POST);
+            $this->Instytucje->save($instytucja);
+            debug($instytucja);
+        } else {
+            $this->json(false);
+        }
+        $this->autoRender = false;
     }
 
     public function delete()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            $id_list=$_POST['delete_ids'];
+            $id_list = $_POST['delete_ids'];
             $this->Instytucje->updateAll(
                 array('deleted' => "1"),
                 array('id IN' => $id_list)
