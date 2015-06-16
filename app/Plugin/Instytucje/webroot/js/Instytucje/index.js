@@ -25,9 +25,9 @@ $(document).ready(function () {
                 success: function (res) {
                     if (res == false) {
                         alert("Wystąpił błąd");
-                    } //else if (res.Podgrupy.id = id) {
-                       // page.reload();
-                   // }
+                    } else {
+                        page.reload();
+                    }
                 },
                 error: function (xhr) {
                     alert("Wystąpił błąd: " + xhr.status + " " + xhr.statusText);

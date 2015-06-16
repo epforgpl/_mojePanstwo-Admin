@@ -29,15 +29,11 @@ class InstytucjeController extends InstytucjeAppController
 
         ClassRegistry::init('Instytucje.Tagi');
         $tagi = new Tagi();
-
-        if ($tag == 'all') {
-            $conditions = array('1');
-        } else {
-            $conditions = array('tag_id' => $tag);
+$conditions=array('Instytucje.deleted LIKE'=>'0');
+        if ($tag !== 'all') {
+            $conditions[] = array('tag_id' => $tag);
         }
-        if ($search == 'all') {
-
-        } else {
+        if ($search !== 'all') {
             $conditions[] = "Instytucje.nazwa LIKE '%$search%'";
         }
 
@@ -47,19 +43,22 @@ class InstytucjeController extends InstytucjeAppController
                 'limit' => 25,
                 'order' => array('id' => 'asc'),
                 'fields' => array('id', 'nazwa'),
+                'conditions' => $conditions,
                 'joins' => array(
                     array(
+                        'type'=>'LEFT',
                         'table' => 'instytucje-tagi',
                         'alias' => 'IT',
                         'conditions' => array('Instytucje.id = IT.instytucja_id')
                     ),
                     array(
+                        'type'=>'LEFT',
                         'table' => 'instytucje_tagi',
                         'alias' => 'Tagi',
                         'conditions' => array('Tagi.id = IT.tag_id')
                     )
                 ),
-                'conditions' => $conditions
+
             )
         );
 
@@ -77,18 +76,6 @@ class InstytucjeController extends InstytucjeAppController
                 )));
         }
 
-        /* $this->Tagi->recursive = 1;
-         $jeden = $this->Tagi->find('first', array(
-             'contain' => array(
-                 'Instytucje' => array(
-                     'fields' => array('Instytucje.id', 'Instytucje.nazwa')
-                 )
-             )
-         ));
-         //  debug($this->Tagi->getDataSource()->getLog(false, false));
-
-         debug($jeden);
- */
         $data = $this->Paginator->paginate('Instytucje');
         $this->set('data', $data);
         $this->set('tagi', $tagi);
@@ -107,17 +94,21 @@ class InstytucjeController extends InstytucjeAppController
     public function add()
     {
 
+
+
     }
 
     public function delete()
     {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-            debug($_POST);
-            /*$opis = trim($_POST['opis']);
-            $this->Podgrupy->id = $_POST['id'];
-            $odp = $this->Podgrupy->saveField('opis', $opis);*/
-            $this->json($_POST);
+            $id_list=$_POST['delete_ids'];
+            $this->Instytucje->updateAll(
+                array('deleted' => "1"),
+                array('id IN' => $id_list)
+            );
+
+            $this->json($id_list);
         } else {
             $this->json(false);
         }

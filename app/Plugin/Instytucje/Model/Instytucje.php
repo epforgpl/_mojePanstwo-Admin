@@ -20,7 +20,9 @@ class Instytucje extends AppModel
                 'className' => 'Instytucje.Tagi',
                 'joinTable' => 'instytucje-tagi',
                 'foreignKey' => 'instytucja_id',
-                'associationForeignKey' => 'tag_id'
+                'associationForeignKey' => 'tag_id',
+                'with' => 'Instytucje.InstytucjeTagi',
+                'unique'=> true
             )
     );
     public $actsAs = array('Containable');

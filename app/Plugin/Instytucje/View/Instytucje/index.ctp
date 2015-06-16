@@ -1,6 +1,5 @@
 <ol class="breadcrumb">
     <li><a href="/">Dane</a></li>
-    <li><a href="/bdl/podgrupy">BDL</a></li>
     <li class="active">Instytucje</li>
 </ol>
 <div class="row">
@@ -26,23 +25,26 @@
             <button class="btn btn-sm btn-primary">Szukaj</button>
         </form>
     </div>
+    <div class="col-sm-4"><a href="/instytucje/instytucje/add">
+            <button class="btn btn-primary pull-right">Nowa</button>
+        </a></div>
 </div>
 
 <? if (count($data)) { ?>
-        <ul class="list-group margin-top-5 panel-items">
-            <? foreach ($data as $row) { ?>
-    <li class="list-group-item">
+    <ul class="list-group margin-top-5 panel-items">
+        <? foreach ($data as $row) { ?>
+            <li class="list-group-item">
         <span class="pull-right">ID: <?= $row['Instytucje']['id']; ?> <input id="delete"
                                                                              value="<?= $row['Instytucje']['id']; ?>"
                                                                              type="checkbox"></span>
-        <a href="/instytucje/instytucje/view/<?= $row['Instytucje']['id']; ?>">
-            <?= $row['Instytucje']['nazwa']; ?>
-        </a>
-    </li>
-<? } ?>
-        </ul>
+                <a href="/instytucje/instytucje/view/<?= $row['Instytucje']['id']; ?>">
+                    <?= $row['Instytucje']['nazwa']; ?>
+                </a>
+            </li>
+        <? } ?>
+    </ul>
     <button class="btn btn-danger pull-right" id="usun">Usuń</button>
-<br><br>
+    <br><br>
 <? } else { ?>
     <p class="block margin-top-10">Brak danych</p>
 <? } ?>
