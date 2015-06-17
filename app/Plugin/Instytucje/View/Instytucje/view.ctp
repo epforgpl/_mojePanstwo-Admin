@@ -63,15 +63,15 @@
                 <div class="text-center">
                     <label class="radio-inline">
                         <input type="radio" name="gender" id="gender1"
-                               value="1" <? if ($inst['gender'] == '1') echo "checked" ?>> Męski
+                               value="1" <? if ($inst['gender'] == '1') echo "checked" ?>> On
                     </label>
                     <label class="radio-inline">
                         <input type="radio" name="gender" id="gender2"
-                               value="2" <? if ($inst['gender'] == '2') echo "checked" ?>> Żeński
+                               value="2" <? if ($inst['gender'] == '2') echo "checked" ?>> Ona
                     </label>
                     <label class="radio-inline">
                         <input type="radio" name="gender" id="gender3"
-                               value="3" <? if ($inst['gender'] == '3') echo "checked" ?>> Nijaki
+                               value="3" <? if ($inst['gender'] == '3') echo "checked" ?>> Ono
                     </label>
                 </div>
             </div>

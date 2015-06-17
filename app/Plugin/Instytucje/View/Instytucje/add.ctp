@@ -57,15 +57,15 @@
             <div class="text-center">
                 <label class="radio-inline">
                     <input type="radio" name="gender" id="gender1"
-                           value="1"> Męski
+                           value="1"> On
                 </label>
                 <label class="radio-inline">
                     <input type="radio" name="gender" id="gender2"
-                           value="2"> Żeński
+                           value="2"> Ona
                 </label>
                 <label class="radio-inline">
                     <input type="radio" name="gender" id="gender3"
-                           value="3"> Nijaki
+                           value="3"> Ono
                 </label>
             </div>
         </div>
