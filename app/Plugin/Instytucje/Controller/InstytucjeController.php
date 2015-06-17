@@ -56,7 +56,7 @@ class InstytucjeController extends InstytucjeAppController
             'paramType' => 'querystring',
             'Instytucje' => array(
                 'limit' => 25,
-                'order' => array('id' => 'desc'),
+                'order' => array('id' => 'asc'),
                 'fields' => array('DISTINCT id', 'nazwa'),
                 'conditions' => $conditions,
                 'joins' => array(

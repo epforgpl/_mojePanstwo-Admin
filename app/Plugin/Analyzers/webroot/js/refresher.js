@@ -1,6 +1,7 @@
 $(document).ready(function () {
 
     var url = window.location.href;
+    url=url.split('?')[0];
     url = url + '.json';
 
 

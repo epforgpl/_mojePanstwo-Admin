@@ -16,7 +16,9 @@ class AnalyzerExecution extends AnalyzersAppModel
         ),
     );
     public $actAs = array('Containable');
-    public $uses = array('Analyzer');
+    public $uses = array(
+        'Analyzer'
+    );
 
     public function execute($id)
     {
@@ -157,7 +159,6 @@ class AnalyzerExecution extends AnalyzersAppModel
                 $prawo_analiza_powiazania_last_err = $this->query("SELECT analiza_powiazania, analiza_powiazania_ts FROM prawo WHERE analiza_powiazania IN ('4','5','6') ORDER BY analiza_powiazania_ts DESC LIMIT 1");
                 $prawo_analiza_powiazania_last_corr = $this->query("SELECT analiza_powiazania, analiza_powiazania_ts FROM prawo WHERE analiza_powiazania='3' ORDER BY analiza_powiazania_ts DESC LIMIT 1");
 
-
                 $data = array(
 
                     'ISAP_status' => $ISAP_status,
@@ -194,7 +195,6 @@ class AnalyzerExecution extends AnalyzersAppModel
                     'prawo_analiza_powiazania' => $prawo_analiza_powiazania,
                     'prawo_analiza_powiazania_last_err' => $prawo_analiza_powiazania_last_err,
                     'prawo_analiza_powiazania_last_corr' => $prawo_analiza_powiazania_last_corr,
-
                 );
                 break;
             }
@@ -347,7 +347,6 @@ class AnalyzerExecution extends AnalyzersAppModel
                 );
                 break;
             }
-
             case 'BDL' : {
 
                 $BDL_kategorie_status = $this->query("SELECT COUNT(*) AS 'count', status  FROM BDL_kategorie GROUP BY status");
