@@ -2,6 +2,7 @@
     <li><a href="/">Dane</a></li>
     <li class="active">Instytucje</li>
 </ol>
+
 <div class="row">
     <form method="get" id="tag" action="../instytucje">
         <div class="col-sm-4">
@@ -20,15 +21,30 @@
             </select>
         </div>
     </form>
-    <div class="col-sm-4">
-        <form method="get" id="szukacz" action=""><input name="search" id="search">
-            <button class="btn btn-sm btn-primary">Szukaj</button>
+    <div class="col-sm-6">
+        <form method="get" id="szukacz" action="">
+            <div class="input-group">
+                <input class="form-control" name="search" id="search">
+                <span class="input-group-btn"
+                    ><button class="btn btn-primary">Szukaj</button>
+                </span>
+
+            </div>
         </form>
     </div>
-    <div class="col-sm-4"><a href="/instytucje/instytucje/add">
-            <button class="btn btn-primary pull-right">Nowa</button>
-        </a></div>
+    <? if ($mode == 'act') { ?>
+        <div class="col-sm-2"><a href="/instytucje/instytucje/add">
+                <button class="btn btn-primary pull-right">Nowa</button>
+            </a></div>
+    <? } ?>
 </div>
+
+<ul class="nav nav-tabs">
+    <?php foreach ($modes as $key => $label) { ?>
+        <li role="presentation" <?= ($mode == $key) ? 'class="active"' : ''; ?>><a
+                href="/instytucje?mode=<?= $key; ?>"><?= $label; ?></a></li>
+    <? } ?>
+</ul>
 
 <? if (count($data)) { ?>
     <ul class="list-group margin-top-5 panel-items">
@@ -43,7 +59,12 @@
             </li>
         <? } ?>
     </ul>
-    <button class="btn btn-danger pull-right" id="usun">Usuń</button>
+    <? if ($mode == 'act') { ?>
+        <button class="btn btn-danger pull-right" id="usun">Usuń</button>
+    <? } elseif ($mode = 'del') { ?>
+        <button class="btn btn-success pull-right" id="przywroc">Przywróć</button>
+    <? } ?>
+
     <br><br>
 <? } else { ?>
     <p class="block margin-top-10">Brak danych</p>

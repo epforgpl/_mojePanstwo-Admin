@@ -26,7 +26,7 @@ $(document).ready(function () {
                     if (res == false) {
                         alert("Wystąpił błąd");
                     } else {
-                        page.reload();
+                        location.reload();
                     }
                 },
                 error: function (xhr) {
@@ -40,4 +40,39 @@ $(document).ready(function () {
             checkBoxes.prop("checked", !checkBoxes.prop("checked"));
         }
     })
+
+    $('#przywroc').click(function(){
+        $(this).preventDefault;
+
+        if(confirm("Czy na pewno chcesz przywrócić instytucje do bazy?"))
+        {
+
+            var form_data = { 'delete_ids[]' : []};
+            $(".list-group :checked").each(function() {
+                form_data['delete_ids[]'].push($(this).val());
+            });
+            console.log(form_data);
+            $.ajax({
+                url: "../instytucje/instytucje/undelete",
+                method: "post",
+                data: form_data,
+                success: function (res) {
+                    if (res == false) {
+                        alert("Wystąpił błąd");
+                    } else {
+                        location.reload();
+                    }
+                },
+                error: function (xhr) {
+                    alert("Wystąpił błąd: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        }
+        else
+        {
+            var checkBoxes = $("input[id=delete]");
+            checkBoxes.prop("checked", !checkBoxes.prop("checked"));
+        }
+    })
+
 });

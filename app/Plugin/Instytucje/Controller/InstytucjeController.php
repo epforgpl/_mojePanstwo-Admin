@@ -19,6 +19,17 @@ class InstytucjeController extends InstytucjeAppController
 
     public function index($tag = 'all', $search = 'all')
     {
+        $modes = array(
+            'act' => 'Aktualne',
+            'del' => 'Usunięte',
+        );
+
+        $mode = in_array(@$this->params['url']['mode'], array_keys($modes))
+            ? $this->params['url']['mode'] : 'act';
+
+        $this->set('modes', $modes);
+        $this->set('mode', $mode);
+
 
         if (isset($this->params['url']['Tag'])) {
             $tag = $this->params['url']['Tag'];
@@ -29,7 +40,11 @@ class InstytucjeController extends InstytucjeAppController
 
         ClassRegistry::init('Instytucje.Tagi');
         $tagi = new Tagi();
-        $conditions = array('Instytucje.deleted LIKE' => '0');
+        if ($mode == 'del') {
+            $conditions = array('Instytucje.deleted LIKE' => '1');
+        } else {
+            $conditions = array('Instytucje.deleted LIKE' => '0');
+        }
         if ($tag !== 'all') {
             $conditions[] = array('tag_id' => $tag);
         }
@@ -42,7 +57,7 @@ class InstytucjeController extends InstytucjeAppController
             'Instytucje' => array(
                 'limit' => 25,
                 'order' => array('id' => 'desc'),
-                'fields' => array('id', 'nazwa'),
+                'fields' => array('DISTINCT id', 'nazwa'),
                 'conditions' => $conditions,
                 'joins' => array(
                     array(
@@ -66,7 +81,7 @@ class InstytucjeController extends InstytucjeAppController
             'fields' => array('Tagi.id', 'Tagi.nazwa'),
         ));
         try {
-            $this->Paginator->paginate('Instytucje');
+            $data = $this->Paginator->paginate('Instytucje');
         } catch (NotFoundException $e) {
             $this->redirect(array(
                 'controller' => 'Instytucje',
@@ -75,8 +90,6 @@ class InstytucjeController extends InstytucjeAppController
                     'Tag' => $tag
                 )));
         }
-
-        $data = $this->Paginator->paginate('Instytucje');
         $this->set('data', $data);
         $this->set('tagi', $tagi);
     }
@@ -99,36 +112,42 @@ class InstytucjeController extends InstytucjeAppController
 
     public function add()
     {
+        $this->Tagi->contain();
+        $tags = $this->Tagi->find('list', array(
+            'fields' => array('Tagi.id', 'Tagi.nazwa'),
+        ));
 
+        $this->set('tags', $tags);
 
     }
 
-    public function update(){
+    public function update()
+    {
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-$gender=str_replace('gender=','',$_POST['gender']);
-            $instytucja=$this->Instytucje->findById($_POST['id']);
-            $tagi=str_replace('tagi=','',$_POST['tagi']);
-            $tagi=explode('&',$tagi);
-            $instytucja['Tagi']=array('Tagi'=>$tagi);
-            $instytucja['Instytucje']['gender']=$gender;
-            $instytucja['Instytucje']['phone']=$_POST['phone'];
-            $instytucja['Instytucje']['email']=$_POST['email'];
-            $instytucja['Instytucje']['nazwa']=$_POST['nazwa'];
-            $instytucja['Instytucje']['adres_str']=$_POST['adres_str'];
-            $instytucja['Instytucje']['fax']=$_POST['fax'];
-            $instytucja['Instytucje']['www']=$_POST['www'];
-            preg_match('/[0-9]{2}-[0-9]{3}/',$_POST['adres_str'],$match);
-            $instytucja['Instytucje']['kod_pocztowy_str']=$match[0];
-            $instytucja['Instytucje']['opis_html']=$_POST['opis_html'];
-            $instytucja['Instytucje']['modified']=date('Y-m-d H:i:s',time());
-                debug($_POST);
-            $this->Instytucje->save($instytucja);
-            debug($instytucja);
-        } else {
-            $this->json(false);
+            $gender = str_replace('gender=', '', $_POST['gender']);
+            $instytucja = $this->Instytucje->findById($_POST['id']);
+            $tagi = str_replace('tagi=', '', $_POST['tagi']);
+            $tagi = explode('&', $tagi);
+            $instytucja['Tagi'] = array('Tagi' => $tagi);
+            $instytucja['Instytucje']['gender'] = $gender;
+            $instytucja['Instytucje']['phone'] = $_POST['phone'];
+            $instytucja['Instytucje']['email'] = $_POST['email'];
+            $instytucja['Instytucje']['nazwa'] = $_POST['nazwa'];
+            $instytucja['Instytucje']['adres_str'] = $_POST['adres_str'];
+            $instytucja['Instytucje']['fax'] = $_POST['fax'];
+            $instytucja['Instytucje']['www'] = $_POST['www'];
+            preg_match('/[0-9]{2}-[0-9]{3}/', $_POST['adres_str'], $match);
+            $instytucja['Instytucje']['kod_pocztowy_str'] = $match[0];
+            $instytucja['Instytucje']['opis_html'] = $_POST['opis_html'];
+            $instytucja['Instytucje']['modified'] = date('Y-m-d H:i:s', time());
+            if ($this->Instytucje->save($instytucja)) {
+                $this->json($_POST['id']);
+            } else {
+                $this->json(false);
+            }
+            $this->autoRender = false;
         }
-        $this->autoRender = false;
     }
 
     public function delete()
@@ -136,16 +155,80 @@ $gender=str_replace('gender=','',$_POST['gender']);
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $id_list = $_POST['delete_ids'];
-            $this->Instytucje->updateAll(
-                array('deleted' => "1"),
-                array('id IN' => $id_list)
-            );
+            if (sizeof($id_list) == 1) {
+                $this->Instytucje->updateAll(
+                    array('deleted' => "1"),
+                    array("id" => $id_list[0])
+                );
+            } else {
+                $this->Instytucje->updateAll(
+                    array('deleted' => "1"),
+                    array("id IN" => $id_list)
+                );
+            }
 
             $this->json($id_list);
         } else {
             $this->json(false);
         }
         $this->autoRender = false;
+    }
+
+    public function undelete()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $id_list = $_POST['delete_ids'];
+            if (sizeof($id_list) == 1) {
+                $this->Instytucje->updateAll(
+                    array('deleted' => "0"),
+                    array("id" => $id_list[0])
+                );
+            } else {
+                $this->Instytucje->updateAll(
+                    array('deleted' => "0"),
+                    array("id IN" => $id_list)
+                );
+            }
+
+            $this->json($id_list);
+        } else {
+            $this->json(false);
+        }
+        $this->autoRender = false;
+    }
+
+    public function addnew()
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+            $gender = str_replace('gender=', '', $_POST['gender']);
+            $instytucja = array();
+            $tagi = str_replace('tagi=', '', $_POST['tagi']);
+            $tagi = explode('&', $tagi);
+            $instytucja['Tagi'] = array('Tagi' => $tagi);
+            $instytucja['Instytucje']['gender'] = $gender;
+            $instytucja['Instytucje']['phone'] = $_POST['phone'];
+            $instytucja['Instytucje']['email'] = $_POST['email'];
+            $instytucja['Instytucje']['nazwa'] = $_POST['nazwa'];
+            $instytucja['Instytucje']['adres_str'] = $_POST['adres_str'];
+            $instytucja['Instytucje']['fax'] = $_POST['fax'];
+            $instytucja['Instytucje']['www'] = $_POST['www'];
+            preg_match('/[0-9]{2}-[0-9]{3}/', $_POST['adres_str'], $match);
+            if(isset($match[0])) {
+                $instytucja['Instytucje']['kod_pocztowy_str'] = $match[0];
+            }
+            $instytucja['Instytucje']['opis_html'] = $_POST['opis_html'];
+            $instytucja['Instytucje']['created'] = date('Y-m-d H:i:s', time());
+
+
+            if ($this->Instytucje->save($instytucja)) {
+                $this->json(true);
+            } else {
+                $this->json(false);
+            }
+            $this->autoRender = false;
+        }
     }
 
 }
