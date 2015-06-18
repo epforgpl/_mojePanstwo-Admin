@@ -33,14 +33,8 @@
         <? } ?>
     </div>
     <div class="col-sm-9">
-        <? if( isset($doc) ) {?>
-
-            <div id="page-container"><?= debug($doc['Package']); ?></div>
-
-       <? } ?>
+        <iframe class="full-width" height="700" src="https://mojepanstwo.pl:2345/docs/<?=$wydanie['Wydania']['dokument_id']?>.html"></iframe>
     </div>
 </div>
 
-
-<? // echo $this->Html->script('Msig.Wydania/view'); ?>
 <? echo $this->Html->css('Msig.Wydania/view'); ?>

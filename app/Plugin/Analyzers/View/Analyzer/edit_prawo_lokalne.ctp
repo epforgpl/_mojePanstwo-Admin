@@ -5,10 +5,10 @@
     <li class="active">Prawo Województwa id:<?= $data['PrawoLokalne']['id']; ?></li>
 </ol>
 <div id="info" class="hidden alert alert-success margin-top-20"></div>
-
+</div>
 <div id="id" class="hidden"><?= $data['PrawoLokalne']['id']; ?></div>
 <div class="row">
-    <div class="col-sm-5">
+    <div class="col-sm-4">
         <div class="row">
             <div class="col-sm-4"><label class="pull-right">Tytuł:</label></div>
             <div class="col-sm-8"><textarea name="tytul" id="tytul" class="form-control" rows="4"
@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="col-sm-7">
-<iframe class="full-width">
+<iframe class="full-width" height="700" src="https://mojepanstwo.pl:2345/docs/<?= $data['PrawoLokalne']['dokument_id']; ?>.html">
 
 </iframe>
 

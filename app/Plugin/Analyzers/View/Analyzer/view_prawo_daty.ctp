@@ -8,7 +8,7 @@
     <ul class="nav nav-tabs">
         <?php foreach ($modes as $key => $label) { ?>
             <li role="presentation" <?= ($mode == $key) ? 'class="active"' : ''; ?>><a
-                    href="/analyzers/analyzer/view/id:Prawo?mode=<?= $key; ?>"><?= $label; ?></a></li>
+                    href="/analyzers/analyzer/view/id:Prawo-Daty?mode=<?= $key; ?>"><?= $label; ?></a></li>
         <? } ?>
     </ul>
 
