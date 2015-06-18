@@ -36,7 +36,7 @@ class AnalyzerController extends AnalyzersAppController
                 $this->render('view_krs');
                 break;
             }
-            case 'Prawo-Daty':{
+            case 'Prawo-Daty': {
 
                 $modes = array(
                     'all' => 'Wszystkie',
@@ -67,8 +67,10 @@ class AnalyzerController extends AnalyzersAppController
                         'paramType' => 'querystring',
                         'PrawoLokalne' => array(
                             'limit' => 25,
+                            'order' => array('data_wydania' => 'desc',
+                                'id' => 'asc'),
                             'fields' => array('id', 'tytul', 'rocznik', 'data_wydania'),
-                            'conditions' => 'YEAR(data_wydania)>rocznik OR data_wydania > NOW()'
+                            'conditions' => '(YEAR(data_wydania)>rocznik+1 OR data_wydania > NOW()) AND data_poprawiona IS NULL'
                         )
                     );
                     $dane = $this->Paginator->paginate('PrawoLokalne');
@@ -170,7 +172,7 @@ class AnalyzerController extends AnalyzersAppController
 
     public function editPrawoLokalne($id)
     {
-        $data = $this->PrawoLokalne->findById($id);
+        $data = $this->PrawoLokalne->findByIdWithClosest($id);
         $this->set('data', $data);
     }
 
@@ -180,6 +182,7 @@ class AnalyzerController extends AnalyzersAppController
             $prawo = $this->PrawoLokalne->findById($_POST['id']);
             $prawo['PrawoLokalne']['rocznik'] = $_POST['rocznik'];
             $prawo['PrawoLokalne']['data_wydania'] = $_POST['data_wydania'];
+            $prawo['PrawoLokalne']['data_poprawiona'] = $_POST['data_poprawiona'];
             $prawo['PrawoLokalne']['organ_wydajacy_str'] = $_POST['organ_wydajacy_str'];
             if ($this->PrawoLokalne->save($prawo)) {
                 $this->json($_POST['id']);

@@ -9,7 +9,8 @@ $(document).ready(function () {
             id: $('#id').text(),
             organ_wydajacy_str: $('#organ_wydajacy_str').val(),
             rocznik: $('#rocznik').val(),
-            data_wydania: $('#data_wydania').val()
+            data_wydania: $('#data_wydania').val(),
+            data_poprawiona: $('#data_poprawiona').val()
         }
         $.ajax({
             url: "./../update",
