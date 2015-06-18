@@ -12,4 +12,9 @@
     <?
     }
     ?>
+    <li><?= $this->Html->link('Prawo-Daty', array(
+            'controller'=>'analyzer',
+            'action'=>'view',
+            'id'=> 'Prawo-Daty'
+        )) ?></li>
 </ul>

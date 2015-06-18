@@ -36,13 +36,53 @@ class AnalyzerController extends AnalyzersAppController
                 $this->render('view_krs');
                 break;
             }
+            case 'Prawo-Daty':{
+
+                $modes = array(
+                    'all' => 'Wszystkie',
+                    'err' => 'Błędne daty'
+                );
+
+                $mode = in_array(@$this->params['url']['mode'], array_keys($modes))
+                    ? $this->params['url']['mode'] : 'all';
+
+
+                $this->set('modes', $modes);
+                $this->set('mode', $mode);
+                if ($mode == 'all') {
+                    $this->Paginator->settings = array(
+                        'paramType' => 'querystring',
+                        'PrawoLokalne' => array(
+                            'limit' => 100,
+                            'order' => 'data_wydania desc',
+                            'fields' => array('id', 'tytul', 'rocznik', 'data_wydania')
+                        )
+                    );
+
+                    $dane = $this->Paginator->paginate('PrawoLokalne');
+
+                } else {
+
+                    $this->Paginator->settings = array(
+                        'paramType' => 'querystring',
+                        'PrawoLokalne' => array(
+                            'limit' => 25,
+                            'fields' => array('id', 'tytul', 'rocznik', 'data_wydania'),
+                            'conditions' => 'YEAR(data_wydania)>rocznik OR data_wydania > NOW()'
+                        )
+                    );
+                    $dane = $this->Paginator->paginate('PrawoLokalne');
+                }
+                $this->set('dane', $dane);
+                $this->render('view_prawo_daty');
+                break;
+            }
             case 'Prawo': {
 
                 $modes = array(
                     'woj' => 'Wojewodztwa',
                     'gmi' => 'Gminy',
-                    'inst' => 'Instytucje',
-                    'err' => 'Błędne daty'
+                    'inst' => 'Instytucje'
                 );
 
                 $mode = in_array(@$this->params['url']['mode'], array_keys($modes))
@@ -102,18 +142,6 @@ class AnalyzerController extends AnalyzersAppController
                     );
 
                     $dane = $this->Paginator->paginate('PrawoUrzedowe');
-                } else {
-
-                    $this->Paginator->settings = array(
-                        'paramType' => 'querystring',
-                        'PrawoLokalne' => array(
-                            'limit' => 25,
-                            'fields' => array('id', 'tytul', 'rocznik', 'data_wydania'),
-                            'conditions' => 'YEAR(data_wydania)>rocznik OR data_wydania > NOW()'
-                        )
-                    );
-                    $dane = $this->Paginator->paginate('PrawoLokalne');
-                    $slow = '';
                 }
                 $this->set('slownik', $slow);
                 $this->set('dane', $dane);
