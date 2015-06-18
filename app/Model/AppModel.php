@@ -243,6 +243,11 @@ class AppModel extends Model
                             'label' => 'Instytucje',
                             'href' => '/instytucje',
                             'groups' => array('admin')
+                        ),
+                        array(
+                            'label' => 'NGO',
+                            'href' => '/ngo/deklaracje',
+                            'groups' => array('admin')
                         )
                     )
                 ),

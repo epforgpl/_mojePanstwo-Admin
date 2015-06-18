@@ -46,7 +46,7 @@ class PrawoLokalne extends AnalyzersAppModel
             ),
             'order' => array(
                 'PrawoLokalne.data_wydania' => 'asc',
-                'PrawoLokalne.id'=> 'asc'
+                'PrawoLokalne.id'=> 'desc'
             ),
         ));
 
