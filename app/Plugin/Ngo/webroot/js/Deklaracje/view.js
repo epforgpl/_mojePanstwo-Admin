@@ -23,6 +23,10 @@ $(document).ready(function () {
                     $('#info').html('Podanie zostało odrzucone');
                     $('#info').addClass('alert alert-danger');
                     $('#info').removeClass('hidden');
+                } else if (res == 0) {
+                    $('#info').html('Podanie do ponownego rozpatrzenia');
+                    $('#info').addClass('alert alert-info');
+                    $('#info').removeClass('hidden');
                 }
             },
             error: function (xhr) {
