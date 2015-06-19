@@ -5,18 +5,26 @@
 </ol>
 
 <ul class="nav nav-tabs">
-    <?php foreach($modes as $key => $label) { ?>
-        <li role="presentation" <?= ($mode == $key) ? 'class="active"' : ''; ?>><a href="/ngo/deklaracje?mode=<?= $key; ?>"><?= $label; ?></a></li>
+    <?php foreach ($modes as $key => $label) { ?>
+        <li role="presentation" <?= ($mode == $key) ? 'class="active"' : ''; ?>><a
+                href="/ngo/deklaracje?mode=<?= $key; ?>"><?= $label; ?></a></li>
     <? } ?>
 </ul>
 
-<? if(count($data)) { ?>
+<? if (count($data)) { ?>
     <ul class="list-group margin-top-5 panel-items">
-        <? foreach($data as $row) { ?>
+        <? foreach ($data as $row) { ?>
             <li class="list-group-item">
-                <span class="pull-right"><?= $row['Deklaracje']['position']; ?> w <?= $row['Deklaracje']['organization']; ?></span>
+                <span class="pull-right"><? if ($row['Deklaracje']['position'] == '') {
+                        echo "Brak funkcji";
+                    } else { ?><?= $row['Deklaracje']['position']; ?><? } ?>
+                    w <? if ($row['Deklaracje']['organization'] == '') {
+                        echo "Brak organizacji";
+                    } else { ?><?= $row['Deklaracje']['organization']; ?><? } ?></span>
                 <a href="/ngo/deklaracje/view/<?= $row['Deklaracje']['id']; ?>">
-                    <div><?= $row['Deklaracje']['firstname']; ?> <?= $row['Deklaracje']['lastname']; ?></div>
+                    <div><? if ($row['Deklaracje']['firstname'] == '') {
+                            echo "Brak Imienia i Nazwiska";
+                        } else { ?><?= $row['Deklaracje']['firstname']; ?> <?= $row['Deklaracje']['lastname']; ?><? } ?></div>
                 </a>
             </li>
         <? } ?>
@@ -27,9 +35,9 @@
 
 <ul class="pagination">
     <?php
-    echo $this->Paginator->prev(__('Poprzednia'), array('tag' => 'li'), null, array('tag' => 'li','class' => 'disabled','disabledTag' => 'a'));
-    echo $this->Paginator->numbers(array('separator' => '','currentTag' => 'a', 'currentClass' => 'active','tag' => 'li','first' => 1));
-    echo $this->Paginator->next(__('Następna'), array('tag' => 'li','currentClass' => 'disabled'), null, array('tag' => 'li','class' => 'disabled','disabledTag' => 'a'));
+    echo $this->Paginator->prev(__('Poprzednia'), array('tag' => 'li'), null, array('tag' => 'li', 'class' => 'disabled', 'disabledTag' => 'a'));
+    echo $this->Paginator->numbers(array('separator' => '', 'currentTag' => 'a', 'currentClass' => 'active', 'tag' => 'li', 'first' => 1));
+    echo $this->Paginator->next(__('Następna'), array('tag' => 'li', 'currentClass' => 'disabled'), null, array('tag' => 'li', 'class' => 'disabled', 'disabledTag' => 'a'));
     ?>
 </ul>
 
