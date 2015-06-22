@@ -13,7 +13,7 @@ $(document).ready(function () {
             method: "post",
             data: form_data,
             success: function (res) {
-                if (res == false) {
+                if (res === false) {
                     alert("Wystąpił błąd");
                 } else if (res == 1) {
                     $('#info').html('Podanie zostało zaakceptowane');

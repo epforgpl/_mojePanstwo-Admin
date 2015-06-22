@@ -9,12 +9,24 @@
 </ol>
 <div id="info" class="alert alert-success margin-top-20 hidden"></div>
 <div id="id" class="hidden"><?= $podgrupa['Podgrupy']['id'] ?></div>
-<article id="editor">
-    <? if (!empty($podgrupa['Podgrupy']['opis'])) {
-        echo $podgrupa['Podgrupy']['opis'];
-    } ?>
-</article>
 
+<div class="row">
+    <div class="col-sm-4 "><label class="pull-right margin-top-10">Nazwa:</label></div>
+    <div class="col-sm-6"><input id="nazwa" class="form-control" value="<? if ($podgrupa['Podgrupy']['nazwa'] == '') {
+            echo $podgrupa['Podgrupy']['tytul'];
+        } else {
+            echo $podgrupa['Podgrupy']['nazwa'];
+        } ?>"</div>
+    <div class="col-sm-2"></div>
+</div><br>
+<div class="row">
+    <br><br>
+    <article id="editor">
+        <? if (!empty($podgrupa['Podgrupy']['opis'])) {
+            echo $podgrupa['Podgrupy']['opis'];
+        } ?>
+    </article>
+</div>
 <div class="pull-right">
     <button id="savebtn" class="btn-lg btn-primary">Save</button>
 </div>

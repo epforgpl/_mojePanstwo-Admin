@@ -113,7 +113,8 @@ class PodgrupyController extends BdlAppController
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $opis = trim($_POST['opis']);
             $this->Podgrupy->id = $_POST['id'];
-            $odp = $this->Podgrupy->saveField('opis', $opis);
+            $this->Podgrupy->saveField('opis', $opis);
+            $odp = $this->Podgrupy->saveField('nazwa', $_POST['nazwa']);
             $this->json($odp);
         } else {
             $this->json(false);

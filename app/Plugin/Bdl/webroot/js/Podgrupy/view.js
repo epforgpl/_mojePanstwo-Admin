@@ -9,6 +9,7 @@ $(document).ready(function () {
     $('#savebtn').click(function () {
         var form_data = {
             id: $('#id').text(),
+            nazwa: $('#nazwa').val(),
             opis: $('#editor').html()
         }
         $.ajax({
