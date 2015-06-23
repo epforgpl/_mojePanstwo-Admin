@@ -36,7 +36,7 @@ $(document).ready(function () {
 
     function pullData(typ) {
         $.ajax({
-            url: "./getdata",
+            url: "/wskazniki/panel_wskazniki/getdata",
             method: 'post',
             data: {search: $('#search').val()},
             success: function (res) {

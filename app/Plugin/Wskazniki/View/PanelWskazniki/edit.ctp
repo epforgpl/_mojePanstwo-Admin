@@ -140,7 +140,7 @@
                 </ul>
 
                 <p class="text-info">
-                    <small>Podwójne kliknięcie doda wybrany wskaźnik do licznika</small>
+                    <small>Kliknięcie doda wybrany wskaźnik</small>
                 </p>
             </div>
         </div>
