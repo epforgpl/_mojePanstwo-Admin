@@ -5,7 +5,7 @@
 </ol>
 <div id="info" class="hidden alert alert-success margin-top-20"></div>
 <div id="mainid" class="hidden"></div>
-<div class="col-sm-6">
+<div class="row">
     <div class="row">
         <div class="col-sm-2"><label class="pull-right">Tytuł:</label></div>
         <div class="col-sm-10"><input id="nazwa" class="form-control input-lg text-center">
@@ -18,7 +18,7 @@
 
     </article>
 </div>
-<div class="col-sm-6">
+<div class="row">
     <div class="row">
         <div class="col-sm-2"><label class="pull-right">Licznik:</label></div>
         <div class="col-sm-10">
@@ -27,7 +27,7 @@
                 </ul>
             </div>
             <div class="row">
-                <button id="licznik" class="btn btn-primary pull-right">Dodaj Wskaznik</button>
+                <button id="licznik" class="btn btn-default pull-right">Dodaj wskaźnik do licznika</button>
             </div>
         </div>
     </div>
@@ -39,7 +39,7 @@
                 </ul>
             </div>
             <div class="row">
-                <button id="mianownik" class="btn btn-primary pull-right">Dodaj Wskaznik</button>
+                <button id="mianownik" class="btn btn-default pull-right">Dodaj wskaźnik do mianownika</button>
             </div>
         </div>
     </div>

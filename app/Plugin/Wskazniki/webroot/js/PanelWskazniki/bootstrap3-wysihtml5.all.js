@@ -14568,7 +14568,7 @@ this["wysihtml5"]["tpl"]["blockquote"] = Handlebars.template(function (Handlebar
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-command=\"formatBlock\" data-wysihtml5-command-value=\"blockquote\" data-wysihtml5-display-format-name=\"false\" tabindex=\"-1\">\n    ";
+    buffer += " btn-default\" data-wysihtml5-command=\"formatBlock\" data-wysihtml5-command-value=\"blockquote\" data-wysihtml5-display-format-name=\"false\" tabindex=\"-1\">\n    ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.fa), {
         hash: {},
         inverse: self.program(5, program5, data),
@@ -14596,7 +14596,7 @@ this["wysihtml5"]["tpl"]["color"] = Handlebars.template(function (Handlebars, de
         return buffer;
     }
 
-    buffer += "<li class=\"dropdown\">\n  <a class=\"btn btn-primary dropdown-toggle ";
+    buffer += "<li class=\"dropdown\">\n  <a class=\"btn btn-default dropdown-toggle ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.size), {
         hash: {},
         inverse: self.noop,
@@ -14661,7 +14661,7 @@ this["wysihtml5"]["tpl"]["emphasis"] = Handlebars.template(function (Handlebars,
         if (stack1 || stack1 === 0) {
             buffer += stack1;
         }
-        buffer += " btn-primary\" data-wysihtml5-command=\"small\" title=\"CTRL+S\" tabindex=\"-1\">"
+        buffer += " btn-default\" data-wysihtml5-command=\"small\" title=\"CTRL+S\" tabindex=\"-1\">"
         + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.emphasis)), stack1 == null || stack1 === false ? stack1 : stack1.small)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
         + "</a>\n    ";
         return buffer;
@@ -14677,7 +14677,7 @@ this["wysihtml5"]["tpl"]["emphasis"] = Handlebars.template(function (Handlebars,
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-command=\"bold\" title=\"CTRL+B\" tabindex=\"-1\">"
+    buffer += " btn-default\" data-wysihtml5-command=\"bold\" title=\"CTRL+B\" tabindex=\"-1\">"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.emphasis)), stack1 == null || stack1 === false ? stack1 : stack1.bold)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</a>\n    <a class=\"btn ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.size), {
@@ -14689,7 +14689,7 @@ this["wysihtml5"]["tpl"]["emphasis"] = Handlebars.template(function (Handlebars,
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-command=\"italic\" title=\"CTRL+I\" tabindex=\"-1\">"
+    buffer += " btn-default\" data-wysihtml5-command=\"italic\" title=\"CTRL+I\" tabindex=\"-1\">"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.emphasis)), stack1 == null || stack1 === false ? stack1 : stack1.italic)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</a>\n    <a class=\"btn ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.size), {
@@ -14701,7 +14701,7 @@ this["wysihtml5"]["tpl"]["emphasis"] = Handlebars.template(function (Handlebars,
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-command=\"underline\" title=\"CTRL+U\" tabindex=\"-1\">"
+    buffer += " btn-default\" data-wysihtml5-command=\"underline\" title=\"CTRL+U\" tabindex=\"-1\">"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.emphasis)), stack1 == null || stack1 === false ? stack1 : stack1.underline)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</a>\n    ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.emphasis)), stack1 == null || stack1 === false ? stack1 : stack1.small), {
@@ -14743,7 +14743,7 @@ this["wysihtml5"]["tpl"]["font-styles"] = Handlebars.template(function (Handleba
         return "\n      <span class=\"glyphicon glyphicon-font\"></span>\n    ";
     }
 
-    buffer += "<li class=\"dropdown\">\n  <a class=\"btn btn-primary dropdown-toggle ";
+    buffer += "<li class=\"dropdown\">\n  <a class=\"btn btn-default dropdown-toggle ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.size), {
         hash: {},
         inverse: self.noop,
@@ -14819,7 +14819,7 @@ this["wysihtml5"]["tpl"]["html"] = Handlebars.template(function (Handlebars, dep
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-action=\"change_view\" title=\""
+    buffer += " btn-default\" data-wysihtml5-action=\"change_view\" title=\""
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.html)), stack1 == null || stack1 === false ? stack1 : stack1.edit)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" tabindex=\"-1\">\n      ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.fa), {
@@ -14879,9 +14879,9 @@ this["wysihtml5"]["tpl"]["image"] = Handlebars.template(function (Handlebars, de
     }
     buffer += "\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header\">\n          <a class=\"close\" data-dismiss=\"modal\">&times;</a>\n          <h3>"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.image)), stack1 == null || stack1 === false ? stack1 : stack1.insert)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h3>\n        </div>\n        <div class=\"modal-body\">\n          <div class=\"form-group\">\n            <input value=\"http://\" class=\"bootstrap-wysihtml5-insert-image-url form-control\" data-wysihtml5-dialog-field=\"src\">\n          </div> \n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"btn btn-primary\" data-dismiss=\"modal\" data-wysihtml5-dialog-action=\"cancel\" href=\"#\">"
+    + "</h3>\n        </div>\n        <div class=\"modal-body\">\n          <div class=\"form-group\">\n            <input value=\"http://\" class=\"bootstrap-wysihtml5-insert-image-url form-control\" data-wysihtml5-dialog-field=\"src\">\n          </div> \n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"btn btn-default\" data-dismiss=\"modal\" data-wysihtml5-dialog-action=\"cancel\" href=\"#\">"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.image)), stack1 == null || stack1 === false ? stack1 : stack1.cancel)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a>\n          <a class=\"btn btn-primary\" data-dismiss=\"modal\"  data-wysihtml5-dialog-action=\"save\" href=\"#\">"
+    + "</a>\n          <a class=\"btn btn-default\" data-dismiss=\"modal\"  data-wysihtml5-dialog-action=\"save\" href=\"#\">"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.image)), stack1 == null || stack1 === false ? stack1 : stack1.insert)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</a>\n        </div>\n      </div>\n    </div>\n  </div>\n  <a class=\"btn ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.size), {
@@ -14893,7 +14893,7 @@ this["wysihtml5"]["tpl"]["image"] = Handlebars.template(function (Handlebars, de
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-command=\"insertImage\" title=\""
+    buffer += " btn-default\" data-wysihtml5-command=\"insertImage\" title=\""
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.image)), stack1 == null || stack1 === false ? stack1 : stack1.insert)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" tabindex=\"-1\">\n    ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.fa), {
@@ -14955,9 +14955,9 @@ this["wysihtml5"]["tpl"]["link"] = Handlebars.template(function (Handlebars, dep
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.link)), stack1 == null || stack1 === false ? stack1 : stack1.insert)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</h3>\n        </div>\n        <div class=\"modal-body\">\n          <div class=\"form-group\">\n            <input value=\"http://\" class=\"bootstrap-wysihtml5-insert-link-url form-control\" data-wysihtml5-dialog-field=\"href\">\n          </div> \n          <div class=\"checkbox\">\n            <label> \n              <input type=\"checkbox\" class=\"bootstrap-wysihtml5-insert-link-target\" checked>"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.link)), stack1 == null || stack1 === false ? stack1 : stack1.target)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n            </label>\n          </div>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"btn btn-primary\" data-dismiss=\"modal\" data-wysihtml5-dialog-action=\"cancel\" href=\"#\">"
+    + "\n            </label>\n          </div>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"btn btn-default\" data-dismiss=\"modal\" data-wysihtml5-dialog-action=\"cancel\" href=\"#\">"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.link)), stack1 == null || stack1 === false ? stack1 : stack1.cancel)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a>\n          <a href=\"#\" class=\"btn btn-primary\" data-dismiss=\"modal\" data-wysihtml5-dialog-action=\"save\">"
+    + "</a>\n          <a href=\"#\" class=\"btn btn-default\" data-dismiss=\"modal\" data-wysihtml5-dialog-action=\"save\">"
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.link)), stack1 == null || stack1 === false ? stack1 : stack1.insert)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</a>\n        </div>\n      </div>\n    </div>\n  </div>\n  <a class=\"btn ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.size), {
@@ -14969,7 +14969,7 @@ this["wysihtml5"]["tpl"]["link"] = Handlebars.template(function (Handlebars, dep
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-command=\"createLink\" title=\""
+    buffer += " btn-default\" data-wysihtml5-command=\"createLink\" title=\""
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.link)), stack1 == null || stack1 === false ? stack1 : stack1.insert)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" tabindex=\"-1\">\n    ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.fa), {
@@ -15057,7 +15057,7 @@ this["wysihtml5"]["tpl"]["lists"] = Handlebars.template(function (Handlebars, de
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-command=\"insertUnorderedList\" title=\""
+    buffer += " btn-default\" data-wysihtml5-command=\"insertUnorderedList\" title=\""
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.lists)), stack1 == null || stack1 === false ? stack1 : stack1.unordered)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" tabindex=\"-1\">\n    ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.fa), {
@@ -15079,7 +15079,7 @@ this["wysihtml5"]["tpl"]["lists"] = Handlebars.template(function (Handlebars, de
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-command=\"insertOrderedList\" title=\""
+    buffer += " btn-default\" data-wysihtml5-command=\"insertOrderedList\" title=\""
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.lists)), stack1 == null || stack1 === false ? stack1 : stack1.ordered)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" tabindex=\"-1\">\n    ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.fa), {
@@ -15101,7 +15101,7 @@ this["wysihtml5"]["tpl"]["lists"] = Handlebars.template(function (Handlebars, de
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-command=\"Outdent\" title=\""
+    buffer += " btn-default\" data-wysihtml5-command=\"Outdent\" title=\""
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.lists)), stack1 == null || stack1 === false ? stack1 : stack1.outdent)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" tabindex=\"-1\">\n    ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.fa), {
@@ -15123,7 +15123,7 @@ this["wysihtml5"]["tpl"]["lists"] = Handlebars.template(function (Handlebars, de
     if (stack1 || stack1 === 0) {
         buffer += stack1;
     }
-    buffer += " btn-primary\" data-wysihtml5-command=\"Indent\" title=\""
+    buffer += " btn-default\" data-wysihtml5-command=\"Indent\" title=\""
     + escapeExpression(((stack1 = ((stack1 = ((stack1 = (depth0 && depth0.locale)), stack1 == null || stack1 === false ? stack1 : stack1.lists)), stack1 == null || stack1 === false ? stack1 : stack1.indent)), typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" tabindex=\"-1\">\n    ";
     stack1 = helpers['if'].call(depth0, ((stack1 = ((stack1 = (depth0 && depth0.options)), stack1 == null || stack1 === false ? stack1 : stack1.toolbar)), stack1 == null || stack1 === false ? stack1 : stack1.fa), {

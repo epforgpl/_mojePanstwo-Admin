@@ -80,7 +80,7 @@ $(document).ready(function () {
     });
 
     $(document).on('click', '[id^="remove"]', function () {
-        $(this).parent('li').remove();
+        $(this).parent('div').parent('div').parent('li').remove();
     });
 
 
