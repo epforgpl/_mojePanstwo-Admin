@@ -98,7 +98,7 @@ class AnalyzerController extends AnalyzersAppController
                     $dict = $this->PrawoLokalne->getWoj();
                     $slow = array();
                     foreach ($dict as $key => $val) {
-                        array_push($slow, array($val['wojewodztwa']['id'] => $val['wojewodztwa']['nazwa']));
+                        $slow[$val['wojewodztwa']['id']] = $val['wojewodztwa']['nazwa'];
                         //$slow += array($val['wojewodztwa']['id'] => $val['wojewodztwa']['nazwa']);
                     }
                     $dane = $this->PrawoLokalne->find('all', array(
@@ -110,10 +110,10 @@ class AnalyzerController extends AnalyzersAppController
                     $dict = $this->PrawoLokalne->getGmi();
                     $slow = array();
                     foreach ($dict as $key => $val) {
-                        array_push($slow, array($val['gminy']['id'] => $val['gminy']['nazwa']));
+                        $slow[$val['gminy']['id']] = $val['gminy']['nazwa'];
                      //   $slow += array($val['gminy']['id'] => $val['gminy']['nazwa']);
                     }
-                    array_push($slow, array(0 => 'Nieprzypisane'));
+                    $slow[0] = 'Nieprzypisane';
                    // $slow += [0 => 'Nieprzypisane'];
                     $this->Paginator->settings = array(
                         'paramType' => 'querystring',
@@ -132,10 +132,10 @@ class AnalyzerController extends AnalyzersAppController
                     $dict = $this->PrawoUrzedowe->getInst();
                     $slow = array();
                     foreach ($dict as $key => $val) {
-                        array_push($slow, array($val['instytucje']['id'] => $val['instytucje']['nazwa']));
+                        $slow[$val['instytucje']['id']] = $val['instytucje']['nazwa'];
                       //  $slow += array($val['instytucje']['id'] => $val['instytucje']['nazwa']);
                     }
-                    array_push($slow, array(0 => 'Nieprzypisane'));
+                    $slow[0] = 'Nieprzypisane';
                    // $slow += [0 => 'Nieprzypisane'];
                     $this->Paginator->settings = array(
                         'paramType' => 'querystring',
