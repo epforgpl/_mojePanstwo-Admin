@@ -4,7 +4,7 @@
 </ol>
 
 <div class="row">
-    <div class="col-sm-10">
+    <div class="col-sm-9">
         <form method="get" id="szukacz" action="">
             <div class="input-group">
                 <input class="form-control" name="search" id="search">
@@ -14,8 +14,10 @@
             </div>
         </form>
     </div>
-    <div class="col-sm-2"><a href="/wskazniki/panel_wskazniki/add">
+    <div class="col-sm-3"><a href="/wskazniki/panel_wskazniki/add">
             <button class="btn btn-primary pull-right">Dodaj Nowy</button>
+        </a><a href="/wskazniki/panel_wskazniki/import">
+            <button class="btn btn-primary pull-right">Importuj</button>
         </a></div>
 </div>
 

@@ -25,6 +25,5 @@ class PanelWskazniki extends WskaznikiAppModel {
     );
     public $actsAs = array('Containable');
 
-
 }
 
