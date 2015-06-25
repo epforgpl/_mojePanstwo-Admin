@@ -97,7 +97,7 @@
     <? } else { ?>
         <div class="container text-center">
             <h2>_mojePanstwo-Admin</h2>
-            <a class="btn btn-primary margin-top-10" href="https://mojepanstwo.pl/auth/mojepanstwo">
+            <a class="btn btn-primary margin-top-10" href="auth/mojepanstwo">
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 &nbsp;Zaloguj się
             </a>
