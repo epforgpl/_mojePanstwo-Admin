@@ -98,7 +98,8 @@ class AnalyzerController extends AnalyzersAppController
                     $dict = $this->PrawoLokalne->getWoj();
                     $slow = array();
                     foreach ($dict as $key => $val) {
-                        $slow += array($val['wojewodztwa']['id'] => $val['wojewodztwa']['nazwa']);
+                        array_push($slow, array($val['wojewodztwa']['id'] => $val['wojewodztwa']['nazwa']));
+                        //$slow += array($val['wojewodztwa']['id'] => $val['wojewodztwa']['nazwa']);
                     }
                     $dane = $this->PrawoLokalne->find('all', array(
                         'fields' => array('COUNT(*) as count', 'wojewodztwo_id', 'MAX(data_wydania) AS najnowsze'),
@@ -109,7 +110,8 @@ class AnalyzerController extends AnalyzersAppController
                     $dict = $this->PrawoLokalne->getGmi();
                     $slow = array();
                     foreach ($dict as $key => $val) {
-                        $slow += array($val['gminy']['id'] => $val['gminy']['nazwa']);
+                        array_push($slow, array($val['gminy']['id'] => $val['gminy']['nazwa']));
+                     //   $slow += array($val['gminy']['id'] => $val['gminy']['nazwa']);
                     }
                     $slow += [0 => 'Nieprzypisane'];
                     $this->Paginator->settings = array(
@@ -129,7 +131,8 @@ class AnalyzerController extends AnalyzersAppController
                     $dict = $this->PrawoUrzedowe->getInst();
                     $slow = array();
                     foreach ($dict as $key => $val) {
-                        $slow += [$val['instytucje']['id'] => $val['instytucje']['nazwa']];
+                        array_push($slow, array($val['instytucje']['id'] => $val['instytucje']['nazwa']));
+                      //  $slow += array($val['instytucje']['id'] => $val['instytucje']['nazwa']);
                     }
 
                     $slow += [0 => 'Nieprzypisane'];
