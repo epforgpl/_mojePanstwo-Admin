@@ -109,7 +109,7 @@ class AnalyzerController extends AnalyzersAppController
                     $dict = $this->PrawoLokalne->getGmi();
                     $slow = array();
                     foreach ($dict as $key => $val) {
-                        $slow += [$val['gminy']['id'] => $val['gminy']['nazwa']];
+                        $slow += array($val['gminy']['id'] => $val['gminy']['nazwa']);
                     }
                     $slow += [0 => 'Nieprzypisane'];
                     $this->Paginator->settings = array(
