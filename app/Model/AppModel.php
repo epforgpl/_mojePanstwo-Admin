@@ -91,9 +91,12 @@ class AppModel extends Model
         parent::__construct();
 
         if (!count(self::$databaseType)) {
+
+            $keys=array_keys(self::$databaseTypes);
+
             App::uses('CakeSession', 'Model/Datasource');
             $type = in_array(CakeSession::read('Database.type'), array_keys(self::$databaseTypes)) ?
-                CakeSession::read('Database.type') : array_keys(self::$databaseTypes)[1];
+                CakeSession::read('Database.type') : $keys[1];
 
             self::$databaseType = array(
                 'key' => $type,
