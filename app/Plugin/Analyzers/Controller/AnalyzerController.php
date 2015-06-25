@@ -98,7 +98,7 @@ class AnalyzerController extends AnalyzersAppController
                     $dict = $this->PrawoLokalne->getWoj();
                     $slow = array();
                     foreach ($dict as $key => $val) {
-                        $slow += [$val['wojewodztwa']['id'] => $val['wojewodztwa']['nazwa']];
+                        $slow += array($val['wojewodztwa']['id'] => $val['wojewodztwa']['nazwa']);
                     }
                     $dane = $this->PrawoLokalne->find('all', array(
                         'fields' => array('COUNT(*) as count', 'wojewodztwo_id', 'MAX(data_wydania) AS najnowsze'),
