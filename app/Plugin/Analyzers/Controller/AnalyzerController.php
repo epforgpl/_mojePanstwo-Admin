@@ -135,8 +135,8 @@ class AnalyzerController extends AnalyzersAppController
                         array_push($slow, array($val['instytucje']['id'] => $val['instytucje']['nazwa']));
                       //  $slow += array($val['instytucje']['id'] => $val['instytucje']['nazwa']);
                     }
-
-                    $slow += [0 => 'Nieprzypisane'];
+                    array_push($slow, array(0 => 'Nieprzypisane'));
+                   // $slow += [0 => 'Nieprzypisane'];
                     $this->Paginator->settings = array(
                         'paramType' => 'querystring',
                         'PrawoUrzedowe' => array(
