@@ -257,15 +257,15 @@ class AnalyzerExecution extends AnalyzersAppModel
             case 'Cluster' : {
                 $cluster = $this->query("SELECT server_name, space_free, space_usage, avg1, insert_ts FROM watcher_log WHERE insert_ts>'$minushour' ORDER BY server_name, insert_ts ASC");
 
-                $Portal = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
-                $MySQL = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
-                $Main = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
-                $CPU_HOG = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
-                $Video = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
-                $ES1 = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
-                $ES2 = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
-                $ES3 = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
-                $ES4 = ['avg1' => [], 'space_free' => [], 'space_usage' => [], 'insert_ts' => []];
+                $Portal = ['avg1' => array(), 'space_free' => array(), 'space_usage' => array(), 'insert_ts' => array()];
+                $MySQL = ['avg1' => array(), 'space_free' => array(), 'space_usage' => array(), 'insert_ts' => array()];
+                $Main = ['avg1' => array(), 'space_free' => array(), 'space_usage' => array(), 'insert_ts' => array()];
+                $CPU_HOG = ['avg1' => array(), 'space_free' => array(), 'space_usage' => array(), 'insert_ts' => array()];
+                $Video = ['avg1' => array(), 'space_free' => array(), 'space_usage' => array(), 'insert_ts' => array()];
+                $ES1 = ['avg1' => array(), 'space_free' => array(), 'space_usage' => array(), 'insert_ts' => array()];
+                $ES2 = ['avg1' => array(), 'space_free' => array(), 'space_usage' => array(), 'insert_ts' => array()];
+                $ES3 = ['avg1' => array(), 'space_free' => array(), 'space_usage' => array(), 'insert_ts' => array()];
+                $ES4 = ['avg1' => array(), 'space_free' => array(), 'space_usage' => array(), 'insert_ts' => array()];
 
                 foreach ($cluster as $key => $val) {
                     switch ($val['watcher_log']['server_name']) {
