@@ -3,7 +3,7 @@
     <li><a href="/bdl/podgrupy">BDL</a></li>
     <? if (sizeof($kategorie) == 1) { ?>
         <li>
-            <a href="/bdl/kategorie/index/<? echo array_keys($kategorie)[0]; ?>"> <?= $kategorie[array_keys($kategorie)[0]] ?></a>
+            <a href="/bdl/kategorie/index/<? $keys=array_keys($kategorie); echo $keys[0]; ?>"> <?= $kategorie[$keys[0]] ?></a>
         </li>
     <? } else { ?>
         <li><a href="/bdl/kategorie/lista">Kategorie</a></li>
