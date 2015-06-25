@@ -4,7 +4,7 @@
 	<?php echo $this->Html->charset(); ?>
 	<title>_mojePanstwo-Admin</title>
 	<?php
-		echo $this->Html->meta('icon');
+		echo $this->Html->meta('app/webroot/icon');
 
 		echo $this->Html->css('bootstrap.min');
 		echo $this->Html->css('layout');
