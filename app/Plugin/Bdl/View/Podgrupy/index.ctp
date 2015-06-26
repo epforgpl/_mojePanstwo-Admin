@@ -3,14 +3,14 @@
     <li><a href="/bdl/podgrupy">BDL</a></li>
     <? if (sizeof($kategorie) == 1) { ?>
         <li>
-            <a href="/bdl/kategorie/index/<? $keys=array_keys($kategorie); echo $keys[0]; ?>"> <?= $kategorie[$keys[0]] ?></a>
+            <a href="/bdl/kategorie/index/<? $keysk=array_keys($kategorie); echo $keysk[0]; ?>"> <?= $kategorie[$keys[0]] ?></a>
         </li>
     <? } else { ?>
         <li><a href="/bdl/kategorie/lista">Kategorie</a></li>
     <? } ?>
     <? if (sizeof($grupy) == 1) { ?>
         <li>
-            <a href="/bdl/grupy/index/<? echo array_keys($grupy)[0]; ?>"> <?= $grupy[array_keys($grupy)[0]] ?></a>
+            <a href="/bdl/grupy/index/<? $keysg=array_keys($grupy); echo $keysg[0]; ?>"> <?= $grupy[$keysg[0]] ?></a>
         </li>
     <? } else { ?>
         <li><a href="/bdl/grupy/lista">Grupy</a></li>
